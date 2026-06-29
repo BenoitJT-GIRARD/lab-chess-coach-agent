@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     # --- Lichess ---
     lichess_explorer_base: str = "https://explorer.lichess.ovh"
     lichess_api_base: str = "https://lichess.org"
+    # The Opening Explorer now requires an authenticated token; when empty the
+    # agent falls back to the local opening book (see services/opening_book.py).
+    lichess_token: str = ""
 
     # --- Stockfish ---
     stockfish_path: str = "/usr/games/stockfish"
