@@ -10,6 +10,7 @@ from __future__ import annotations
 from chess_coach.services.rag_search import RagService
 from chess_coach.services.stockfish_engine import StockfishService
 from chess_coach.services.theory import TheoryService
+from chess_coach.services.youtube import YoutubeService
 
 
 def get_theory_service() -> TheoryService:
@@ -28,3 +29,9 @@ def get_stockfish_service() -> StockfishService:
     """Provide a :class:`StockfishService` instance."""
 
     return StockfishService()
+
+
+def get_youtube_service() -> YoutubeService:
+    """Provide a :class:`YoutubeService` instance."""
+
+    return YoutubeService()
