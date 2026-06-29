@@ -71,6 +71,23 @@ class VectorSearchResponse(BaseModel):
     passages: list[Passage] = Field(default_factory=list)
 
 
+class VideoResult(BaseModel):
+    """A single YouTube video suggestion."""
+
+    video_id: str
+    title: str
+    channel: str
+    url: str
+    thumbnail: str
+
+
+class VideosResponse(BaseModel):
+    """Returned by ``GET /api/v1/videos/{opening}``."""
+
+    opening: str
+    videos: list[VideoResult] = Field(default_factory=list)
+
+
 class EvaluationResponse(BaseModel):
     """Returned by ``GET /api/v1/evaluate/{fen}``."""
 
