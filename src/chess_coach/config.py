@@ -49,8 +49,13 @@ class Settings(BaseSettings):
     milvus_port: int = 19530
     milvus_collection: str = "chess_openings"
 
+    # Directory of Wikichess Markdown articles, relative to the working dir.
+    wikichess_dir: str = "data/openings"
+
     # --- Embeddings ---
-    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    # Multilingual model: the Wikichess knowledge base is in French. 384-dim,
+    # lightweight and CPU-friendly, in the spirit of the brief's suggestion.
+    embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     embedding_dim: int = 384
 
     # --- MongoDB ---

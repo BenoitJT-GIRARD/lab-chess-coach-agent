@@ -28,6 +28,9 @@ COPY src ./src
 COPY scripts ./scripts
 RUN uv sync --frozen --no-dev
 
+# Wikichess knowledge base, ingested into Milvus at runtime.
+COPY data ./data
+
 EXPOSE 8000
 
 # Lightweight liveness probe used by docker-compose.

@@ -55,6 +55,22 @@ class MovesResponse(BaseModel):
     moves: list[MoveStat] = Field(default_factory=list)
 
 
+class Passage(BaseModel):
+    """A knowledge-base passage retrieved by vector search."""
+
+    text: str
+    opening: str
+    source: str
+    score: float = Field(description="Similarity score (higher is closer).")
+
+
+class VectorSearchResponse(BaseModel):
+    """Returned by ``GET /api/v1/vector-search``."""
+
+    query: str
+    passages: list[Passage] = Field(default_factory=list)
+
+
 class EvaluationResponse(BaseModel):
     """Returned by ``GET /api/v1/evaluate/{fen}``."""
 
