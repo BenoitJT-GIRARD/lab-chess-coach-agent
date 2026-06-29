@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from chess_coach import __version__
-from chess_coach.api.routes import health
+from chess_coach.api.routes import evaluate, health, moves, position
 
 API_PREFIX = "/api/v1"
 
@@ -39,6 +39,9 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(health.router, prefix=API_PREFIX)
+    app.include_router(position.router, prefix=API_PREFIX)
+    app.include_router(moves.router, prefix=API_PREFIX)
+    app.include_router(evaluate.router, prefix=API_PREFIX)
 
     return app
 
