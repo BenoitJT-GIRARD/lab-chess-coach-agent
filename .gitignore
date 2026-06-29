@@ -1,0 +1,95 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- Environments ---
+.venv/
+venv/
+env/
+ENV/
+.env
+.envrc
+
+# --- uv ---
+.uv/
+
+# --- Node / Angular ---
+node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.angular/cache/
+npm-debug.log*
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# --- Testing / Linting ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.bandit
+
+# --- Logs / runtime ---
+logs/
+*.log
+
+# --- Docker / data volumes (named volumes only, never committed) ---
+volumes/
+
+# --- Models / artifacts ---
+models/
+*.tar.gz
+*.pkl
+*.npy
+
+# --- OS / temp ---
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# --- Project-specific ---
+infos/
+data/raw/
+# Final deliverable bundle — produced on demand via scripts/package_deliverables.py
+Mettez_en_place_un_Agent_IA_Girard_Benoit*.zip

@@ -1,0 +1,75 @@
+"""Centralised application settings.
+
+Every tunable value (hosts, ports, API keys, model names) is read from the
+environment — never hard-coded — so the same code runs identically on a
+developer laptop and inside Docker Compose. Values are documented in
+``.env.example``.
+"""
+
+from __future__ import annotations
+
+from functools import lru_cache
+
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    """Application configuration sourced from environment variables / ``.env``."""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
+    # --- API ---
+    # Binding to all interfaces is intentional: the API only ever runs inside a
+    # container whose published ports are controlled by docker-compose.
+    api_host: str = "0.0.0.0"  # nosec B104
+    api_port: int = 8000
+
+    # --- Lichess ---
+    lichess_explorer_base: str = "https://explorer.lichess.ovh"
+    lichess_api_base: str = "https://lichess.org"
+
+    # --- Stockfish ---
+    stockfish_path: str = "/usr/games/stockfish"
+    stockfish_depth: int = 15
+    stockfish_threads: int = 1
+
+    # --- YouTube Data API v3 ---
+    youtube_api_key: str = ""
+
+    # --- Milvus ---
+    milvus_host: str = "milvus"
+    milvus_port: int = 19530
+    milvus_collection: str = "chess_openings"
+
+    # --- Embeddings ---
+    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_dim: int = 384
+
+    # --- MongoDB ---
+    mongodb_uri: str = "mongodb://mongo:27017"
+    mongodb_db: str = "chess_coach"
+
+    # --- Optional LLM synthesis layer ---
+    llm_enabled: bool = False
+    llm_base_url: str = "https://api.openai.com/v1"
+    llm_api_key: str = ""
+    llm_model: str = "gpt-4o-mini"
+
+    # External HTTP timeout (seconds) shared by every service client.
+    http_timeout: float = Field(default=10.0, ge=1.0)
+
+
+@lru_cache
+def get_settings() -> Settings:
+    """Return a cached :class:`Settings` instance.
+
+    Caching guarantees the environment is parsed once and that every module
+    sees the same configuration object.
+    """
+
+    return Settings()

@@ -1,0 +1,125 @@
+[project]
+name = "chess_coach"
+version = "0.1.0"
+description = "Chess Coach: a LangGraph chess-opening coaching agent"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "Benoit Girard" }]
+keywords = [
+    "chess",
+    "openings",
+    "langgraph",
+    "agent",
+    "rag",
+    "milvus",
+    "fastapi",
+    "stockfish",
+    "lichess",
+]
+
+dependencies = [
+    # Web API
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.5",
+    "httpx>=0.27",
+    # Chess domain
+    "chess>=1.11",
+    "stockfish>=3.28",
+    # Agent orchestration
+    "langgraph>=0.2.50",
+    "langchain-core>=0.3.20",
+    # Retrieval-Augmented Generation
+    "pymilvus>=2.4",
+    "sentence-transformers>=3.3",
+    # External knowledge sources
+    "google-api-python-client>=2.150",
+    # Persistence
+    "pymongo>=4.9",
+    # Utilities
+    "rich>=13.9",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "respx>=0.21",
+    "ruff>=0.7",
+    "bandit>=1.7",
+    "pre-commit>=4.0",
+    "ipykernel>=6.29",
+    "jupyter>=1.1",
+    "nbstripout>=0.7",
+    "python-pptx>=1.0",
+]
+# Optional natural-language synthesis layer for the agent. The graph runs
+# fully without it (deterministic template answer); installing this extra
+# enables an OpenAI-compatible LLM to phrase the final recommendation.
+llm = ["langchain-openai>=0.2.10"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/chess_coach"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["notebooks/*.ipynb"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+]
+ignore = [
+    "E501", # line length handled by formatter
+    "N803", # allow FEN / SAN style argument names where natural
+    "N806",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["src/chess_coach"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "notebooks", ".venv"]
+# B101: assert is used for invariants in scripts/notebooks, not security checks.
+# B113: external HTTP calls always pass an explicit timeout in the services layer.
+skips = ["B101"]
