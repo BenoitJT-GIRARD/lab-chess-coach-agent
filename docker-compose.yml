@@ -1,0 +1,14 @@
+# Chess Coach stack — orchestration.
+#
+# This first iteration brings up the FastAPI backend only (Étape 1). The Milvus,
+# MongoDB and Angular services are added as the project grows (Étape 3, 5 and 6).
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: chess_coach-backend
+    env_file: .env
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
