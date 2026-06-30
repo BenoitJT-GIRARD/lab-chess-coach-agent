@@ -61,6 +61,20 @@ services:
       minio:
         condition: service_healthy
 
+  # --- Document database (interaction history) ---
+  mongo:
+    image: mongo:7
+    container_name: chess_coach-mongo
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   # --- Backend (FastAPI + LangGraph agent) ---
   backend:
     build:
@@ -71,6 +85,7 @@ services:
     environment:
       - MILVUS_HOST=milvus
       - MILVUS_PORT=19530
+      - MONGODB_URI=mongodb://mongo:27017
       - HF_HOME=/cache/huggingface
     volumes:
       - hf_cache:/cache/huggingface
@@ -80,9 +95,12 @@ services:
     depends_on:
       milvus:
         condition: service_healthy
+      mongo:
+        condition: service_healthy
 
 volumes:
   etcd_data:
   minio_data:
   milvus_data:
+  mongo_data:
   hf_cache:

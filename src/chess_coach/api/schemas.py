@@ -100,3 +100,26 @@ class EvaluationResponse(BaseModel):
     best_move: str | None = None
     best_move_san: str | None = None
     depth: int
+
+
+class AgentRequest(BaseModel):
+    """Body of ``POST /api/v1/agent``."""
+
+    fen: str = Field(description="Position to analyse, in FEN notation.")
+
+
+class AgentResponse(BaseModel):
+    """Full agent answer for a position."""
+
+    fen: str
+    valid: bool
+    opening_name: str | None = None
+    opening_eco: str | None = None
+    in_theory: bool = False
+    theory_moves: list[MoveStat] = Field(default_factory=list)
+    evaluation: EvaluationResponse | None = None
+    passages: list[Passage] = Field(default_factory=list)
+    videos: list[VideoResult] = Field(default_factory=list)
+    recommendation: str = ""
+    sources_used: list[str] = Field(default_factory=list)
+    error: str | None = None
