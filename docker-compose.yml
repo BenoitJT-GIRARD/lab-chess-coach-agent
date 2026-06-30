@@ -98,6 +98,17 @@ services:
       mongo:
         condition: service_healthy
 
+  # --- Frontend (Angular served by nginx, proxies /api to the backend) ---
+  frontend:
+    build:
+      context: ./frontend
+    container_name: chess_coach-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
 volumes:
   etcd_data:
   minio_data:
