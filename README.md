@@ -50,15 +50,42 @@ ffe/
 copy .env.example .env
 
 # 2. Build and start the whole stack (FastAPI, Milvus, MongoDB, Angular)
-docker compose up --build
+docker compose up -d --build
 
-# 3. Load the Wikichess knowledge base into Milvus (first run only)
+# 3. Load the Wikichess knowledge base into Milvus (first run only;
+#    the Milvus volume persists it across restarts)
 docker compose run --rm backend python -m scripts.ingest_wikichess
 
 # 4. Open the interfaces
 #    - Angular UI ............ http://localhost:4200
 #    - FastAPI Swagger docs .. http://localhost:8000/docs
 ```
+
+The services (`etcd`, `minio`, `milvus`, `mongo`, `backend`, `frontend`) come
+up in order thanks to health-checks; all state lives in named volumes
+(`docker volume ls`), so stopping and restarting the stack keeps the indexed
+knowledge base and the interaction history.
+
+## Demonstration
+
+Open <http://localhost:4200> and either play moves on the board or use the
+demo-position buttons. Interesting positions to show:
+
+| Position | What the agent does |
+| -------- | ------------------- |
+| Starting position | Identifies the opening family, lists the main first moves |
+| Italian Game (after 3.Bc4 Bc5) | Names the opening, shows theory + Wikichess context + videos |
+| Sicilian Defence (after 1.e4 c5) | Retrieves the Sicilian knowledge and tutorials |
+| Out of theory (after 1.e4 e5 2.Qh5) | Falls back to Stockfish and explains the evaluation |
+
+## Troubleshooting
+
+- **No videos** — the `YOUTUBE_API_KEY` is missing or its quota is exhausted;
+  the rest of the answer still works.
+- **No theory, only engine** — the Lichess Explorer needs a token; without one
+  the local opening book covers the main lines and deeper positions fall back to
+  Stockfish, which is the intended behaviour.
+- **`vector-search` returns nothing** — run the ingestion step (3) once.
 
 ## Quick start (local backend, without Docker)
 
