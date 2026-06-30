@@ -1,0 +1,31 @@
+/* Global styles — Chess Coach frontend. */
+
+:root {
+  --navy: #0d1b2a;
+  --navy-soft: #1b263b;
+  --gold: #c8a04b;
+  --gold-soft: #e0c074;
+  --paper: #f4f1ea;
+  --ink: #1f2933;
+  --muted: #6b7480;
+  --line: #e2ddd2;
+  --green: #2f8f5b;
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(160deg, #f7f5ef 0%, #eceadf 100%);
+}
