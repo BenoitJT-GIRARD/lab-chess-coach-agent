@@ -1,0 +1,139 @@
+<mat-card class="panneau" appearance="outlined">
+  <mat-card-content>
+    @if (chargement) {
+      <div class="etat">
+        <mat-spinner diameter="36"></mat-spinner>
+        <p>L'agent analyse la position…</p>
+      </div>
+    } @else if (erreur) {
+      <div class="etat erreur">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ erreur }}</p>
+      </div>
+    } @else if (resultat) {
+      <header class="entete">
+        <h2>{{ resultat.opening_name || 'Position hors théorie' }}</h2>
+        <mat-chip-set>
+          @if (resultat.opening_eco) {
+            <mat-chip highlighted color="accent">{{ resultat.opening_eco }}</mat-chip>
+          }
+          @if (resultat.in_theory) {
+            <mat-chip highlighted color="primary">Théorie</mat-chip>
+          } @else {
+            <mat-chip highlighted color="warn">Hors théorie</mat-chip>
+          }
+        </mat-chip-set>
+      </header>
+
+      <p class="recommandation">{{ resultat.recommendation }}</p>
+
+      @if (resultat.in_theory && resultat.theory_moves.length) {
+        <mat-divider></mat-divider>
+        <section class="bloc">
+          <h3><mat-icon>menu_book</mat-icon> Coups théoriques</h3>
+          <ul class="coups">
+            @for (coup of resultat.theory_moves; track coup.uci) {
+              <li>
+                <span class="coup">{{ coup.san }}</span>
+                @if (coup.total) {
+                  <span class="coup-parties">{{ nombreDeParties(coup.total) }} parties</span>
+                }
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (resultat.reference_games.length) {
+        <mat-divider></mat-divider>
+        <section class="bloc">
+          <h3><mat-icon>military_tech</mat-icon> Parties de référence</h3>
+          <ul class="parties">
+            @for (partie of resultat.reference_games; track partie.game_id) {
+              <li>
+                <a [href]="partie.url" target="_blank" rel="noopener">
+                  {{ partie.white }} ({{ partie.white_rating }}) &ndash;
+                  {{ partie.black }} ({{ partie.black_rating }})
+                </a>
+                <span class="partie-resultat">{{ partie.result }}</span>
+                @if (partie.year) {
+                  <span class="partie-annee">{{ partie.year }}</span>
+                }
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (resultat.evaluation) {
+        <mat-divider></mat-divider>
+        <section class="bloc moteur">
+          <h3><mat-icon>memory</mat-icon> Évaluation Stockfish</h3>
+          <div class="eval">
+            <span class="eval-score">{{ libelleEvaluation() }}</span>
+            <span class="eval-detail">
+              Meilleur coup : <strong>{{ resultat.evaluation.best_move_san }}</strong>
+              <em>(profondeur {{ resultat.evaluation.depth }})</em>
+            </span>
+          </div>
+        </section>
+      }
+
+      @if (resultat.passages.length) {
+        <mat-divider></mat-divider>
+        <section class="bloc">
+          <h3><mat-icon>auto_stories</mat-icon> Pour approfondir</h3>
+          @for (passage of resultat.passages; track passage.source) {
+            <article class="passage">
+              <span class="passage-source">{{ passage.opening }}</span>
+              <p>{{ passage.text }}</p>
+            </article>
+          }
+        </section>
+      }
+
+      @if (resultat.videos.length) {
+        <mat-divider></mat-divider>
+        <section class="bloc">
+          <h3><mat-icon>smart_display</mat-icon> Vidéos explicatives</h3>
+          <div class="video">
+            <iframe
+              [src]="urlIntegration(resultat.videos[0].video_id)"
+              title="Vidéo explicative"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <ul class="videos">
+            @for (video of resultat.videos; track video.video_id) {
+              <li>
+                <a [href]="video.url" target="_blank" rel="noopener">{{ video.title }}</a>
+                <span class="video-chaine">{{ video.channel }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (resultat.sources_used.length) {
+        <mat-divider></mat-divider>
+        <footer class="sources">
+          <span>Outils utilisés :</span>
+          <mat-chip-set>
+            @for (source of resultat.sources_used; track source) {
+              <mat-chip>{{ libelleSource(source) }}</mat-chip>
+            }
+          </mat-chip-set>
+        </footer>
+      }
+    } @else {
+      <div class="etat vide">
+        <mat-icon>touch_app</mat-icon>
+        <p>
+          Jouez un coup sur l'échiquier, ou choisissez une position de démonstration,
+          pour recevoir les conseils de l'agent.
+        </p>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

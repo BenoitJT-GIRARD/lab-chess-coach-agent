@@ -1,4 +1,87 @@
-/* Global styles — Chess Coach frontend. */
+/* Styles globaux — Chess Coach.
+ *
+ * Le thème Angular Material est construit sur un bleu nuit et un or.
+ * Française des Échecs : un bleu nuit et un or. Les mêmes couleurs sont aussi
+ * exposées en variables CSS, pour les quelques éléments dessinés à la main.
+ */
+
+@use '@angular/material' as mat;
+@use 'material-icons/iconfont/material-icons.css';
+
+@include mat.core();
+
+$chess_coach-navy: (
+  50: #e7e9ec,
+  100: #c3c8d0,
+  200: #9ba4b1,
+  300: #728091,
+  400: #54647a,
+  500: #364963,
+  600: #30425b,
+  700: #1b263b,
+  800: #131d2f,
+  900: #0d1b2a,
+  contrast: (
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  ),
+);
+
+$chess_coach-gold: (
+  50: #f9f4e9,
+  100: #f0e4c8,
+  200: #e6d2a4,
+  300: #dbbf7f,
+  400: #d4b163,
+  500: #c8a04b,
+  600: #b89044,
+  700: #a37c3b,
+  800: #8e6933,
+  900: #6b4c24,
+  contrast: (
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: rgba(0, 0, 0, 0.87),
+    500: rgba(0, 0, 0, 0.87),
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  ),
+);
+
+// Pile de polices systeme : la demonstration doit rester lisible sans acces
+// a internet, on ne charge donc pas Roboto depuis Google Fonts.
+$chess_coach-police: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+
+$chess_coach-typographie: mat.define-typography-config(
+  $font-family: $chess_coach-police,
+);
+
+$chess_coach-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: mat.define-palette($chess_coach-navy, 900, 700, 500),
+      accent: mat.define-palette($chess_coach-gold, 500, 300, 700),
+      warn: mat.define-palette(mat.$red-palette),
+    ),
+    typography: $chess_coach-typographie,
+    density: 0,
+  )
+);
+
+@include mat.all-component-themes($chess_coach-theme);
+@include mat.typography-hierarchy($chess_coach-typographie);
 
 :root {
   --navy: #0d1b2a;
@@ -25,7 +108,7 @@ body {
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  font-family: $chess_coach-police;
   color: var(--ink);
   background: linear-gradient(160deg, #f7f5ef 0%, #eceadf 100%);
 }

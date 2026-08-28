@@ -1,0 +1,78 @@
+<div class="ecran">
+  <!-- À gauche : l'échiquier et ses commandes -->
+  <mat-card class="carte-echiquier" appearance="outlined">
+    <mat-card-content>
+      <div class="echiquier">
+        <ngx-chess-board
+          #board
+          [size]="taille"
+          [lightTileColor]="caseClaire"
+          [darkTileColor]="caseSombre"
+          (moveChange)="auCoupJoue()"
+        ></ngx-chess-board>
+      </div>
+
+      <div class="commandes">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="auCoupJoue()"
+          matTooltip="Demander l'analyse de la position affichée"
+        >
+          <mat-icon>psychology</mat-icon>
+          Analyser
+        </button>
+
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="annulerCoup()"
+          matTooltip="Annuler le dernier coup"
+          aria-label="Annuler le dernier coup"
+        >
+          <mat-icon>undo</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="retourner()"
+          matTooltip="Retourner l'échiquier"
+          aria-label="Retourner l'échiquier"
+        >
+          <mat-icon>swap_vert</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          color="accent"
+          (click)="reinitialiser()"
+          matTooltip="Revenir à la position de départ"
+          aria-label="Revenir à la position de départ"
+        >
+          <mat-icon>restart_alt</mat-icon>
+        </button>
+      </div>
+
+      <div class="demos">
+        <span class="demos-titre">Positions de démonstration</span>
+        <mat-chip-set aria-label="Positions de démonstration">
+          @for (position of positionsDemo; track position.fen) {
+            <mat-chip (click)="chargerDemo(position)">{{ position.libelle }}</mat-chip>
+          }
+        </mat-chip-set>
+      </div>
+
+      @if (fenCourante) {
+        <p class="fen"><strong>FEN</strong> {{ fenCourante }}</p>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- À droite : ce que répond l'agent -->
+  <app-coach-panel
+    [chargement]="chargement"
+    [erreur]="erreur"
+    [resultat]="resultat"
+  ></app-coach-panel>
+</div>

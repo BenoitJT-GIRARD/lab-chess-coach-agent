@@ -1,0 +1,73 @@
+.ecran {
+  display: grid;
+  grid-template-columns: minmax(420px, 480px) minmax(320px, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .ecran {
+    grid-template-columns: 1fr;
+  }
+}
+
+.carte-echiquier {
+  background: #ffffff;
+  border-radius: var(--radius);
+}
+
+.echiquier {
+  display: flex;
+  justify-content: center;
+  padding: 0.25rem 0 1rem;
+}
+
+.commandes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+
+  button mat-icon {
+    margin-right: 0.25rem;
+  }
+
+  button[mat-icon-button] mat-icon {
+    margin-right: 0;
+  }
+}
+
+.demos {
+  padding: 1rem 0 0.5rem;
+}
+
+.demos-titre {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+mat-chip {
+  cursor: pointer;
+}
+
+.fen {
+  margin: 0.75rem 0 0;
+  padding: 0.6rem 0.75rem;
+  background: var(--paper);
+  border-radius: 8px;
+  font-family: 'Cascadia Mono', Consolas, monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+  word-break: break-all;
+
+  strong {
+    color: var(--navy);
+    margin-right: 0.5rem;
+  }
+}

@@ -41,7 +41,7 @@ ffe/
 │   ├── tests/                  # Suite pytest
 │   ├── Dockerfile
 │   └── pyproject.toml
-├── frontend/                   # Interface Angular (échiquier ngx-chess-board)
+├── frontend/                   # Interface Angular Material (ngx-chess-board)
 ├── docs/                       # Architecture, note de faisabilité, auto-évaluation
 ├── notebooks/
 │   └── chess_coach_mission.ipynb    # Déroulé de la démarche
@@ -127,6 +127,7 @@ Le frontend se lance depuis `frontend/` avec `npm start`.
 | Bandit | `backend/pyproject.toml` | `uv run bandit -c pyproject.toml -r src` |
 | Pytest | `backend/pyproject.toml` | `uv run pytest` |
 | Pre-commit | `.pre-commit-config.yaml` | `uv run pre-commit run --all-files` |
+| Karma (frontend) | `frontend/angular.json` | `npm test -- --watch=false --browsers=ChromeHeadless` |
 
 Le crochet pre-commit enchaîne `ruff --fix`, `ruff-format`, `bandit` et
 `nbstripout` : les notebooks sont versionnés sans sortie d'exécution.
