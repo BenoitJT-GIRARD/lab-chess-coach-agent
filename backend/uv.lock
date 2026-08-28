@@ -198,6 +198,7 @@ dependencies = [
     { name = "google-api-python-client" },
     { name = "httpx" },
     { name = "langchain-core" },
+    { name = "langchain-openai" },
     { name = "langgraph" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
@@ -225,9 +226,6 @@ dev = [
     { name = "respx" },
     { name = "ruff" },
 ]
-llm = [
-    { name = "langchain-openai" },
-]
 
 [package.metadata]
 requires-dist = [
@@ -239,7 +237,7 @@ requires-dist = [
     { name = "ipykernel", marker = "extra == 'dev'", specifier = ">=6.29" },
     { name = "jupyter", marker = "extra == 'dev'", specifier = ">=1.1" },
     { name = "langchain-core", specifier = ">=0.3.20" },
-    { name = "langchain-openai", marker = "extra == 'llm'", specifier = ">=0.2.10" },
+    { name = "langchain-openai", specifier = ">=0.2.10" },
     { name = "langgraph", specifier = ">=0.2.50" },
     { name = "nbstripout", marker = "extra == 'dev'", specifier = ">=0.7" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=4.0" },
@@ -259,7 +257,7 @@ requires-dist = [
     { name = "tqdm", specifier = ">=4.66" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.32" },
 ]
-provides-extras = ["dev", "llm"]
+provides-extras = ["dev"]
 
 [[package]]
 name = "certifi"

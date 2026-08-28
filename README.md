@@ -16,6 +16,11 @@ plusieurs outils spécialisés dans un graphe [LangGraph](https://langchain-ai.g
 - **les vidéos** — des tutoriels pertinents remontés par
   [l'API YouTube Data v3](https://developers.google.com/youtube/v3).
 
+Un modèle de langage rédige ensuite la recommandation à partir de ces seuls
+éléments. Il ne décide rien : les coups viennent de Lichess, l'évaluation de
+Stockfish, le contexte de Milvus. Sans clé d'API, ou si l'appel échoue, un
+gabarit déterministe prend le relais et l'agent répond quand même.
+
 Le projet est un agent d'aide à l'apprentissage des ouvertures. Il se
 présente comme une pile conteneurisée — **FastAPI + LangGraph + Milvus +
 MongoDB + Angular** — qui démarre entièrement avec un seul `docker compose up`.

@@ -78,11 +78,15 @@ class Settings(BaseSettings):
     mongodb_uri: str = "mongodb://mongo:27017"
     mongodb_db: str = "chess_coach"
 
-    # --- Optional LLM synthesis layer ---
+    # --- Language model used to phrase the final recommendation ---
+    # Disabled by default so the project runs without a paid key: the agent
+    # then answers with a deterministic French template.
     llm_enabled: bool = False
     llm_base_url: str = "https://api.openai.com/v1"
     llm_api_key: str = ""
     llm_model: str = "gpt-4o-mini"
+    # Writing a paragraph takes longer than a REST call, hence its own timeout.
+    llm_timeout: float = Field(default=30.0, ge=1.0)
 
     # External HTTP timeout (seconds) shared by every service client.
     http_timeout: float = Field(default=10.0, ge=1.0)
