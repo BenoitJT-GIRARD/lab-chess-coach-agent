@@ -1,13 +1,19 @@
 """Lichess Opening Explorer client.
 
-The Opening Explorer aggregates millions of games and, for a given position,
-returns the moves that have actually been played together with their win/draw/
-loss statistics and the name of the opening. It is the agent's source of
-*theoretical* moves.
+The Opening Explorer answers, for a given position, with the moves that have
+actually been played, their win/draw/loss statistics, the name of the opening,
+and a handful of reference games. It is the agent's source of *theoretical*
+moves and of the reference games the brief asks for.
 
-The public Explorer endpoint (``https://explorer.lichess.ovh``) needs no
-authentication. We only ever issue one request at a time and always pass an
-explicit timeout, as recommended by the Lichess API guidelines.
+Two databases are available. ``lichess`` aggregates every rated game played on
+the site — hundreds of millions, including a lot of beginner improvisation —
+while ``masters`` only holds over-the-board master games. We query ``masters``:
+those are the reference games, and their much smaller volume is what lets us
+tell a studied line apart from a position nobody plays.
+
+The endpoint requires an authenticated request; a personal Lichess token
+(no scope needed) is read from ``LICHESS_TOKEN``. Requests are issued one at a
+time with an explicit timeout, as the Lichess API guidelines ask.
 """
 
 from __future__ import annotations
@@ -42,6 +48,35 @@ class TheoryMove:
 
 
 @dataclass(slots=True)
+class ReferenceGame:
+    """One master game reaching the position, as shown by the Explorer."""
+
+    game_id: str
+    white: str
+    black: str
+    white_rating: int
+    black_rating: int
+    winner: str  # "white", "black" or "draw"
+    year: int | None
+
+    @property
+    def url(self) -> str:
+        """Link to the game on Lichess."""
+
+        return f"https://lichess.org/{self.game_id}"
+
+    @property
+    def result(self) -> str:
+        """The result written the way a chess database writes it."""
+
+        if self.winner == "white":
+            return "1-0"
+        if self.winner == "black":
+            return "0-1"
+        return "1/2-1/2"
+
+
+@dataclass(slots=True)
 class OpeningExplorerResult:
     """Aggregated theory for a position."""
 
@@ -50,12 +85,12 @@ class OpeningExplorerResult:
     opening_eco: str | None
     total_games: int
     moves: list[TheoryMove] = field(default_factory=list)
-
-    @property
-    def in_theory(self) -> bool:
-        """Whether the position is known to opening theory (has played moves)."""
-
-        return bool(self.moves)
+    # Whether the position belongs to known opening theory. It is a plain field
+    # rather than a computed property because the rule that decides it depends
+    # on the source: a curated opening book is theory by construction, while an
+    # Explorer answer has to be judged on how many games back it.
+    in_theory: bool = False
+    reference_games: list[ReferenceGame] = field(default_factory=list)
 
 
 class LichessService:
@@ -67,7 +102,7 @@ class LichessService:
         self._timeout = self._settings.http_timeout
 
     def _headers(self) -> dict[str, str]:
-        """Build the request headers (meaningful User-Agent, optional token)."""
+        """Build the request headers (meaningful User-Agent, bearer token)."""
 
         headers = {"User-Agent": "chess_coach-ffe-poc/0.1 (educational project)"}
         if self._settings.lichess_token:
@@ -76,7 +111,7 @@ class LichessService:
 
     @property
     def is_configured(self) -> bool:
-        """Whether a Lichess token is available (the Explorer now requires one)."""
+        """Whether a Lichess token is available (the Explorer requires one)."""
 
         return bool(self._settings.lichess_token)
 
@@ -84,7 +119,7 @@ class LichessService:
         self,
         fen: str,
         *,
-        database: str = "lichess",
+        database: str | None = None,
         moves: int = 8,
     ) -> OpeningExplorerResult:
         """Return the theoretical moves played from ``fen``.
@@ -94,14 +129,19 @@ class LichessService:
         fen:
             The position to look up.
         database:
-            ``"lichess"`` (all rated games) or ``"masters"`` (over-the-board
-            master games, i.e. reference games).
+            ``"masters"`` (over-the-board master games, the default) or
+            ``"lichess"`` (every rated game played on the site).
         moves:
             Maximum number of candidate moves to return.
         """
 
+        database = database or self._settings.lichess_database
         url = f"{self._base_url}/{database}"
-        params = {"fen": fen, "moves": moves}
+        params = {
+            "fen": fen,
+            "moves": moves,
+            "topGames": self._settings.lichess_reference_games,
+        }
         try:
             response = httpx.get(url, params=params, headers=self._headers(), timeout=self._timeout)
             response.raise_for_status()
@@ -111,15 +151,23 @@ class LichessService:
             status = exc.response.status_code
             if status == 429:
                 raise LichessServiceError("Lichess rate limit reached (HTTP 429)") from exc
+            if status == 401:
+                raise LichessServiceError("Lichess refused the token (HTTP 401)") from exc
             raise LichessServiceError(f"Lichess returned HTTP {status}") from exc
         except httpx.HTTPError as exc:
             raise LichessServiceError("Lichess request failed") from exc
 
-        return self._parse(fen, response.json())
+        return self._parse(fen, response.json(), self._settings.theory_min_games)
 
     @staticmethod
-    def _parse(fen: str, payload: dict) -> OpeningExplorerResult:
-        """Map the raw Explorer JSON onto :class:`OpeningExplorerResult`."""
+    def _parse(fen: str, payload: dict, min_games: int) -> OpeningExplorerResult:
+        """Map the raw Explorer JSON onto :class:`OpeningExplorerResult`.
+
+        ``min_games`` is the number of reference games below which a position
+        is considered out of theory: the master database answers for almost any
+        legal position, but a line played forty-eight times is an oddity, not
+        theory a young player should learn.
+        """
 
         opening = payload.get("opening") or {}
         moves = [
@@ -133,10 +181,31 @@ class LichessService:
             for move in payload.get("moves", [])
         ]
         total_games = payload.get("white", 0) + payload.get("draws", 0) + payload.get("black", 0)
+
         return OpeningExplorerResult(
             fen=fen,
             opening_name=opening.get("name"),
             opening_eco=opening.get("eco"),
             total_games=total_games,
             moves=moves,
+            in_theory=bool(moves) and total_games >= min_games,
+            reference_games=[
+                LichessService._parse_game(game) for game in payload.get("topGames", [])
+            ],
+        )
+
+    @staticmethod
+    def _parse_game(game: dict) -> ReferenceGame:
+        """Map one entry of the Explorer's ``topGames`` list."""
+
+        white = game.get("white") or {}
+        black = game.get("black") or {}
+        return ReferenceGame(
+            game_id=game.get("id", ""),
+            white=white.get("name", "?"),
+            black=black.get("name", "?"),
+            white_rating=white.get("rating", 0),
+            black_rating=black.get("rating", 0),
+            winner=game.get("winner") or "draw",
+            year=game.get("year"),
         )

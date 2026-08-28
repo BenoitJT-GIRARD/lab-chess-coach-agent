@@ -69,6 +69,26 @@
         </div>
       }
 
+      @if (result.reference_games.length) {
+        <div class="block">
+          <h3>Parties de référence</h3>
+          <ul class="games">
+            @for (game of result.reference_games; track game.game_id) {
+              <li>
+                <a [href]="game.url" target="_blank" rel="noopener">
+                  {{ game.white }} ({{ game.white_rating }}) &ndash;
+                  {{ game.black }} ({{ game.black_rating }})
+                </a>
+                <span class="game-result">{{ game.result }}</span>
+                @if (game.year) {
+                  <span class="game-year">{{ game.year }}</span>
+                }
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
       @if (result.evaluation) {
         <div class="block engine">
           <h3>Évaluation Stockfish</h3>

@@ -44,6 +44,20 @@ class MoveStat(BaseModel):
     source: str = Field(default="lichess", description='Origin of the move: "lichess" or "book".')
 
 
+class ReferenceGame(BaseModel):
+    """A master game reaching the position, as listed by Lichess."""
+
+    game_id: str
+    white: str
+    black: str
+    white_rating: int
+    black_rating: int
+    winner: str = Field(description='"white", "black" or "draw".')
+    year: int | None = None
+    url: str = Field(description="Link to the game on Lichess.")
+    result: str = Field(description='Result written as "1-0", "0-1" or "1/2-1/2".')
+
+
 class MovesResponse(BaseModel):
     """Returned by ``GET /api/v1/moves/{fen}``."""
 
@@ -53,6 +67,7 @@ class MovesResponse(BaseModel):
     total_games: int = 0
     in_theory: bool = Field(description="Whether the position is known to theory.")
     moves: list[MoveStat] = Field(default_factory=list)
+    reference_games: list[ReferenceGame] = Field(default_factory=list)
 
 
 class Passage(BaseModel):
@@ -117,6 +132,7 @@ class AgentResponse(BaseModel):
     opening_eco: str | None = None
     in_theory: bool = False
     theory_moves: list[MoveStat] = Field(default_factory=list)
+    reference_games: list[ReferenceGame] = Field(default_factory=list)
     evaluation: EvaluationResponse | None = None
     passages: list[Passage] = Field(default_factory=list)
     videos: list[VideoResult] = Field(default_factory=list)

@@ -15,6 +15,7 @@ from chess_coach.api.schemas import (
     EvaluationResponse,
     MoveStat,
     Passage,
+    ReferenceGame,
     VideoResult,
 )
 from chess_coach.services.chess_position import is_valid_fen
@@ -33,6 +34,7 @@ def _to_response(fen: str, state: AgentState) -> AgentResponse:
         opening_eco=state.get("opening_eco"),
         in_theory=state.get("in_theory", False),
         theory_moves=[MoveStat(**move) for move in state.get("theory_moves", [])],
+        reference_games=[ReferenceGame(**game) for game in state.get("reference_games", [])],
         evaluation=EvaluationResponse(**evaluation) if evaluation else None,
         passages=[Passage(**passage) for passage in state.get("passages", [])],
         videos=[VideoResult(**video) for video in state.get("videos", [])],

@@ -30,6 +30,7 @@ class FakeTheory:
             "C50",
             1500,
             [TheoryMove(uci="e2e4", san="e4", white=600, draws=200, black=300, source="book")],
+            in_theory=True,
         )
 
 
