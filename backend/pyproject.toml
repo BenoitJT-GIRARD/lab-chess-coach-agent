@@ -34,6 +34,10 @@ dependencies = [
     # Retrieval-Augmented Generation
     "pymilvus>=2.4",
     "sentence-transformers>=3.3",
+    # PyTorch backs sentence-transformers. It is listed here on purpose: being a
+    # direct dependency is what lets [tool.uv.sources] send it to the CPU-only
+    # index (see the comment further down).
+    "torch>=2.4",
     # External knowledge sources
     "google-api-python-client>=2.150",
     # Persistence
@@ -60,6 +64,18 @@ dev = [
 # fully without it (deterministic template answer); installing this extra
 # enables an OpenAI-compatible LLM to phrase the final recommendation.
 llm = ["langchain-openai>=0.2.10"]
+
+# sentence-transformers pulls in PyTorch. By default PyTorch ships with the
+# whole CUDA runtime (about 8 GB of wheels) which is useless here: the
+# embeddings are computed on CPU, inside a container that has no GPU. Pointing
+# torch at the CPU-only index keeps the backend image around 2 GB.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]
 
 [build-system]
 requires = ["hatchling"]
