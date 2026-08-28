@@ -133,7 +133,11 @@ def build_graph(deps: AgentDeps):
         return {"videos": items, "sources_used": ["youtube"] if items else []}
 
     def synthesize(state: AgentState) -> AgentState:
-        return {"recommendation": build_recommendation(state, deps.settings)}
+        recommendation = build_recommendation(state, deps.settings)
+        return {
+            "recommendation": recommendation.text,
+            "sources_used": ["llm"] if recommendation.used_llm else [],
+        }
 
     def persist(state: AgentState) -> AgentState:
         document = {

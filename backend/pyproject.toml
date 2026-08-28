@@ -31,6 +31,8 @@ dependencies = [
     # Agent orchestration
     "langgraph>=0.2.50",
     "langchain-core>=0.3.20",
+    # The synthesis node talks to an OpenAI-compatible model.
+    "langchain-openai>=0.2.10",
     # Retrieval-Augmented Generation
     "pymilvus>=2.4",
     "sentence-transformers>=3.3",
@@ -60,10 +62,6 @@ dev = [
     "nbstripout>=0.7",
     "python-pptx>=1.0",
 ]
-# Optional natural-language synthesis layer for the agent. The graph runs
-# fully without it (deterministic template answer); installing this extra
-# enables an OpenAI-compatible LLM to phrase the final recommendation.
-llm = ["langchain-openai>=0.2.10"]
 
 # sentence-transformers pulls in PyTorch. By default PyTorch ships with the
 # whole CUDA runtime (about 8 GB of wheels) which is useless here: the
