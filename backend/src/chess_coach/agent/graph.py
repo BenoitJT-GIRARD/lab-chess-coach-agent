@@ -64,7 +64,12 @@ def build_graph(deps: AgentDeps):
         try:
             result = deps.theory.get_theoretical_moves(state["fen"])
         except LichessServiceError:
-            return {"in_theory": False, "theory_moves": [], "opening_name": None}
+            return {
+                "in_theory": False,
+                "theory_moves": [],
+                "reference_games": [],
+                "opening_name": None,
+            }
         moves = [
             {
                 "uci": move.uci,
@@ -77,11 +82,26 @@ def build_graph(deps: AgentDeps):
             }
             for move in result.moves
         ]
+        games = [
+            {
+                "game_id": game.game_id,
+                "white": game.white,
+                "black": game.black,
+                "white_rating": game.white_rating,
+                "black_rating": game.black_rating,
+                "winner": game.winner,
+                "year": game.year,
+                "url": game.url,
+                "result": game.result,
+            }
+            for game in result.reference_games
+        ]
         return {
             "in_theory": result.in_theory,
             "opening_name": result.opening_name,
             "opening_eco": result.opening_eco,
             "theory_moves": moves,
+            "reference_games": games,
             "sources_used": ["theory"] if result.in_theory else [],
         }
 

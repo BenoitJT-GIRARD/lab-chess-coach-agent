@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from chess_coach.api.dependencies import get_stockfish_service, get_theory_service
 from chess_coach.api.main import create_app
 from chess_coach.services.chess_position import STARTING_FEN
-from chess_coach.services.lichess import OpeningExplorerResult, TheoryMove
+from chess_coach.services.lichess import OpeningExplorerResult, ReferenceGame, TheoryMove
 from chess_coach.services.stockfish_engine import EvaluationResult
 
 
@@ -26,6 +26,18 @@ class FakeTheory:
             opening_eco="B00",
             total_games=1500,
             moves=[TheoryMove(uci="e2e4", san="e4", white=600, draws=200, black=300)],
+            in_theory=True,
+            reference_games=[
+                ReferenceGame(
+                    game_id="abc123",
+                    white="Carlsen",
+                    black="Nakamura",
+                    white_rating=2850,
+                    black_rating=2780,
+                    winner="white",
+                    year=2023,
+                )
+            ],
         )
 
 
@@ -69,6 +81,15 @@ def test_moves_route_returns_theory() -> None:
     assert body["in_theory"] is True
     assert body["opening_name"] == "King's Pawn Game"
     assert body["moves"][0]["san"] == "e4"
+
+
+def test_moves_route_lists_the_reference_games() -> None:
+    response = _client().get(_path("/api/v1/moves", STARTING_FEN))
+
+    game = response.json()["reference_games"][0]
+    assert game["white"] == "Carlsen"
+    assert game["result"] == "1-0"
+    assert game["url"] == "https://lichess.org/abc123"
 
 
 def test_evaluate_route_returns_score() -> None:

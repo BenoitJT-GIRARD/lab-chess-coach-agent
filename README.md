@@ -4,7 +4,8 @@ Chess Coach est un agent conversationnel qui aide les jeunes joueurs à travaill
 leurs **ouvertures**. Pour une position donnée (au format FEN), il combine
 plusieurs outils spécialisés dans un graphe [LangGraph](https://langchain-ai.github.io/langgraph/) :
 
-- **la théorie** — les coups joués dans les parties de référence, via
+- **la théorie** — les coups et les parties de référence issus de la base de
+  parties de maîtres, via
   [l'Opening Explorer de Lichess](https://lichess.org/api#tag/Opening-Explorer) ;
 - **le moteur** — une évaluation [Stockfish](https://stockfishchess.org/) quand
   la partie sort des sentiers battus ;
@@ -93,7 +94,7 @@ les positions préparées.
 | --- | --- |
 | `GET /api/v1/healthcheck` | Vérifie que le service répond |
 | `GET /api/v1/position/{fen}` | Décrit une position (trait, coups légaux, diagramme) |
-| `GET /api/v1/moves/{fen}` | Coups théoriques depuis Lichess ou le livre local |
+| `GET /api/v1/moves/{fen}` | Coups théoriques et parties de référence (Lichess), ou le livre local |
 | `GET /api/v1/evaluate/{fen}` | Évaluation Stockfish et meilleur coup |
 | `GET /api/v1/vector-search?q=` | Recherche vectorielle dans la base de connaissances |
 | `GET /api/v1/videos/{opening}` | Vidéos explicatives YouTube |
@@ -104,8 +105,8 @@ les positions préparées.
 - **Pas de vidéos** — la clé `YOUTUBE_API_KEY` manque ou son quota est épuisé.
   Le reste de la réponse fonctionne quand même.
 - **Pas de théorie, seulement le moteur** — l'Opening Explorer de Lichess exige
-  désormais un jeton. Sans `LICHESS_TOKEN`, le livre d'ouvertures local couvre
-  les grandes lignes et les positions plus profondes basculent sur Stockfish.
+  un jeton. Sans `LICHESS_TOKEN`, le livre d'ouvertures local couvre les
+  grandes lignes et les positions plus profondes basculent sur Stockfish.
 - **`vector-search` ne renvoie rien** — l'ingestion (étape 3) n'a pas été jouée.
 
 ## Développement sans Docker

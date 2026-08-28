@@ -7,7 +7,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 
 from chess_coach.api.dependencies import get_theory_service
-from chess_coach.api.schemas import MovesResponse, MoveStat
+from chess_coach.api.schemas import MovesResponse, MoveStat, ReferenceGame
 from chess_coach.services.chess_position import is_valid_fen
 from chess_coach.services.lichess import LichessServiceError
 from chess_coach.services.theory import TheoryService
@@ -47,5 +47,19 @@ def get_moves(
                 source=move.source,
             )
             for move in result.moves
+        ],
+        reference_games=[
+            ReferenceGame(
+                game_id=game.game_id,
+                white=game.white,
+                black=game.black,
+                white_rating=game.white_rating,
+                black_rating=game.black_rating,
+                winner=game.winner,
+                year=game.year,
+                url=game.url,
+                result=game.result,
+            )
+            for game in result.reference_games
         ],
     )

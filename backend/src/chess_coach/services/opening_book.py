@@ -1,9 +1,9 @@
 """Local opening book.
 
-The Lichess Opening Explorer used to be a public endpoint, but it now requires
-an authenticated token. To keep the POC fully runnable out of the box, the
-theoretical moves are also served from a small, self-contained opening book
-built from the main lines of the most popular openings.
+The Lichess Opening Explorer requires an authenticated token, and any network
+call can fail. To keep the POC runnable in every case, the theoretical moves
+are also served from a small, self-contained opening book built from the main
+lines of the most popular openings.
 
 The book is generated once at import time: each curated line is replayed with
 python-chess and, for every position encountered, we record the move that
@@ -98,4 +98,7 @@ class OpeningBook:
             opening_eco=entry.eco,
             total_games=0,
             moves=moves,
+            # A curated book only contains main lines, so anything it knows is
+            # theory by construction.
+            in_theory=True,
         )
