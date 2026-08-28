@@ -15,11 +15,15 @@ from pathlib import Path
 
 @dataclass(slots=True)
 class Article:
-    """A single Wikichess opening article."""
+    """A single opening article of the knowledge base."""
 
     slug: str
     title: str
     text: str
+    # Name of the folder the article was read from ("wikichess" or "openings").
+    # It travels down to the chunks so a retrieved passage can be traced back
+    # to its origin.
+    collection: str = ""
 
 
 @dataclass(slots=True)
@@ -35,11 +39,17 @@ class Chunk:
 def load_articles(directory: Path) -> list[Article]:
     """Read every ``*.md`` file in ``directory`` into an :class:`Article`."""
 
+    directory = Path(directory)
     articles: list[Article] = []
-    for path in sorted(Path(directory).glob("*.md")):
+    for path in sorted(directory.glob("*.md")):
         text = path.read_text(encoding="utf-8").strip()
         articles.append(
-            Article(slug=path.stem, title=_extract_title(text, fallback=path.stem), text=text)
+            Article(
+                slug=path.stem,
+                title=_extract_title(text, fallback=path.stem),
+                text=text,
+                collection=directory.name,
+            )
         )
     return articles
 
@@ -90,12 +100,13 @@ def build_chunks(articles: list[Article], **chunk_kwargs: int) -> list[Chunk]:
 
     chunks: list[Chunk] = []
     for article in articles:
+        prefix = f"{article.collection}/" if article.collection else ""
         for index, passage in enumerate(chunk_text(article.text, **chunk_kwargs)):
             chunks.append(
                 Chunk(
-                    chunk_id=f"{article.slug}-{index}",
+                    chunk_id=f"{prefix}{article.slug}-{index}",
                     opening=article.title,
-                    source=f"{article.slug}.md",
+                    source=f"{prefix}{article.slug}.md",
                     text=passage,
                 )
             )

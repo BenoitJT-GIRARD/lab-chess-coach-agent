@@ -33,6 +33,24 @@ from chess_coach.services.theory import TheoryService
 from chess_coach.services.youtube import YoutubeService, YoutubeServiceError
 
 
+def build_context_query(state: AgentState) -> str:
+    """Build the question asked to the knowledge base.
+
+    Searching on the bare opening name is too vague: several articles mention
+    it in passing. Adding what the young player is actually looking for — the
+    ideas, the plans, the main moves — pulls the explanatory paragraphs to the
+    top instead of the first passage that happens to quote the name.
+    """
+
+    opening = state.get("opening_name")
+    if not opening:
+        return "principes généraux des ouvertures aux échecs"
+
+    eco = state.get("opening_eco")
+    label = f"{opening} {eco}" if eco else opening
+    return f"{label} chess opening: main ideas, plans and moves"
+
+
 def build_graph(deps: AgentDeps):
     """Build and compile the agent graph wired to ``deps``."""
 
@@ -75,7 +93,7 @@ def build_graph(deps: AgentDeps):
         return {"evaluation": asdict(evaluation), "sources_used": ["engine"]}
 
     def retrieve_context(state: AgentState) -> AgentState:
-        query = state.get("opening_name") or "principes des ouvertures aux échecs"
+        query = build_context_query(state)
         try:
             hits = deps.rag.search(query, top_k=3)
         except MilvusStoreError:

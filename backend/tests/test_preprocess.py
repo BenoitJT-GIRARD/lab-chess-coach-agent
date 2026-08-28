@@ -1,4 +1,4 @@
-"""Tests for the Wikichess preprocessing (loading + chunking)."""
+"""Tests for the knowledge-base preprocessing (loading + chunking)."""
 
 from __future__ import annotations
 
@@ -6,7 +6,8 @@ from pathlib import Path
 
 from chess_coach.rag.preprocess import Article, build_chunks, chunk_text, load_articles
 
-DATA_DIR = Path("data/openings")
+WIKICHESS_DIR = Path("data/wikichess")
+OPENINGS_DIR = Path("data/openings")
 
 SAMPLE = (
     "# Title\n\n"
@@ -39,10 +40,33 @@ def test_build_chunks_creates_unique_ids() -> None:
     assert all(chunk.source == "italienne.md" for chunk in chunks)
 
 
-def test_load_real_wikichess_corpus() -> None:
-    articles = load_articles(DATA_DIR)
+def test_build_chunks_prefixes_the_source_with_its_collection() -> None:
+    articles = [
+        Article(slug="00003-sicilian", title="Sicilian", text=SAMPLE, collection="wikichess")
+    ]
+
+    chunks = build_chunks(articles, max_chars=140)
+
+    assert all(chunk.source == "wikichess/00003-sicilian.md" for chunk in chunks)
+    assert all(chunk.chunk_id.startswith("wikichess/00003-sicilian-") for chunk in chunks)
+
+
+def test_load_the_french_opening_notes() -> None:
+    articles = load_articles(OPENINGS_DIR)
 
     assert len(articles) >= 10
     assert all(article.title for article in articles)
     # Titles come from the first H1 heading, not the filename.
     assert any("italienne" in article.title.lower() for article in articles)
+    assert all(article.collection == "openings" for article in articles)
+
+
+def test_load_the_wikichess_corpus() -> None:
+    articles = load_articles(WIKICHESS_DIR)
+
+    # The corpus downloaded by scripts.fetch_wikichess is committed with the
+    # project, so the ingestion never needs the network.
+    assert len(articles) >= 10
+    assert all(article.collection == "wikichess" for article in articles)
+    # Every downloaded article credits the page it came from.
+    assert all("ficgs.com/wikichess_" in article.text for article in articles)

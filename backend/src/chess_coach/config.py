@@ -49,8 +49,13 @@ class Settings(BaseSettings):
     milvus_port: int = 19530
     milvus_collection: str = "chess_openings"
 
-    # Directory of Wikichess Markdown articles, relative to the working dir.
-    wikichess_dir: str = "data/openings"
+    # The knowledge base is made of two folders of Markdown articles, both
+    # relative to the working directory.
+    #   - wikichess: articles downloaded from FICGS Wikichess (the source the
+    #     brief points to), in English;
+    #   - openings: complementary notes written in French for young players.
+    wikichess_dir: str = "data/wikichess"
+    openings_dir: str = "data/openings"
 
     # --- Embeddings ---
     # Multilingual model: the Wikichess knowledge base is in French. 384-dim,
