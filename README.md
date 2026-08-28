@@ -1,124 +1,138 @@
-# Chess Coach — chess-opening coaching agent
+# Chess Coach — agent d'aide à l'apprentissage des ouvertures
 
-Chess Coach is a proof-of-concept conversational agent that helps young players
-study chess **openings**. For any board position (FEN) the agent combines
-several specialised tools through a [LangGraph](https://langchain-ai.github.io/langgraph/)
-workflow:
+Chess Coach est un agent conversationnel qui aide les jeunes joueurs à travailler
+leurs **ouvertures**. Pour une position donnée (au format FEN), il combine
+plusieurs outils spécialisés dans un graphe [LangGraph](https://langchain-ai.github.io/langgraph/) :
 
-- **theory** — best book moves from the public
-  [Lichess Opening Explorer](https://lichess.org/api#tag/Opening-Explorer);
-- **engine** — a [Stockfish](https://stockfishchess.org/) evaluation when the
-  game leaves known theory;
-- **context** — a Retrieval-Augmented Generation (RAG) layer over Wikichess
-  opening articles, embedded with
-  [sentence-transformers](https://www.sbert.net/) and stored in
-  [Milvus](https://milvus.io/);
-- **videos** — relevant tutorials from the
-  [YouTube Data API v3](https://developers.google.com/youtube/v3).
+- **la théorie** — les coups joués dans les parties de référence, via
+  [l'Opening Explorer de Lichess](https://lichess.org/api#tag/Opening-Explorer) ;
+- **le moteur** — une évaluation [Stockfish](https://stockfishchess.org/) quand
+  la partie sort des sentiers battus ;
+- **le contexte** — une recherche augmentée (RAG) sur les articles
+  [Wikichess](https://ficgs.com/wikichess.html), vectorisés avec
+  [sentence-transformers](https://www.sbert.net/) et indexés dans
+  [Milvus](https://milvus.io/) ;
+- **les vidéos** — des tutoriels pertinents remontés par
+  [l'API YouTube Data v3](https://developers.google.com/youtube/v3).
 
-The project is a chess-opening coaching agent. It is
-delivered as a containerised stack — **FastAPI + LangGraph + Milvus + MongoDB +
-Angular** — runnable end-to-end with a single `docker compose up`.
+Le projet est un agent d'aide à l'apprentissage des ouvertures. Il se
+présente comme une pile conteneurisée — **FastAPI + LangGraph + Milvus +
+MongoDB + Angular** — qui démarre entièrement avec un seul `docker compose up`.
 
-## Repository layout
+## Organisation du dépôt
 
 ```
 ffe/
-├── docs/                       # Auto-evaluation, feasibility note, architecture
-├── frontend/                   # Angular interface (ngx-chessboard)
+├── backend/                    # API FastAPI et agent LangGraph
+│   ├── src/chess_coach/
+│   │   ├── config.py           # Réglages lus dans l'environnement
+│   │   ├── services/           # Lichess, Stockfish, YouTube, Milvus, MongoDB
+│   │   ├── rag/                # Préparation et indexation du corpus
+│   │   ├── agent/              # État, nœuds et graphe LangGraph
+│   │   └── api/                # Routes FastAPI
+│   ├── data/                   # Base de connaissances sur les ouvertures
+│   ├── scripts/                # Ingestion, présentation, packaging
+│   ├── tests/                  # Suite pytest
+│   ├── Dockerfile
+│   └── pyproject.toml
+├── frontend/                   # Interface Angular (échiquier ngx-chess-board)
+├── docs/                       # Architecture, note de faisabilité, auto-évaluation
 ├── notebooks/
-│   └── chess_coach_mission.ipynb    # End-to-end didactic walk-through (French)
-├── scripts/                    # Ingestion, presentation, packaging helpers
-├── src/chess_coach/
-│   ├── config.py               # Centralised settings (env variables)
-│   ├── services/               # Lichess, Stockfish, YouTube, Milvus, MongoDB
-│   ├── rag/                    # Wikichess preprocessing + Milvus ingestion
-│   ├── agent/                  # LangGraph state, nodes and graph
-│   └── api/                    # FastAPI routes (thin layer over the services)
-├── tests/                      # Pytest suite
-├── docker/                     # Service Dockerfiles
-├── docker-compose.yml          # Full stack orchestration
-├── pyproject.toml              # uv-managed deps + ruff/bandit/pytest
-├── .pre-commit-config.yaml     # ruff, bandit, nbstripout
+│   └── chess_coach_mission.ipynb    # Déroulé de la démarche
+├── docker-compose.yml          # Orchestration des six services
 └── README.md
 ```
 
-## Quick start (Docker)
+La séparation `backend/` / `frontend/` est celle demandée à l'étape 1 du brief.
+Chaque moitié se construit et se teste indépendamment ; `docker-compose.yml` les
+assemble.
+
+## Démarrage rapide
+
+Docker Desktop doit être lancé.
 
 ```powershell
-# 1. Copy the environment template and add your YouTube Data API key
+# 1. Copier le modèle d'environnement et y coller ses clés
 copy .env.example .env
 
-# 2. Build and start the whole stack (FastAPI, Milvus, MongoDB, Angular)
+# 2. Construire et démarrer toute la pile
 docker compose up -d --build
 
-# 3. Load the Wikichess knowledge base into Milvus (first run only;
-#    the Milvus volume persists it across restarts)
+# 3. Charger la base de connaissances dans Milvus (une seule fois :
+#    le volume Milvus la conserve d'un redémarrage à l'autre)
 docker compose run --rm backend python -m scripts.ingest_wikichess
 
-# 4. Open the interfaces
-#    - Angular UI ............ http://localhost:4200
-#    - FastAPI Swagger docs .. http://localhost:8000/docs
+# 4. Ouvrir les interfaces
+#    - Application Angular ..... http://localhost:4200
+#    - Documentation de l'API .. http://localhost:8000/docs
 ```
 
-The services (`etcd`, `minio`, `milvus`, `mongo`, `backend`, `frontend`) come
-up in order thanks to health-checks; all state lives in named volumes
-(`docker volume ls`), so stopping and restarting the stack keeps the indexed
-knowledge base and the interaction history.
+Les six services (`etcd`, `minio`, `milvus`, `mongo`, `backend`, `frontend`)
+démarrent dans l'ordre grâce aux sondes de santé. Tout l'état vit dans des
+volumes nommés (`docker volume ls`) : arrêter puis relancer la pile conserve la
+base vectorielle et l'historique des interactions.
 
-## Demonstration
+Pour tout arrêter : `docker compose down`. Pour repartir de zéro, volumes
+compris : `docker compose down -v`.
 
-Open <http://localhost:4200> and either play moves on the board or use the
-demo-position buttons. Interesting positions to show:
+## Ce qu'on peut montrer en démonstration
 
-| Position | What the agent does |
-| -------- | ------------------- |
-| Starting position | Identifies the opening family, lists the main first moves |
-| Italian Game (after 3.Bc4 Bc5) | Names the opening, shows theory + Wikichess context + videos |
-| Sicilian Defence (after 1.e4 c5) | Retrieves the Sicilian knowledge and tutorials |
-| Out of theory (after 1.e4 e5 2.Qh5) | Falls back to Stockfish and explains the evaluation |
+Ouvrir <http://localhost:4200>, jouer des coups sur l'échiquier ou cliquer sur
+les positions préparées.
 
-## Troubleshooting
+| Position | Ce que fait l'agent |
+| --- | --- |
+| Position de départ | Reconnaît la famille d'ouverture et liste les premiers coups |
+| Italienne (après 3.Fc4 Fc5) | Nomme l'ouverture, montre la théorie, le contexte Wikichess et des vidéos |
+| Sicilienne (après 1.e4 c5) | Remonte les articles et tutoriels sur la sicilienne |
+| Hors théorie (après 1.e4 e5 2.Dh5) | Bascule sur Stockfish et explique l'évaluation |
 
-- **No videos** — the `YOUTUBE_API_KEY` is missing or its quota is exhausted;
-  the rest of the answer still works.
-- **No theory, only engine** — the Lichess Explorer needs a token; without one
-  the local opening book covers the main lines and deeper positions fall back to
-  Stockfish, which is the intended behaviour.
-- **`vector-search` returns nothing** — run the ingestion step (3) once.
+## Les routes de l'API
 
-## Quick start (local backend, without Docker)
+| Route | Rôle |
+| --- | --- |
+| `GET /api/v1/healthcheck` | Vérifie que le service répond |
+| `GET /api/v1/position/{fen}` | Décrit une position (trait, coups légaux, diagramme) |
+| `GET /api/v1/moves/{fen}` | Coups théoriques depuis Lichess ou le livre local |
+| `GET /api/v1/evaluate/{fen}` | Évaluation Stockfish et meilleur coup |
+| `GET /api/v1/vector-search?q=` | Recherche vectorielle dans la base de connaissances |
+| `GET /api/v1/videos/{opening}` | Vidéos explicatives YouTube |
+| `POST /api/v1/agent` | Exécute le graphe complet sur une position |
 
-```powershell
-# 1. Install Python 3.12 and the project (uv reads .python-version)
-uv sync --all-extras
+## En cas de souci
 
-# 2. Run the test suite
-uv run pytest
+- **Pas de vidéos** — la clé `YOUTUBE_API_KEY` manque ou son quota est épuisé.
+  Le reste de la réponse fonctionne quand même.
+- **Pas de théorie, seulement le moteur** — l'Opening Explorer de Lichess exige
+  désormais un jeton. Sans `LICHESS_TOKEN`, le livre d'ouvertures local couvre
+  les grandes lignes et les positions plus profondes basculent sur Stockfish.
+- **`vector-search` ne renvoie rien** — l'ingestion (étape 3) n'a pas été jouée.
 
-# 3. Serve the API (needs Milvus/MongoDB reachable, see docker-compose.yml)
-uv run uvicorn chess_coach.api.main:app --reload
-```
+## Développement sans Docker
 
-## Quality gates
+Les commandes Python se lancent depuis `backend/` (voir `backend/README.md`).
+Le frontend se lance depuis `frontend/` avec `npm start`.
 
-| Tool | Configuration | Command |
-| ---- | ------------- | ------- |
-| Ruff | `pyproject.toml` (`E,W,F,I,B,C4,UP,N,SIM,RUF`) | `uv run ruff check src tests` |
-| Bandit | `pyproject.toml` | `uv run bandit -c pyproject.toml -r src` |
-| Pytest | `pyproject.toml` | `uv run pytest` |
+## Contrôles qualité
+
+| Outil | Configuration | Commande |
+| --- | --- | --- |
+| Ruff | `backend/pyproject.toml` | `uv run ruff check src tests` |
+| Bandit | `backend/pyproject.toml` | `uv run bandit -c pyproject.toml -r src` |
+| Pytest | `backend/pyproject.toml` | `uv run pytest` |
 | Pre-commit | `.pre-commit-config.yaml` | `uv run pre-commit run --all-files` |
 
-The pre-commit pipeline runs `ruff --fix`, `ruff-format`, `bandit` and
-`nbstripout` (notebooks are committed without execution outputs).
+Le crochet pre-commit enchaîne `ruff --fix`, `ruff-format`, `bandit` et
+`nbstripout` : les notebooks sont versionnés sans sortie d'exécution.
 
-## Deliverables
+## Documents
 
-- The end-to-end reasoning is narrated in `notebooks/chess_coach_mission.ipynb`.
-- The self-evaluation grid is filled out in `docs/auto_evaluation.md`.
-- The advanced video-analysis study (benefits/limits, MCP architecture and
-  cost estimates) is in `docs/feasibility_video_analysis.md`.
+- Le raisonnement complet est déroulé dans `notebooks/chess_coach_mission.ipynb`.
+- Le schéma d'architecture est dans `docs/architecture.md`.
+- L'étude du système d'analyse vidéo (bénéfices, limites, architecture MCP et
+  coûts) est dans `docs/feasibility_video_analysis.md`.
+- La fiche d'auto-évaluation est remplie dans `docs/auto_evaluation.md`.
 
-## License
+## Licence
 
 MIT.
