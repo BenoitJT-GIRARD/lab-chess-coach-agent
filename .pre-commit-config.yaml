@@ -1,3 +1,8 @@
+# Note sur les entrees "python -m ..." : les lanceurs .exe que pip genere pour
+# certains de ces crochets sont bloques par la strategie de controle
+# d'application de Windows sur le poste de developpement. Appeler le module
+# directement evite le lanceur sans rien changer au controle effectue, et reste
+# valable sur les autres systemes.
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -6,10 +11,14 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-toml
+        entry: python -m pre_commit_hooks.check_toml
       - id: check-added-large-files
+        entry: python -m pre_commit_hooks.check_added_large_files
         args: ["--maxkb=20480"]
       - id: check-merge-conflict
+        entry: python -m pre_commit_hooks.check_merge_conflict
       - id: mixed-line-ending
+        entry: python -m pre_commit_hooks.mixed_line_ending
         args: ["--fix=lf"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -23,7 +32,11 @@ repos:
     rev: 1.7.10
     hooks:
       - id: bandit
-        args: ["-c", "pyproject.toml", "-q"]
+        # Appelé en tant que module plutôt que par son exécutable : le
+        # lanceur .exe généré par pip est bloqué par la stratégie de contrôle
+        # d'application de Windows sur le poste de développement.
+        entry: python -m bandit
+        args: ["-c", "backend/pyproject.toml", "-q"]
         additional_dependencies: ["bandit[toml]"]
 
   - repo: https://github.com/kynan/nbstripout

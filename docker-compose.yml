@@ -1,8 +1,10 @@
-# Chess Coach stack — orchestration.
+# Chess Coach — orchestration de la démonstration locale.
 #
-# Services added incrementally as the project grows. This iteration adds the
-# Milvus vector database (with its etcd + MinIO dependencies) used by the RAG
-# layer (Étape 3). MongoDB and the Angular frontend come next (Étape 2bis / 5).
+# Six services : la base vectorielle Milvus (avec ses dépendances etcd et
+# MinIO), la base documentaire MongoDB, le backend FastAPI qui héberge l'agent
+# LangGraph, et le frontend Angular servi par nginx.
+#
+#   docker compose up -d --build
 services:
   # --- Vector database (Milvus standalone) ---
   etcd:
@@ -78,8 +80,7 @@ services:
   # --- Backend (FastAPI + LangGraph agent) ---
   backend:
     build:
-      context: .
-      dockerfile: docker/backend.Dockerfile
+      context: ./backend
     container_name: chess_coach-backend
     env_file: .env
     environment:
