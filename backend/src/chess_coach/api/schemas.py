@@ -139,3 +139,20 @@ class AgentResponse(BaseModel):
     recommendation: str = ""
     sources_used: list[str] = Field(default_factory=list)
     error: str | None = None
+
+
+class Interaction(BaseModel):
+    """One position the agent has already been asked about."""
+
+    fen: str
+    opening_name: str | None = None
+    in_theory: bool = False
+    sources_used: list[str] = Field(default_factory=list)
+    created_at: str = Field(description="When the agent answered (ISO 8601).")
+
+
+class HistoryResponse(BaseModel):
+    """Returned by ``GET /api/v1/history``."""
+
+    total: int = Field(description="Number of interactions stored in MongoDB.")
+    interactions: list[Interaction] = Field(default_factory=list)

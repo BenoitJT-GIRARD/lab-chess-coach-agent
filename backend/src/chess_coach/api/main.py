@@ -15,6 +15,7 @@ from chess_coach.api.routes import (
     agent,
     evaluate,
     health,
+    history,
     moves,
     position,
     vector_search,
@@ -53,6 +54,7 @@ def create_app() -> FastAPI:
     app.include_router(vector_search.router, prefix=API_PREFIX)
     app.include_router(videos.router, prefix=API_PREFIX)
     app.include_router(agent.router, prefix=API_PREFIX)
+    app.include_router(history.router, prefix=API_PREFIX)
 
     return app
 

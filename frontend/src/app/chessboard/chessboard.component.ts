@@ -8,7 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxChessBoardModule, NgxChessBoardView } from 'ngx-chess-board';
 
 import { AgentService } from '../services/agent.service';
-import { AgentResponse } from '../models/agent.models';
+import { AgentResponse, Interaction } from '../models/agent.models';
 import { CoachPanelComponent } from '../coach/coach-panel.component';
 
 /** Une position préparée pour la démonstration. */
@@ -52,6 +52,10 @@ export class ChessboardComponent {
   resultat: AgentResponse | null = null;
   fenCourante = '';
 
+  /** Dernières positions analysées, relues depuis MongoDB. */
+  historique: Interaction[] = [];
+  totalAnalyses = 0;
+
   /** Quelques positions parlantes pour la démonstration au client. */
   readonly positionsDemo: PositionDemo[] = [
     {
@@ -76,7 +80,35 @@ export class ChessboardComponent {
     },
   ];
 
-  constructor(private readonly agent: AgentService) {}
+  constructor(private readonly agent: AgentService) {
+    this.rafraichirHistorique();
+  }
+
+  /** Relit les dernières analyses enregistrées par l'agent. */
+  rafraichirHistorique(): void {
+    this.agent.history(5).subscribe({
+      next: (reponse) => {
+        this.historique = reponse.interactions;
+        this.totalAnalyses = reponse.total;
+      },
+      // L'historique est un confort : son absence ne doit rien casser.
+      error: () => undefined,
+    });
+  }
+
+  /** Recharge une position déjà analysée. */
+  rejouer(interaction: Interaction): void {
+    this.board.setFEN(interaction.fen);
+    this.analyser(interaction.fen);
+  }
+
+  /** N'affiche que l'heure : l'historique porte sur la session en cours. */
+  heure(horodatage: string): string {
+    const date = new Date(horodatage);
+    return isNaN(date.getTime())
+      ? ''
+      : date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  }
 
   /** Appelé à chaque coup joué sur l'échiquier. */
   auCoupJoue(): void {
@@ -117,6 +149,8 @@ export class ChessboardComponent {
       next: (reponse) => {
         this.resultat = reponse;
         this.chargement = false;
+        // L'agent vient d'écrire une ligne de plus dans MongoDB.
+        this.rafraichirHistorique();
       },
       error: () => {
         this.erreur = "Impossible de contacter l'agent. Vérifiez que le backend est démarré.";

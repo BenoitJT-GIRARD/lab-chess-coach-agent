@@ -104,6 +104,7 @@ les positions préparées.
 | `GET /api/v1/vector-search?q=` | Recherche vectorielle dans la base de connaissances |
 | `GET /api/v1/videos/{opening}` | Vidéos explicatives YouTube |
 | `POST /api/v1/agent` | Exécute le graphe complet sur une position |
+| `GET /api/v1/history` | Dernières positions analysées (MongoDB) |
 
 ## En cas de souci
 
