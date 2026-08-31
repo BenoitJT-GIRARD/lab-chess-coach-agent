@@ -138,7 +138,8 @@ Le crochet pre-commit enchaîne `ruff --fix`, `ruff-format`, `bandit` et
 - Le raisonnement complet est déroulé dans `notebooks/chess_coach_mission.ipynb`.
 - Le schéma d'architecture est dans `docs/architecture.md`.
 - L'étude du système d'analyse vidéo (bénéfices, limites, architecture MCP et
-  coûts) est dans `docs/feasibility_video_analysis.md`.
+  coûts) est dans `docs/feasibility_video_analysis.md`, avec sa version
+  paginée `docs/feasibility_video_analysis.pdf` (13 pages).
 - La fiche d'auto-évaluation est remplie dans `docs/auto_evaluation.md`.
 
 ## Licence
