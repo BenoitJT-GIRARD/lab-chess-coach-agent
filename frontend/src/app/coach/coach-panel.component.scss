@@ -49,6 +49,30 @@
   }
 }
 
+.rarete {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin: 0.9rem 0 0;
+  padding: 0.55rem 0.75rem;
+  background: var(--paper);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+
+  mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    color: var(--gold);
+  }
+
+  strong {
+    color: var(--navy);
+  }
+}
+
 .recommandation {
   margin: 1rem 0 1.25rem;
   font-size: 0.98rem;

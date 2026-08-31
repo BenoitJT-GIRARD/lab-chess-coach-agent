@@ -10,6 +10,7 @@ const REPONSE: AgentResponse = {
   opening_name: 'Italian Game',
   opening_eco: 'C50',
   in_theory: true,
+  total_games: 48726,
   theory_moves: [
     { uci: 'f8c5', san: 'Bc5', white: 1, draws: 1, black: 1, total: 25481, source: 'lichess' },
   ],
@@ -80,6 +81,21 @@ describe('CoachPanelComponent', () => {
     expect(rendu).toContain('Caruana');
     expect(rendu).toContain('0-1');
     expect(rendu).toContain('Le fou en c4 vise la case f7.');
+  });
+
+  it('signale une ligne connue mais rarement jouée', () => {
+    fixture.componentInstance.resultat = {
+      ...REPONSE,
+      in_theory: false,
+      opening_name: "King's Pawn Game: Wayward Queen Attack",
+      total_games: 48,
+    };
+    fixture.detectChanges();
+
+    const rendu = texte();
+    expect(rendu).toContain('Wayward Queen Attack');
+    expect(rendu).toContain('Hors théorie');
+    expect(rendu).toContain('48 parties de maîtres');
   });
 
   it('nomme les outils utilisés en clair', () => {

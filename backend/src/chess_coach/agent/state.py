@@ -28,6 +28,7 @@ class AgentState(TypedDict, total=False):
     opening_name: str | None
     opening_eco: str | None
     in_theory: bool
+    total_games: int
     theory_moves: list[dict[str, Any]]
     reference_games: list[dict[str, Any]]
     evaluation: dict[str, Any] | None

@@ -66,6 +66,7 @@ def build_graph(deps: AgentDeps):
         except LichessServiceError:
             return {
                 "in_theory": False,
+                "total_games": 0,
                 "theory_moves": [],
                 "reference_games": [],
                 "opening_name": None,
@@ -98,6 +99,7 @@ def build_graph(deps: AgentDeps):
         ]
         return {
             "in_theory": result.in_theory,
+            "total_games": result.total_games,
             "opening_name": result.opening_name,
             "opening_eco": result.opening_eco,
             "theory_moves": moves,

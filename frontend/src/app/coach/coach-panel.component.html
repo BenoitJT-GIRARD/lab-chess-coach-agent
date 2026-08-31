@@ -25,6 +25,17 @@
         </mat-chip-set>
       </header>
 
+      @if (!resultat.in_theory && resultat.total_games) {
+        <p class="rarete">
+          <mat-icon>info_outline</mat-icon>
+          <span>
+            Ligne connue, mais rarement jouée :
+            <strong>{{ nombreDeParties(resultat.total_games) }} parties de maîtres</strong>.
+            L'agent laisse donc parler le moteur.
+          </span>
+        </p>
+      }
+
       <p class="recommandation">{{ resultat.recommendation }}</p>
 
       @if (resultat.in_theory && resultat.theory_moves.length) {
