@@ -25,6 +25,23 @@
         </mat-chip-set>
       </header>
 
+      @if (resultat.opening_summary) {
+        <section class="ouverture-detectee">
+          <h3><mat-icon>emoji_objects</mat-icon> Ouverture détectée</h3>
+          <p>{{ resultat.opening_summary }}</p>
+        </section>
+      }
+
+      @if (prochainCoup; as coup) {
+        <section class="prochain-coup">
+          <span class="coup-san">{{ coup.san }}</span>
+          <span class="coup-texte">
+            <strong>Prochain coup</strong>
+            <em>{{ coup.raison }}</em>
+          </span>
+        </section>
+      }
+
       @if (!resultat.in_theory && resultat.total_games) {
         <p class="rarete">
           <mat-icon>info_outline</mat-icon>

@@ -36,19 +36,19 @@ from chess_coach.services.youtube import YoutubeService, YoutubeServiceError
 def build_context_query(state: AgentState) -> str:
     """Build the question asked to the knowledge base.
 
-    Searching on the bare opening name is too vague: several articles mention
-    it in passing. Adding what the young player is actually looking for — the
-    ideas, the plans, the main moves — pulls the explanatory paragraphs to the
-    top instead of the first passage that happens to quote the name.
+    The wording matters more than it looks. A query padded with generic English
+    words ("chess opening: main ideas, plans and moves") drowns the name of the
+    opening and pulls the most general articles of the corpus to the top —
+    measured on the live index, "Ruy Lopez" then returned articles on the
+    King's Pawn and on the Queen's Gambit. A short French question keeps the
+    name dominant and retrieves the right article.
     """
 
     opening = state.get("opening_name")
     if not opening:
         return "principes généraux des ouvertures aux échecs"
 
-    eco = state.get("opening_eco")
-    label = f"{opening} {eco}" if eco else opening
-    return f"{label} chess opening: main ideas, plans and moves"
+    return f"ouverture {opening}, idées et plans"
 
 
 def build_graph(deps: AgentDeps):
@@ -137,6 +137,7 @@ def build_graph(deps: AgentDeps):
     def synthesize(state: AgentState) -> AgentState:
         recommendation = build_recommendation(state, deps.settings)
         return {
+            "opening_summary": recommendation.opening_summary,
             "recommendation": recommendation.text,
             "sources_used": ["llm"] if recommendation.used_llm else [],
         }

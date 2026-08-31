@@ -9,6 +9,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AgentResponse } from '../models/agent.models';
 
+/** Le coup mis en avant, avec la raison qui le justifie. */
+interface ProchainCoup {
+  san: string;
+  raison: string;
+}
+
 /**
  * Affiche la réponse de l'agent : ouverture, coups théoriques, parties de
  * référence, évaluation du moteur, extraits de la base et vidéos.
@@ -36,6 +42,41 @@ export class CoachPanelComponent {
   @Input() resultat: AgentResponse | null = null;
 
   constructor(private readonly sanitizer: DomSanitizer) {}
+
+  /**
+   * Le coup à jouer maintenant.
+   *
+   * Dans la théorie, c'est le coup le plus joué en parties de maîtres. Hors
+   * théorie, c'est celui que recommande le moteur. Les deux cas s'excluent :
+   * l'agent n'appelle Stockfish que lorsqu'il sort de la théorie.
+   */
+  get prochainCoup(): ProchainCoup | null {
+    const resultat = this.resultat;
+    if (!resultat) {
+      return null;
+    }
+
+    if (resultat.in_theory && resultat.theory_moves.length) {
+      const coup = resultat.theory_moves[0];
+      const parties = this.nombreDeParties(coup.total);
+      return {
+        san: coup.san,
+        raison: parties
+          ? `le plus joué en parties de maîtres (${parties})`
+          : 'coup principal de la théorie',
+      };
+    }
+
+    const evaluation = resultat.evaluation;
+    if (evaluation?.best_move_san) {
+      return {
+        san: evaluation.best_move_san,
+        raison: `recommandé par Stockfish (profondeur ${evaluation.depth})`,
+      };
+    }
+
+    return null;
+  }
 
   /** Construit l'URL d'intégration de la première vidéo proposée. */
   urlIntegration(videoId: string): SafeResourceUrl {

@@ -139,6 +139,9 @@ class AgentResponse(BaseModel):
     evaluation: EvaluationResponse | None = None
     passages: list[Passage] = Field(default_factory=list)
     videos: list[VideoResult] = Field(default_factory=list)
+    opening_summary: str = Field(
+        default="", description="Two or three sentences presenting the detected opening."
+    )
     recommendation: str = ""
     sources_used: list[str] = Field(default_factory=list)
     error: str | None = None

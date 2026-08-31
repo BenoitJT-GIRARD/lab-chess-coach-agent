@@ -32,6 +32,8 @@ const REPONSE: AgentResponse = {
     { text: 'Le fou en c4 vise la case f7.', opening: 'Giuoco Piano', source: 'x.md', score: 0.7 },
   ],
   videos: [],
+  opening_summary:
+    "L'italienne est l'une des plus anciennes ouvertures : le fou en c4 vise la case f7.",
   recommendation: "Nous sommes dans l'ouverture italienne.",
   sources_used: ['theory', 'rag', 'llm'],
   error: null,
@@ -96,6 +98,63 @@ describe('CoachPanelComponent', () => {
     expect(rendu).toContain('Wayward Queen Attack');
     expect(rendu).toContain('Hors théorie');
     expect(rendu).toContain('48 parties de maîtres');
+  });
+
+  it("présente l'ouverture détectée", () => {
+    fixture.componentInstance.resultat = REPONSE;
+    fixture.detectChanges();
+
+    const rendu = texte();
+    expect(rendu).toContain('Ouverture détectée');
+    expect(rendu).toContain("le fou en c4 vise la case f7");
+  });
+
+  it('met en avant le coup le plus joué quand on est dans la théorie', () => {
+    fixture.componentInstance.resultat = REPONSE;
+    fixture.detectChanges();
+
+    // Le séparateur de milliers français est une espace insécable fine : on
+    // le reconstruit plutôt que de le figer dans le test.
+    const parties = (25481).toLocaleString('fr-FR');
+    expect(fixture.componentInstance.prochainCoup).toEqual({
+      san: 'Bc5',
+      raison: `le plus joué en parties de maîtres (${parties})`,
+    });
+    expect(texte()).toContain('Prochain coup');
+  });
+
+  it('met en avant le coup du moteur quand on sort de la théorie', () => {
+    fixture.componentInstance.resultat = {
+      ...REPONSE,
+      in_theory: false,
+      theory_moves: [],
+      evaluation: {
+        fen: REPONSE.fen,
+        evaluation_type: 'cp',
+        value: 29,
+        perspective: 'white',
+        best_move: 'b8c6',
+        best_move_san: 'Nc6',
+        depth: 15,
+      },
+    };
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.prochainCoup).toEqual({
+      san: 'Nc6',
+      raison: 'recommandé par Stockfish (profondeur 15)',
+    });
+  });
+
+  it("n'invente pas de coup quand il n'y en a aucun", () => {
+    fixture.componentInstance.resultat = {
+      ...REPONSE,
+      in_theory: false,
+      theory_moves: [],
+      evaluation: null,
+    };
+
+    expect(fixture.componentInstance.prochainCoup).toBeNull();
   });
 
   it('nomme les outils utilisés en clair', () => {

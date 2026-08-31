@@ -1,4 +1,4 @@
-# Défense sicilienne
+# Défense sicilienne (Sicilian Defense)
 
 > Code ECO : B20–B99  ·  Premiers coups : 1.e4 c5
 

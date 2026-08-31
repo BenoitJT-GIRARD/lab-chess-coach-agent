@@ -1,4 +1,4 @@
-# Partie anglaise
+# Partie anglaise (English Opening)
 
 > Code ECO : A10–A39  ·  Premiers coups : 1.c4
 

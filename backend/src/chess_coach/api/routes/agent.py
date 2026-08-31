@@ -39,6 +39,7 @@ def _to_response(fen: str, state: AgentState) -> AgentResponse:
         evaluation=EvaluationResponse(**evaluation) if evaluation else None,
         passages=[Passage(**passage) for passage in state.get("passages", [])],
         videos=[VideoResult(**video) for video in state.get("videos", [])],
+        opening_summary=state.get("opening_summary", ""),
         recommendation=state.get("recommendation", ""),
         sources_used=state.get("sources_used", []),
         error=state.get("error"),

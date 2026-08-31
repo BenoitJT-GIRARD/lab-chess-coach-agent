@@ -1,4 +1,4 @@
-# Défense scandinave
+# Défense scandinave (Scandinavian Defense, Center Counter)
 
 > Code ECO : B01  ·  Premiers coups : 1.e4 d5
 

@@ -1,4 +1,4 @@
-# Défense Caro-Kann
+# Défense Caro-Kann (Caro-Kann Defense)
 
 > Code ECO : B10–B19  ·  Premiers coups : 1.e4 c6
 

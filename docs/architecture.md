@@ -87,6 +87,11 @@ réponse qui fait la théorie, mais le **nombre de parties** qui la soutiennent.
 Le seuil est réglable (`THEORY_MIN_GAMES`, 1 000 par défaut) : l'ouverture
 italienne s'appuie sur environ 49 000 parties, la sortie de dame 2.Dh5 sur 48.
 
+Le coup mis en avant par l'interface suit la même règle : dans la théorie,
+c'est le coup le plus joué en parties de maîtres ; hors théorie, celui que
+recommande Stockfish. Le modèle de langage est informé de ce choix, pour qu'il
+commente le coup que le joueur a effectivement sous les yeux.
+
 Quand la position tombe sous le seuil, la réponse de Lichess est tout de même
 conservée. Elle porte souvent un nom et un compte de parties, et « attaque du
 berger, 48 parties de maîtres » apprend davantage au joueur que « position
@@ -153,8 +158,11 @@ l'interface.
 4. Le graphe s'exécute : validation, théorie ou moteur, contexte, vidéos.
 5. Le modèle de langage rédige la recommandation à partir de ces seuls faits.
 6. L'interaction est écrite dans MongoDB.
-7. L'interface affiche l'ouverture, les coups, les parties de référence,
-   l'évaluation, les passages retrouvés, les vidéos, et les outils utilisés.
+7. L'interface affiche, dans cet ordre : l'ouverture détectée avec son code
+   ECO, une présentation de cette ouverture en deux ou trois phrases, le
+   prochain coup mis en avant, la recommandation, les coups théoriques, les
+   parties de référence, l'évaluation du moteur, les passages retrouvés, les
+   vidéos, et les outils que l'agent a réellement utilisés.
 
 ---
 

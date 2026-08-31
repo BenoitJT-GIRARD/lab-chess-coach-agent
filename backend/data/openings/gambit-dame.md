@@ -1,4 +1,4 @@
-# Gambit Dame refusé
+# Gambit Dame refusé (Queen's Gambit Declined)
 
 > Code ECO : D30  ·  Premiers coups : 1.d4 d5 2.c4 e6
 
