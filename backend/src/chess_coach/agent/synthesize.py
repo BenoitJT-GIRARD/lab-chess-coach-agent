@@ -16,7 +16,10 @@ is configured and whenever the call fails, so the agent always answers.
 from __future__ import annotations
 
 import logging
+import re
 from dataclasses import dataclass
+
+from pydantic import BaseModel, Field
 
 from chess_coach.agent.state import AgentState
 from chess_coach.config import Settings
@@ -26,8 +29,11 @@ logger = logging.getLogger(__name__)
 
 @dataclass(slots=True)
 class Recommendation:
-    """The text handed to the player, and how it was produced."""
+    """What the coach hands to the player, and how it was produced."""
 
+    # Deux ou trois phrases sur l'ouverture reconnue : ce qu'elle est, son idée.
+    opening_summary: str
+    # Le conseil sur la position courante.
     text: str
     used_llm: bool
 
@@ -51,6 +57,86 @@ def _top_moves(state: AgentState, limit: int = 3) -> list[str]:
 # --------------------------------------------------------------------------
 # The deterministic template
 # --------------------------------------------------------------------------
+
+
+def build_template_opening_summary(state: AgentState) -> str:
+    """Present the detected opening from the facts alone, without a model.
+
+    This is the fallback used when no language model is configured. It stays
+    factual: the name, the ECO code, how many master games reached the
+    position, and the passage retrieved from the knowledge base when it really
+    concerns this opening.
+    """
+
+    opening = state.get("opening_name")
+    if not opening:
+        return ""
+
+    eco = state.get("opening_eco")
+    phrases = [f"Ouverture détectée : {opening}" + (f" (code ECO {eco})." if eco else ".")]
+
+    parties = state.get("total_games", 0)
+    if parties:
+        phrases.append(f"{parties:n} parties de maîtres ont atteint cette position.")
+
+    passage = _matching_passage(state)
+    if passage:
+        phrases.append(passage)
+
+    return " ".join(phrases)
+
+
+# Ces mots reviennent dans la moitié des noms d'ouverture. Les compter comme
+# une correspondance rapprocherait « King's Gambit » de « Queen's Gambit », ou
+# « Défense française » de « Défense sicilienne ».
+MOTS_GENERIQUES = {
+    "attack",
+    "attaque",
+    "chess",
+    "counter",
+    "defence",
+    "defense",
+    "défense",
+    "gambit",
+    "game",
+    "jeu",
+    "opening",
+    "ouverture",
+    "partie",
+    "pawn",
+    "pion",
+    "system",
+    "système",
+    "variante",
+    "variation",
+}
+
+
+def _mots_significatifs(nom: str) -> set[str]:
+    """Return the words of an opening name that actually identify it."""
+
+    mots = re.split(r"[^\w]+", nom.lower())
+    return {mot for mot in mots if len(mot) > 3 and mot not in MOTS_GENERIQUES}
+
+
+def _matching_passage(state: AgentState, max_chars: int = 320) -> str:
+    """Return the retrieved passage that really talks about this opening.
+
+    The knowledge base answers for every query, so a passage is only used as a
+    definition when its article shares an identifying word with the detected
+    opening. Otherwise the presentation would describe the wrong opening, which
+    is worse than saying nothing.
+    """
+
+    mots = _mots_significatifs(state.get("opening_name") or "")
+    if not mots:
+        return ""
+
+    for passage in state.get("passages") or []:
+        if mots & _mots_significatifs(passage.get("opening", "")):
+            texte = passage["text"].replace("\n", " ").strip()
+            return texte[:max_chars].rstrip() + ("…" if len(texte) > max_chars else "")
+    return ""
 
 
 def build_template_recommendation(state: AgentState) -> str:
@@ -102,12 +188,23 @@ SYSTEM_PROMPT = (
     "Tu expliques les ouvertures de façon claire et "
     "encourageante, à un joueur de 10 à 16 ans qui découvre la théorie.\n"
     "\n"
+    "Tu produis deux textes distincts :\n"
+    "1. presentation_ouverture — deux ou trois phrases sur l'ouverture qui "
+    "vient d'être reconnue : ce qu'elle est, d'où vient son nom si c'est "
+    "parlant, et l'idée que poursuit le camp qui la joue. Si aucune ouverture "
+    "n'est nommée, renvoie une chaîne vide.\n"
+    "2. recommandation — le conseil sur la position courante.\n"
+    "\n"
     "Règles de rédaction :\n"
-    "- réponds en français, en 4 à 6 phrases, sans titre ni liste ;\n"
+    "- écris en français, sans titre ni liste ; la recommandation fait 4 à "
+    "6 phrases, la présentation 2 à 3 ;\n"
+    "- nomme les camps en français : « les Blancs », « les Noirs » ;\n"
     "- appuie-toi uniquement sur les éléments fournis ;\n"
     "- ne cite que les coups qui te sont donnés, n'en invente aucun ;\n"
     "- ne parle du moteur d'analyse que si une évaluation figure dans les "
     "éléments fournis ; sinon, n'y fais aucune allusion ;\n"
+    "- explique en priorité le coup mis en avant dans l'interface : c'est "
+    "celui que le joueur a sous les yeux ;\n"
     "- nomme l'ouverture quand elle est connue et explique l'idée du coup "
     "principal (le plan, la case visée), pas seulement son nom ;\n"
     "- si la position est hors théorie, dis-le franchement et explique ce que "
@@ -136,6 +233,13 @@ def build_llm_prompt(state: AgentState) -> str:
             lines.append("Coups théoriques, avec le nombre de parties de maîtres :")
             for move in moves:
                 lines.append(f"  - {move['san']} ({move.get('total', 0)} parties)")
+            # L'interface met le premier coup en avant sous le titre « Prochain
+            # coup ». Le dire au modèle évite qu'il commente un autre coup que
+            # celui que le joueur a sous les yeux.
+            lines.append(
+                f"Coup mis en avant dans l'interface : {moves[0]['san']}, "
+                "le plus joué en parties de maîtres."
+            )
         games = state.get("reference_games") or []
         if games:
             lines.append("Parties de référence :")
@@ -159,6 +263,7 @@ def build_llm_prompt(state: AgentState) -> str:
             lines.append(
                 f"Moteur Stockfish : meilleur coup {best}, {format_evaluation(evaluation)}"
             )
+            lines.append(f"Coup mis en avant dans l'interface : {best}.")
 
     passages = state.get("passages") or []
     if passages:
@@ -178,8 +283,21 @@ def build_llm_prompt(state: AgentState) -> str:
     return "\n".join(lines)
 
 
-def _llm_recommendation(state: AgentState, settings: Settings) -> str:
-    """Ask an OpenAI-compatible model to phrase the recommendation."""
+class CoachAnswer(BaseModel):
+    """The two texts asked of the model, in one call."""
+
+    presentation_ouverture: str = Field(
+        description="Deux ou trois phrases sur l'ouverture reconnue, vide si aucune."
+    )
+    recommandation: str = Field(description="Le conseil sur la position courante.")
+
+
+def _llm_answer(state: AgentState, settings: Settings) -> CoachAnswer:
+    """Ask an OpenAI-compatible model for both texts at once.
+
+    A structured answer avoids parsing a single block of prose, and one call
+    keeps the latency where a second one would double it.
+    """
 
     from langchain_openai import ChatOpenAI
 
@@ -190,25 +308,33 @@ def _llm_recommendation(state: AgentState, settings: Settings) -> str:
         temperature=0.3,
         timeout=settings.llm_timeout,
     )
-    response = model.invoke(
+    answer = model.with_structured_output(CoachAnswer).invoke(
         [
             ("system", SYSTEM_PROMPT),
             ("human", build_llm_prompt(state)),
         ]
     )
-    text = str(response.content).strip()
-    if not text:
+    if not answer or not answer.recommandation.strip():
         raise ValueError("the model returned an empty answer")
-    return text
+    return answer
 
 
 def build_recommendation(state: AgentState, settings: Settings) -> Recommendation:
-    """Return the final recommendation, using the model when it is available."""
+    """Return what the coach says, using the model when it is available."""
 
     if settings.llm_enabled and settings.llm_api_key:
         try:
-            return Recommendation(text=_llm_recommendation(state, settings), used_llm=True)
+            answer = _llm_answer(state, settings)
+            return Recommendation(
+                opening_summary=answer.presentation_ouverture.strip(),
+                text=answer.recommandation.strip(),
+                used_llm=True,
+            )
         except Exception as exc:  # pragma: no cover - network/credentials
             # An answer is more useful than an error: fall back on the template.
             logger.warning("LLM synthesis failed, using the template: %s", exc)
-    return Recommendation(text=build_template_recommendation(state), used_llm=False)
+    return Recommendation(
+        opening_summary=build_template_opening_summary(state),
+        text=build_template_recommendation(state),
+        used_llm=False,
+    )

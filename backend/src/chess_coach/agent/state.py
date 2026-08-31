@@ -34,6 +34,7 @@ class AgentState(TypedDict, total=False):
     evaluation: dict[str, Any] | None
     passages: list[dict[str, Any]]
     videos: list[dict[str, Any]]
+    opening_summary: str
     recommendation: str
     # Reducer: each node appends the tools it used; the lists are concatenated.
     sources_used: Annotated[list[str], add]

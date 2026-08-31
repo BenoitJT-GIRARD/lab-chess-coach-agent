@@ -1,4 +1,4 @@
-# Partie écossaise
+# Partie écossaise (Scotch Game)
 
 > Code ECO : C45  ·  Premiers coups : 1.e4 e5 2.Cf3 Cc6 3.d4
 

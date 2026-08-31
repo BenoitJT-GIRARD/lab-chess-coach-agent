@@ -1,4 +1,4 @@
-# Défense française
+# Défense française (French Defense)
 
 > Code ECO : C00–C19  ·  Premiers coups : 1.e4 e6
 
