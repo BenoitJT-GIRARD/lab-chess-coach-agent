@@ -48,6 +48,20 @@ uv run python -m scripts.fetch_wikichess    # télécharge les articles Wikiches
 uv run python -m scripts.ingest_wikichess   # les indexe dans Milvus
 ```
 
+Les articles téléchargés sont versionnés avec le projet : la première commande
+n'est à rejouer que pour rafraîchir le corpus.
+
+## Fabriquer les documents
+
+```powershell
+uv run python -m scripts.build_pdf ../docs/feasibility_video_analysis.md
+uv run python -m scripts.build_presentation      # support de présentation
+uv run python -m scripts.package_deliverables    # dossier assemblé + zip
+```
+
+`build_pdf` s'appuie sur Pandoc et sur Chrome en mode sans interface ; les
+schémas Mermaid sont dessinés par le navigateur avant l'impression.
+
 ## Contrôles qualité
 
 | Outil | Commande |
