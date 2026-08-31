@@ -87,6 +87,12 @@ réponse qui fait la théorie, mais le **nombre de parties** qui la soutiennent.
 Le seuil est réglable (`THEORY_MIN_GAMES`, 1 000 par défaut) : l'ouverture
 italienne s'appuie sur environ 49 000 parties, la sortie de dame 2.Dh5 sur 48.
 
+Quand la position tombe sous le seuil, la réponse de Lichess est tout de même
+conservée. Elle porte souvent un nom et un compte de parties, et « attaque du
+berger, 48 parties de maîtres » apprend davantage au joueur que « position
+inconnue » : le propos est justement que la ligne existe mais que personne ne
+la joue.
+
 L'état accumule au passage la liste des outils réellement utilisés
 (`sources_used`), ce que l'interface affiche sous la réponse.
 

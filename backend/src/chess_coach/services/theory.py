@@ -9,8 +9,8 @@ It combines two sources so the agent always has an answer:
    when no token is configured or when the call fails, so the POC keeps
    working without any external dependency.
 
-If neither source knows the position, it is considered *out of theory* and the
-caller (the agent) turns to the Stockfish engine instead.
+If neither source establishes the position as theory, it is considered *out of
+theory* and the caller (the agent) turns to the Stockfish engine instead.
 """
 
 from __future__ import annotations
@@ -34,6 +34,8 @@ class TheoryService:
     def get_theoretical_moves(self, fen: str) -> OpeningExplorerResult:
         """Return the best available theory for ``fen``."""
 
+        remote: OpeningExplorerResult | None = None
+
         # 1) Lichess first, whenever a token is configured.
         if self._lichess.is_configured:
             try:
@@ -41,11 +43,11 @@ class TheoryService:
                 if remote.in_theory:
                     return remote
                 # Lichess answered but the position is not established theory.
-                # The local book may still know it (a main line the master
-                # database happens to be thin on), so we keep looking.
+                # The local book may still know it — a main line the master
+                # database happens to be thin on — so we keep looking.
             except LichessServiceError:
                 # Network or rate-limit problems must not break the agent.
-                pass
+                remote = None
 
         # 2) Local opening book.
         book = OpeningBook.lookup(fen)
@@ -53,6 +55,15 @@ class TheoryService:
             return book
 
         # 3) Out of theory: the agent will call the engine.
+        #
+        # When Lichess answered, its answer is kept even though it falls below
+        # the threshold. It costs nothing and it says something useful: the
+        # position may carry a name and a handful of master games. "Attaque du
+        # berger, 48 parties" teaches more than "position inconnue" — the point
+        # is precisely that the line exists but that nobody plays it.
+        if remote is not None:
+            return remote
+
         return OpeningExplorerResult(
             fen=fen,
             opening_name=None,

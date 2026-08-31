@@ -145,7 +145,14 @@ def build_llm_prompt(state: AgentState) -> str:
                 )
         lines.append("Le moteur d'analyse n'a pas été sollicité : la position est dans la théorie.")
     else:
-        lines.append("La position est hors théorie connue.")
+        lines.append("La position n'est pas de la théorie établie.")
+        nom = state.get("opening_name")
+        parties = state.get("total_games", 0)
+        if nom and parties:
+            lines.append(
+                f"Elle porte tout de même un nom — {nom} — mais seules "
+                f"{parties} parties de maîtres l'ont atteinte."
+            )
         evaluation = state.get("evaluation")
         if evaluation:
             best = evaluation.get("best_move_san") or evaluation.get("best_move")

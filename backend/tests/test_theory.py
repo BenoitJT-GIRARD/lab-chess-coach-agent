@@ -84,3 +84,51 @@ def test_the_local_book_takes_over_when_lichess_finds_nothing() -> None:
     assert result.in_theory is True
     assert {move.san for move in result.moves} >= {"e4", "d4"}
     assert all(move.source == "book" for move in result.moves)
+
+
+# 1.e4 e5 2.Dh5 : l'attaque du berger. Le livre local l'ignore, et la base des
+# maîtres n'en compte qu'une poignée de parties.
+FEN_BERGER = "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2"
+
+
+def test_a_named_but_rare_line_is_out_of_theory_and_keeps_its_name() -> None:
+    lichess = FakeLichess(
+        OpeningExplorerResult(
+            fen=FEN_BERGER,
+            opening_name="King's Pawn Game: Wayward Queen Attack",
+            opening_eco="C20",
+            total_games=48,
+            moves=[TheoryMove(uci="b8c6", san="Nc6", white=20, draws=5, black=18)],
+            in_theory=False,
+        )
+    )
+    service = TheoryService(settings=Settings(lichess_token="lip_test"), lichess=lichess)
+
+    result = service.get_theoretical_moves(FEN_BERGER)
+
+    # Le moteur doit prendre la main : la ligne n'est pas de la théorie établie.
+    assert result.in_theory is False
+    # Mais on garde ce que Lichess sait. « Attaque du berger, 48 parties »
+    # apprend plus au joueur que « position inconnue ».
+    assert result.opening_name == "King's Pawn Game: Wayward Queen Attack"
+    assert result.total_games == 48
+
+
+def test_an_unknown_position_returns_nothing_at_all() -> None:
+    lichess = FakeLichess(
+        OpeningExplorerResult(
+            fen=FEN_BERGER,
+            opening_name=None,
+            opening_eco=None,
+            total_games=0,
+            moves=[],
+            in_theory=False,
+        )
+    )
+    service = TheoryService(settings=Settings(lichess_token="lip_test"), lichess=lichess)
+
+    result = service.get_theoretical_moves(FEN_BERGER)
+
+    assert result.in_theory is False
+    assert result.opening_name is None
+    assert result.moves == []

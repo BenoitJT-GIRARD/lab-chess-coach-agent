@@ -131,6 +131,9 @@ class AgentResponse(BaseModel):
     opening_name: str | None = None
     opening_eco: str | None = None
     in_theory: bool = False
+    total_games: int = Field(
+        default=0, description="Master games reaching this position, as known to Lichess."
+    )
     theory_moves: list[MoveStat] = Field(default_factory=list)
     reference_games: list[ReferenceGame] = Field(default_factory=list)
     evaluation: EvaluationResponse | None = None

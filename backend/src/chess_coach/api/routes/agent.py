@@ -33,6 +33,7 @@ def _to_response(fen: str, state: AgentState) -> AgentResponse:
         opening_name=state.get("opening_name"),
         opening_eco=state.get("opening_eco"),
         in_theory=state.get("in_theory", False),
+        total_games=state.get("total_games", 0),
         theory_moves=[MoveStat(**move) for move in state.get("theory_moves", [])],
         reference_games=[ReferenceGame(**game) for game in state.get("reference_games", [])],
         evaluation=EvaluationResponse(**evaluation) if evaluation else None,
