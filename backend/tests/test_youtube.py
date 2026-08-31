@@ -19,6 +19,15 @@ SAMPLE_RESPONSE = {
                 "thumbnails": {"medium": {"url": "https://img/abc.jpg"}},
             },
         },
+        {
+            "id": {"videoId": "def456"},
+            "snippet": {
+                # The API escapes the titles for HTML.
+                "title": "How To Learn &amp; Study Chess Openings",
+                "channelTitle": "GothamChess",
+                "thumbnails": {"default": {"url": "https://img/def.jpg"}},
+            },
+        },
         # An item without a videoId (e.g. a channel) must be ignored.
         {"id": {"kind": "youtube#channel"}, "snippet": {"title": "A channel"}},
     ]
@@ -54,7 +63,8 @@ def test_search_videos_parses_and_filters() -> None:
 
     videos = service.search_videos("Ouverture italienne")
 
-    assert len(videos) == 1
+    # Two real videos in the sample; the channel entry is dropped.
+    assert len(videos) == 2
     assert videos[0].video_id == "abc123"
     assert videos[0].url == "https://www.youtube.com/watch?v=abc123"
     assert videos[0].channel == "ChessChannel"
@@ -84,3 +94,14 @@ def test_videos_route_503_when_not_configured() -> None:
     response = client.get("/api/v1/videos/Ouverture italienne")
 
     assert response.status_code == 503
+
+
+def test_html_entities_are_decoded_in_the_titles() -> None:
+    service = YoutubeService(
+        settings=Settings(youtube_api_key="fake-key"),
+        client=FakeYoutube(SAMPLE_RESPONSE),
+    )
+
+    videos = service.search_videos("italian game")
+
+    assert videos[1].title == "How To Learn & Study Chess Openings"

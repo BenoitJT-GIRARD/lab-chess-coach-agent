@@ -42,16 +42,36 @@ def load_articles(directory: Path) -> list[Article]:
     directory = Path(directory)
     articles: list[Article] = []
     for path in sorted(directory.glob("*.md")):
-        text = path.read_text(encoding="utf-8").strip()
+        raw = path.read_text(encoding="utf-8").strip()
         articles.append(
             Article(
                 slug=path.stem,
-                title=_extract_title(text, fallback=path.stem),
-                text=text,
+                # The title is read before cleaning, since it is the "# " heading.
+                title=_extract_title(raw, fallback=path.stem),
+                text=strip_markdown(raw),
                 collection=directory.name,
             )
         )
     return articles
+
+
+def strip_markdown(text: str) -> str:
+    """Remove the Markdown markers so a passage reads as plain prose.
+
+    The articles are stored as Markdown — a title, a quoted block of metadata,
+    then section headings. Those markers are noise once a passage is shown to a
+    player or handed to the language model, so they are dropped. The words
+    themselves are kept: the ECO code and the move sequence help the search.
+    """
+
+    lines: list[str] = []
+    for line in text.splitlines():
+        line = re.sub(r"^\s{0,3}#{1,6}\s*", "", line)  # titres de section
+        line = re.sub(r"^\s{0,3}>\s?", "", line)  # bloc de métadonnées
+        line = line.replace("**", "").replace("__", "")  # gras
+        lines.append(line.rstrip())
+    # Deux sauts de ligne au maximum : le découpage se fait sur les paragraphes.
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(lines)).strip()
 
 
 def _extract_title(text: str, *, fallback: str) -> str:
