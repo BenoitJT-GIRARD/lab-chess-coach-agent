@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from chess_coach.rag.preprocess import Article, build_chunks, chunk_text, load_articles
+from chess_coach.rag.preprocess import (
+    Article,
+    build_chunks,
+    chunk_text,
+    load_articles,
+    strip_markdown,
+)
 
 WIKICHESS_DIR = Path("data/wikichess")
 OPENINGS_DIR = Path("data/openings")
@@ -15,6 +21,17 @@ SAMPLE = (
     "Deuxieme paragraphe tout aussi consequent afin de declencher un decoupage.\n\n"
     "Troisieme paragraphe qui ajoute encore du contenu a notre petit article.\n\n"
     "Quatrieme paragraphe pour terminer ce court exemple de chunking de texte."
+)
+
+ARTICLE_MARKDOWN = (
+    "# Sicilian defense\n"
+    "\n"
+    "> Code ECO : B20\n"
+    "> Coups : 1.e4 c5\n"
+    "\n"
+    "## Idees principales\n"
+    "\n"
+    "Les Noirs contestent le centre **immediatement**.\n"
 )
 
 
@@ -51,6 +68,18 @@ def test_build_chunks_prefixes_the_source_with_its_collection() -> None:
     assert all(chunk.chunk_id.startswith("wikichess/00003-sicilian-") for chunk in chunks)
 
 
+def test_strip_markdown_keeps_the_words_and_drops_the_markers() -> None:
+    nettoye = strip_markdown(ARTICLE_MARKDOWN)
+
+    assert "#" not in nettoye
+    assert ">" not in nettoye
+    assert "**" not in nettoye
+    # Les mots, eux, restent : le code ECO et la ligne de coups aident la recherche.
+    assert "Sicilian defense" in nettoye
+    assert "Code ECO : B20" in nettoye
+    assert "immediatement" in nettoye
+
+
 def test_load_the_french_opening_notes() -> None:
     articles = load_articles(OPENINGS_DIR)
 
@@ -70,3 +99,5 @@ def test_load_the_wikichess_corpus() -> None:
     assert all(article.collection == "wikichess" for article in articles)
     # Every downloaded article credits the page it came from.
     assert all("ficgs.com/wikichess_" in article.text for article in articles)
+    # And the Markdown markers are gone by the time the text is indexed.
+    assert all(not article.text.startswith("#") for article in articles)

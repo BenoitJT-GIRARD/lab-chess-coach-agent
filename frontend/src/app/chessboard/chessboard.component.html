@@ -69,6 +69,27 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- Sous l'échiquier : ce que l'agent a déjà analysé (MongoDB) -->
+  @if (historique.length) {
+    <mat-card class="carte-historique" appearance="outlined">
+      <mat-card-content>
+        <h3>
+          <mat-icon>history</mat-icon>
+          Dernières analyses
+          <span class="total">{{ totalAnalyses }} au total</span>
+        </h3>
+        <ul>
+          @for (analyse of historique; track analyse.created_at) {
+            <li (click)="rejouer(analyse)">
+              <span class="ouverture">{{ analyse.opening_name || 'Hors théorie' }}</span>
+              <span class="heure">{{ heure(analyse.created_at) }}</span>
+            </li>
+          }
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  }
+
   <!-- À droite : ce que répond l'agent -->
   <app-coach-panel
     [chargement]="chargement"

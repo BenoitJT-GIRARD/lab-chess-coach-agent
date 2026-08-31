@@ -10,6 +10,7 @@ from __future__ import annotations
 from functools import lru_cache
 
 from chess_coach.agent.graph import ChessAgent, build_default_agent
+from chess_coach.services.mongo import MongoService
 from chess_coach.services.rag_search import RagService
 from chess_coach.services.stockfish_engine import StockfishService
 from chess_coach.services.theory import TheoryService
@@ -26,6 +27,12 @@ def get_rag_service() -> RagService:
     """Provide a :class:`RagService` (embeddings + Milvus search)."""
 
     return RagService()
+
+
+def get_mongo_service() -> MongoService:
+    """Provide a :class:`MongoService` (interaction history)."""
+
+    return MongoService()
 
 
 def get_stockfish_service() -> StockfishService:

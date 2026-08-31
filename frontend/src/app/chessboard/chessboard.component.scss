@@ -1,19 +1,37 @@
+// Trois zones : l'échiquier, l'historique dessous, le coach sur toute la
+// hauteur à droite. Les zones sont nommées pour que l'ordre du HTML reste
+// lisible et que la version étroite se contente de les empiler.
 .ecran {
   display: grid;
   grid-template-columns: minmax(420px, 480px) minmax(320px, 1fr);
+  grid-template-areas:
+    'echiquier coach'
+    'historique coach';
+  grid-template-rows: auto 1fr;
   gap: 1.5rem;
   align-items: start;
+}
+
+.carte-echiquier {
+  grid-area: echiquier;
+  background: #ffffff;
+  border-radius: var(--radius);
+}
+
+app-coach-panel {
+  grid-area: coach;
+  display: block;
 }
 
 @media (max-width: 980px) {
   .ecran {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'echiquier'
+      'coach'
+      'historique';
+    grid-template-rows: auto;
   }
-}
-
-.carte-echiquier {
-  background: #ffffff;
-  border-radius: var(--radius);
 }
 
 .echiquier {
@@ -69,5 +87,68 @@ mat-chip {
   strong {
     color: var(--navy);
     margin-right: 0.5rem;
+  }
+}
+
+.carte-historique {
+  grid-area: historique;
+  background: #ffffff;
+  border-radius: var(--radius);
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.6rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+
+    mat-icon {
+      font-size: 1.05rem;
+      width: 1.05rem;
+      height: 1.05rem;
+      color: var(--gold);
+    }
+  }
+
+  .total {
+    margin-left: auto;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.72rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--paper);
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    &:hover .ouverture {
+      color: var(--gold);
+    }
+  }
+
+  .ouverture {
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .heure {
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
   }
 }

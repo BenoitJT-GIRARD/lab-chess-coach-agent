@@ -1,9 +1,11 @@
 """MongoDB persistence service.
 
-Every agent interaction (the position queried and the recommendation produced)
-is stored in MongoDB so a coach could later analyse usage, cache answers or
-build a training history. Persistence is best-effort: a database outage logs a
-warning but never breaks the agent's answer.
+Every agent interaction — the position looked at and the recommendation
+produced — is stored in MongoDB. A coach can then see what the young players
+actually work on, and the demonstration can show the history growing.
+
+Persistence is best-effort: a database outage logs a warning but never breaks
+the agent's answer. The player came for advice, not for a stack trace.
 """
 
 from __future__ import annotations
@@ -17,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class MongoService:
-    """Store and count agent interactions in MongoDB."""
+    """Store and read back the agent's interactions."""
 
     _COLLECTION = "interactions"
 
@@ -58,3 +60,19 @@ class MongoService:
         except Exception as exc:  # pragma: no cover - needs a live server
             logger.warning("Could not count interactions in MongoDB: %s", exc)
             return 0
+
+    def recent_interactions(self, limit: int = 10) -> list[dict]:
+        """Return the most recent interactions, newest first.
+
+        The Mongo document id is dropped: it is an internal detail, and it does
+        not serialise to JSON.
+        """
+
+        try:
+            documents = (
+                self._collection().find({}, {"_id": False}).sort("created_at", -1).limit(limit)
+            )
+            return list(documents)
+        except Exception as exc:  # pragma: no cover - needs a live server
+            logger.warning("Could not read the interactions from MongoDB: %s", exc)
+            return []

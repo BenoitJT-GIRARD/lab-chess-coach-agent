@@ -8,6 +8,7 @@ exhausted, or nothing relevant is found.
 
 from __future__ import annotations
 
+import html
 from dataclasses import dataclass
 from typing import Any
 
@@ -105,8 +106,10 @@ class YoutubeService:
             videos.append(
                 VideoItem(
                     video_id=video_id,
-                    title=snippet.get("title", ""),
-                    channel=snippet.get("channelTitle", ""),
+                    # The API escapes the titles for HTML ("&amp;"), but they
+                    # are displayed as text: unescape them once, here.
+                    title=html.unescape(snippet.get("title", "")),
+                    channel=html.unescape(snippet.get("channelTitle", "")),
                     url=f"https://www.youtube.com/watch?v={video_id}",
                     thumbnail=thumb,
                 )
