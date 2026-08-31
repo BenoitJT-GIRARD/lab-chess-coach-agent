@@ -1,22 +1,25 @@
 # --- Python ---
+# Les dossiers d'empaquetage sont ancrés à la racine du dépôt : sans la barre
+# oblique de tête, « lib/ » ou « build/ » masqueraient aussi du code source
+# rangé dans un dossier du même nom.
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
+/build/
+/develop-eggs/
+/dist/
+/downloads/
+/eggs/
+/.eggs/
+/lib/
+/lib64/
+/parts/
+/sdist/
+/var/
+/wheels/
+/share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -76,8 +79,9 @@ logs/
 # --- Docker / data volumes (named volumes only, never committed) ---
 volumes/
 
-# --- Models / artifacts ---
-models/
+# --- Modèles entraînés et artefacts ---
+# Ancré : frontend/src/app/models/ contient du code, pas des poids de modèle.
+/models/
 *.tar.gz
 *.pkl
 *.npy
