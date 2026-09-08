@@ -21,9 +21,10 @@ Un modèle de langage rédige ensuite la recommandation à partir de ces seuls
 Stockfish, le contexte de Milvus. Sans clé d'API, ou si l'appel échoue, un
 gabarit déterministe prend le relais et l'agent répond quand même.
 
-Le projet est un agent d'aide à l'apprentissage des ouvertures. Il se
-présente comme une pile conteneurisée — **FastAPI + LangGraph + Milvus +
-MongoDB + Angular** — qui démarre entièrement avec un seul `docker compose up`.
+Le projet est un agent d'aide à l'apprentissage des ouvertures, écrit pour
+des joueurs de club. Il se présente comme une pile conteneurisée —
+**FastAPI + LangGraph + Milvus + MongoDB + Angular** — qui démarre
+entièrement avec un seul `docker compose up`.
 
 ## Organisation du dépôt
 
@@ -37,12 +38,12 @@ ffe/
 │   │   ├── agent/              # État, nœuds et graphe LangGraph
 │   │   └── api/                # Routes FastAPI
 │   ├── data/                   # Base de connaissances sur les ouvertures
-│   ├── scripts/                # Ingestion, présentation, packaging
+│   ├── scripts/                # Ingestion du corpus
 │   ├── tests/                  # Suite pytest
 │   ├── Dockerfile
 │   └── pyproject.toml
 ├── frontend/                   # Interface Angular Material (ngx-chess-board)
-├── docs/                       # Architecture, note de faisabilité, auto-évaluation
+├── docs/                       # Architecture et note de faisabilité
 ├── notebooks/
 │   └── chess_coach_mission.ipynb    # Déroulé de la démarche
 ├── docker-compose.yml          # Orchestration des six services
@@ -133,14 +134,13 @@ Le frontend se lance depuis `frontend/` avec `npm start`.
 Le crochet pre-commit enchaîne `ruff --fix`, `ruff-format`, `bandit` et
 `nbstripout` : les notebooks sont versionnés sans sortie d'exécution.
 
-## Documents
+## Documentation
 
 - Le raisonnement complet est déroulé dans `notebooks/chess_coach_mission.ipynb`.
 - Le schéma d'architecture est dans `docs/architecture.md`.
 - L'étude du système d'analyse vidéo (bénéfices, limites, architecture MCP et
   coûts) est dans `docs/feasibility_video_analysis.md`, avec sa version
   paginée `docs/feasibility_video_analysis.pdf` (13 pages).
-- La fiche d'auto-évaluation est remplie dans `docs/auto_evaluation.md`.
 
 ## Licence
 

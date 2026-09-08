@@ -95,7 +95,7 @@ volumes/
 # --- Project-specific ---
 infos/
 data/raw/
-# Final deliverable bundle — produced on demand via scripts/package_deliverables.py
+# Dossier assemblé à la demande, jamais versionné
 Mettez_en_place_un_Agent_IA_Girard_Benoit/
 Mettez_en_place_un_Agent_IA_Girard_Benoit*.zip
 

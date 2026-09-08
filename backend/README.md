@@ -55,8 +55,6 @@ n'est à rejouer que pour rafraîchir le corpus.
 
 ```powershell
 uv run python -m scripts.build_pdf ../docs/feasibility_video_analysis.md
-uv run python -m scripts.build_presentation      # support de présentation
-uv run python -m scripts.package_deliverables    # dossier assemblé + zip
 ```
 
 `build_pdf` s'appuie sur Pandoc et sur Chrome en mode sans interface ; les
