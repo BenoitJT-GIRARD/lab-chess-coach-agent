@@ -50,7 +50,7 @@ ffe/
 └── README.md
 ```
 
-La séparation `backend/` / `frontend/` est celle demandée à l'étape 1 du brief.
+La séparation `backend/` / `frontend/` suit la coupure de l'application.
 Chaque moitié se construit et se teste indépendamment ; `docker-compose.yml` les
 assemble.
 

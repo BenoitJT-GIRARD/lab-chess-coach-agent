@@ -8,7 +8,7 @@ Sequential and explicit on purpose:
     4. (re)create the Milvus collection and insert the vectors.
 
 The knowledge base has two folders. ``data/wikichess`` holds the articles
-downloaded from FICGS Wikichess, which is the source the brief points to.
+downloaded from FICGS Wikichess.
 ``data/openings`` holds the complementary notes written in French for young
 players. Both are indexed in the same collection, and every chunk keeps the
 name of the folder it came from, so a retrieved passage can always be traced

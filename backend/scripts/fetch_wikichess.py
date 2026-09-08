@@ -1,7 +1,8 @@
 """Download the opening articles of Wikichess (FICGS).
 
 Wikichess (https://ficgs.com/wikichess.html) is the collaborative opening
-repertoire the brief points to. It is organised as a tree of positions: article
+repertoire this corpus is built from. It is organised as a tree of positions:
+article
 0 is the starting position, and every article links to the articles reached by
 playing one more move. An article carries an ECO code, an opening name, an
 explanatory text written by contributors, and the statistics of the games

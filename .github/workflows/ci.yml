@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "feat/**"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Two halves, two jobs. They share nothing and fail independently: a broken Angular test
+# should not hide a green backend, and the reverse.
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --extra dev
+
+      - name: Ruff
+        run: uv run ruff check .
+
+      - name: Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Bandit
+        run: uv run bandit -c pyproject.toml -r src
+
+      - name: Pytest
+        run: uv run pytest
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      # ngx-chess-board 3.0.0 ships sources only, so the build pins the Ivy-compiled
+      # 2.2.3, which Angular 17 accepts through legacy peer resolution.
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Karma
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+
+      - name: Build
+        run: npm run build

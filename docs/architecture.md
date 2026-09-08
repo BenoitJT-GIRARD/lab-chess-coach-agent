@@ -77,9 +77,8 @@ flowchart TD
     PERSIST --> END2(("Réponse à l'utilisateur"))
 ```
 
-Le nœud `theory` est celui qui **choisit la source d'information**, ce que
-demande le brief : si la position est établie, on donne la théorie ; sinon, on
-laisse parler le moteur.
+Le nœud `theory` est celui qui **choisit la source d'information** : si la position
+est établie, on donne la théorie ; sinon, on laisse parler le moteur.
 
 La règle est explicite. La base de parties de maîtres de Lichess répond pour
 presque n'importe quelle position légale ; ce n'est donc pas la présence d'une

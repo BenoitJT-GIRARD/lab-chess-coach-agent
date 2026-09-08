@@ -36,8 +36,8 @@ class Settings(BaseSettings):
     # with no scope is enough; when it is missing the agent falls back to the
     # local opening book (see services/opening_book.py).
     lichess_token: str = ""
-    # "masters" holds over-the-board master games — the reference games the
-    # brief asks for. "lichess" would hold every rated game played on the site.
+    # "masters" holds over-the-board master games, which are the reference games
+    # worth showing. "lichess" would hold every rated game played on the site.
     lichess_database: str = "masters"
     # Number of reference games shown alongside the theoretical moves.
     lichess_reference_games: int = 3
@@ -62,15 +62,15 @@ class Settings(BaseSettings):
 
     # The knowledge base is made of two folders of Markdown articles, both
     # relative to the working directory.
-    #   - wikichess: articles downloaded from FICGS Wikichess (the source the
-    #     brief points to), in English;
+    #   - wikichess: articles downloaded from FICGS Wikichess, in English;
     #   - openings: complementary notes written in French for young players.
     wikichess_dir: str = "data/wikichess"
     openings_dir: str = "data/openings"
 
     # --- Embeddings ---
-    # Multilingual model: the Wikichess knowledge base is in French. 384-dim,
-    # lightweight and CPU-friendly, in the spirit of the brief's suggestion.
+    # Multilingual, and it has to be: the Wikichess articles are in English, the
+    # complementary notes and the queries are in French. 384 dimensions, small
+    # enough to embed on CPU inside the container.
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     embedding_dim: int = 384
 
