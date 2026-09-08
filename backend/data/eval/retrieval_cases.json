@@ -1,0 +1,145 @@
+{
+  "about": "Retrieval cases with a hard relevance label. Written by hand from the corpus index, never generated from the text of the target article: a question drawn from the article it should retrieve measures string matching, not retrieval.",
+  "corpus": "data/wikichess (21 articles, English) + data/openings (11 notes, French)",
+  "written": "2026-09-07",
+  "cases": [
+    {
+      "id": "ruy-lopez",
+      "opening_name": "Ruy Lopez",
+      "eco": "C60",
+      "question": "Pourquoi sort-on le fou en b5 et qu'est-ce que les Blancs cherchent ensuite ?",
+      "expected_sources": [
+        "wikichess/00012-ruy-lopez-spanish-opening.md",
+        "wikichess/00297-ruy-lopez-spanish-opening.md",
+        "openings/partie-espagnole.md"
+      ]
+    },
+    {
+      "id": "italian-game",
+      "opening_name": "Italian Game",
+      "eco": "C50",
+      "question": "Que vise le fou posé en c4 et comment continuer tranquillement ?",
+      "expected_sources": [
+        "wikichess/00048-giuoco-piano.md",
+        "openings/ouverture-italienne.md"
+      ]
+    },
+    {
+      "id": "sicilian",
+      "opening_name": "Sicilian Defense",
+      "eco": "B40",
+      "question": "Comment jouer avec les Noirs quand on répond au premier coup du pion roi par le pion c ?",
+      "expected_sources": [
+        "wikichess/00003-sicilian-defense.md",
+        "wikichess/00006-sicilian-defense.md",
+        "openings/defense-sicilienne.md"
+      ]
+    },
+    {
+      "id": "french",
+      "opening_name": "French Defense",
+      "eco": "C00",
+      "question": "Mon fou de cases claires est enfermé derrière ma chaîne de pions, que faire ?",
+      "expected_sources": [
+        "wikichess/00021-french-defense.md",
+        "openings/defense-francaise.md"
+      ]
+    },
+    {
+      "id": "scandinavian",
+      "opening_name": "Scandinavian Defense",
+      "eco": "B01",
+      "question": "Sortir la dame très tôt est-il risqué et où faut-il la placer ?",
+      "expected_sources": [
+        "wikichess/00502-scandinavian-centre-counter-defense.md",
+        "openings/defense-scandinave.md"
+      ]
+    },
+    {
+      "id": "scotch",
+      "opening_name": "Scotch Game",
+      "eco": "C45",
+      "question": "Ouvrir le centre tout de suite avec d4, quels plans cela donne-t-il ?",
+      "expected_sources": [
+        "wikichess/00046-scotch-opening.md",
+        "openings/partie-ecossaise.md"
+      ]
+    },
+    {
+      "id": "petrov",
+      "opening_name": "Petrov Defense",
+      "eco": "C42",
+      "question": "Répondre en attaquant le pion adverse plutôt qu'en défendant le sien, est-ce jouable ?",
+      "expected_sources": [
+        "wikichess/00013-petrov-s-defense.md"
+      ]
+    },
+    {
+      "id": "queens-gambit",
+      "opening_name": "Queen's Gambit Declined",
+      "eco": "D30",
+      "question": "Faut-il prendre le pion offert sur l'aile dame ou le refuser ?",
+      "expected_sources": [
+        "wikichess/00016-queen-s-gambit.md",
+        "openings/gambit-dame.md"
+      ]
+    },
+    {
+      "id": "slav",
+      "opening_name": "Slav Defense",
+      "eco": "D10",
+      "question": "Soutenir le pion d5 avec le pion c plutôt qu'avec le pion e, qu'est-ce que ça change ?",
+      "expected_sources": [
+        "wikichess/00017-qgd-slav-defense.md"
+      ]
+    },
+    {
+      "id": "kings-indian",
+      "opening_name": "King's Indian Defense",
+      "eco": "E60",
+      "question": "Laisser l'adversaire prendre tout le centre puis contre-attaquer, comment s'y prend-on ?",
+      "expected_sources": [
+        "wikichess/00044-king-s-indian-defense.md",
+        "wikichess/00144-king-s-indian-defense-3-nc3.md",
+        "openings/defense-est-indienne.md"
+      ]
+    },
+    {
+      "id": "english",
+      "opening_name": "English Opening",
+      "eco": "A10",
+      "question": "Commencer par le pion c au lieu du pion roi, vers quoi cela mène-t-il ?",
+      "expected_sources": [
+        "wikichess/00029-english-opening.md",
+        "openings/partie-anglaise.md"
+      ]
+    },
+    {
+      "id": "reti",
+      "opening_name": "Réti Opening",
+      "eco": "A04",
+      "question": "Développer le cavalier avant de pousser un pion au centre, quelle est l'idée ?",
+      "expected_sources": [
+        "wikichess/00004-reti-opening.md"
+      ]
+    },
+    {
+      "id": "caro-kann",
+      "opening_name": "Caro-Kann Defense",
+      "eco": "B10",
+      "question": "Une défense solide contre le pion roi qui ne bloque pas mon fou de cases claires ?",
+      "expected_sources": [
+        "openings/defense-caro-kann.md"
+      ]
+    },
+    {
+      "id": "london",
+      "opening_name": "London System",
+      "eco": "D02",
+      "question": "Un système que je peux jouer presque à chaque partie sans mémoriser de variantes ?",
+      "expected_sources": [
+        "openings/systeme-de-londres.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,494 @@
+{
+  "read_on": "2026-09-07",
+  "database": "masters",
+  "served_threshold": 1000,
+  "note": "Frozen reading of the Lichess Opening Explorer. The database is alive; these counts are what it answered on the date above, and the sweep runs on them so that it replays.",
+  "positions": [
+    {
+      "name": "Italian Game",
+      "ply": 2,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "explorer_name": "King's Pawn Game",
+      "eco": "C20",
+      "total_games": 314452,
+      "n_moves": 8
+    },
+    {
+      "name": "Italian Game",
+      "ply": 4,
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "explorer_name": "King's Knight Opening: Normal Variation",
+      "eco": "C44",
+      "total_games": 249218,
+      "n_moves": 8
+    },
+    {
+      "name": "Italian Game",
+      "ply": 6,
+      "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "explorer_name": "Italian Game: Giuoco Piano",
+      "eco": "C50",
+      "total_games": 25559,
+      "n_moves": 8
+    },
+    {
+      "name": "Italian Game",
+      "ply": 8,
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R w KQkq - 1 5",
+      "explorer_name": "Italian Game: Classical Variation",
+      "eco": "C54",
+      "total_games": 13480,
+      "n_moves": 6
+    },
+    {
+      "name": "Italian Game",
+      "ply": 10,
+      "fen": "r1bqk2r/ppp2ppp/2np1n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQK2R w KQkq - 0 6",
+      "explorer_name": "Italian Game: Classical Variation, Giuoco Pianissimo",
+      "eco": "C54",
+      "total_games": 8135,
+      "n_moves": 8
+    },
+    {
+      "name": "Ruy Lopez",
+      "ply": 6,
+      "fen": "r1bqkbnr/1ppp1ppp/p1n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4",
+      "explorer_name": "Ruy Lopez: Morphy Defense",
+      "eco": "C70",
+      "total_games": 115755,
+      "n_moves": 6
+    },
+    {
+      "name": "Ruy Lopez",
+      "ply": 8,
+      "fen": "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 5",
+      "explorer_name": null,
+      "eco": null,
+      "total_games": 94188,
+      "n_moves": 8
+    },
+    {
+      "name": "Ruy Lopez",
+      "ply": 10,
+      "fen": "r1bqk2r/1pppbppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 4 6",
+      "explorer_name": "Ruy Lopez: Closed",
+      "eco": "C84",
+      "total_games": 59848,
+      "n_moves": 8
+    },
+    {
+      "name": "Scotch Game",
+      "ply": 6,
+      "fen": "r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+      "explorer_name": "Scotch Game",
+      "eco": "C44",
+      "total_games": 22629,
+      "n_moves": 4
+    },
+    {
+      "name": "Scotch Game",
+      "ply": 8,
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+      "explorer_name": "Scotch Game: Schmidt Variation",
+      "eco": "C45",
+      "total_games": 8802,
+      "n_moves": 7
+    },
+    {
+      "name": "Petrov Defense",
+      "ply": 4,
+      "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "explorer_name": "Petrov's Defense",
+      "eco": "C42",
+      "total_games": 34244,
+      "n_moves": 8
+    },
+    {
+      "name": "Petrov Defense",
+      "ply": 6,
+      "fen": "rnbqkb1r/ppp2ppp/3p1n2/4N3/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 0 4",
+      "explorer_name": "Petrov's Defense",
+      "eco": "C42",
+      "total_games": 22835,
+      "n_moves": 4
+    },
+    {
+      "name": "Petrov Defense",
+      "ply": 8,
+      "fen": "rnbqkb1r/ppp2ppp/3p4/8/4n3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 5",
+      "explorer_name": "Petrov's Defense",
+      "eco": "C42",
+      "total_games": 21866,
+      "n_moves": 8
+    },
+    {
+      "name": "Sicilian Defense, Najdorf",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "explorer_name": "Sicilian Defense",
+      "eco": "B20",
+      "total_games": 601092,
+      "n_moves": 8
+    },
+    {
+      "name": "Sicilian Defense, Najdorf",
+      "ply": 4,
+      "fen": "rnbqkbnr/pp2pppp/3p4/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3",
+      "explorer_name": "Sicilian Defense: Modern Variations",
+      "eco": "B50",
+      "total_games": 231200,
+      "n_moves": 8
+    },
+    {
+      "name": "Sicilian Defense, Najdorf",
+      "ply": 6,
+      "fen": "rnbqkbnr/pp2pppp/3p4/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+      "explorer_name": "Sicilian Defense",
+      "eco": "B50",
+      "total_games": 179436,
+      "n_moves": 7
+    },
+    {
+      "name": "Sicilian Defense, Najdorf",
+      "ply": 8,
+      "fen": "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+      "explorer_name": "Sicilian Defense: Modern Variations, Main Line",
+      "eco": "B54",
+      "total_games": 171576,
+      "n_moves": 8
+    },
+    {
+      "name": "Sicilian Defense, Najdorf",
+      "ply": 10,
+      "fen": "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
+      "explorer_name": "Sicilian Defense: Najdorf Variation",
+      "eco": "B90",
+      "total_games": 126636,
+      "n_moves": 8
+    },
+    {
+      "name": "Sicilian Defense",
+      "ply": 4,
+      "fen": "rnbqkbnr/pp1p1ppp/4p3/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3",
+      "explorer_name": "Sicilian Defense: French Variation",
+      "eco": "B40",
+      "total_games": 115430,
+      "n_moves": 8
+    },
+    {
+      "name": "Sicilian Defense",
+      "ply": 6,
+      "fen": "rnbqkbnr/pp1p1ppp/4p3/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+      "explorer_name": "Sicilian Defense: French Variation, Open",
+      "eco": "B40",
+      "total_games": 83087,
+      "n_moves": 6
+    },
+    {
+      "name": "Sicilian Defense",
+      "ply": 8,
+      "fen": "rnbqkb1r/pp1p1ppp/4pn2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+      "explorer_name": "Sicilian Defense: French Variation, Normal",
+      "eco": "B40",
+      "total_games": 17953,
+      "n_moves": 8
+    },
+    {
+      "name": "French Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "explorer_name": "French Defense",
+      "eco": "C00",
+      "total_games": 153056,
+      "n_moves": 8
+    },
+    {
+      "name": "French Defense",
+      "ply": 4,
+      "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "explorer_name": "French Defense",
+      "eco": "C00",
+      "total_games": 139742,
+      "n_moves": 8
+    },
+    {
+      "name": "French Defense",
+      "ply": 6,
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+      "explorer_name": "French Defense: Classical Variation",
+      "eco": "C11",
+      "total_games": 31262,
+      "n_moves": 8
+    },
+    {
+      "name": "French Defense",
+      "ply": 8,
+      "fen": "rnbqkb1r/pppn1ppp/4p3/3pP3/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 1 5",
+      "explorer_name": null,
+      "eco": null,
+      "total_games": 16253,
+      "n_moves": 8
+    },
+    {
+      "name": "Caro-Kann Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "explorer_name": "Caro-Kann Defense",
+      "eco": "B10",
+      "total_games": 106295,
+      "n_moves": 8
+    },
+    {
+      "name": "Caro-Kann Defense",
+      "ply": 4,
+      "fen": "rnbqkbnr/pp2pppp/2p5/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "explorer_name": "Caro-Kann Defense",
+      "eco": "B12",
+      "total_games": 83833,
+      "n_moves": 8
+    },
+    {
+      "name": "Caro-Kann Defense",
+      "ply": 6,
+      "fen": "rnbqkbnr/pp2pppp/2p5/8/3Pp3/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4",
+      "explorer_name": "Caro-Kann Defense",
+      "eco": "B15",
+      "total_games": 19167,
+      "n_moves": 5
+    },
+    {
+      "name": "Caro-Kann Defense",
+      "ply": 8,
+      "fen": "rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR w KQkq - 1 5",
+      "explorer_name": "Caro-Kann Defense: Classical Variation",
+      "eco": "B18",
+      "total_games": 16525,
+      "n_moves": 7
+    },
+    {
+      "name": "Scandinavian Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "explorer_name": "Scandinavian Defense",
+      "eco": "B01",
+      "total_games": 24305,
+      "n_moves": 8
+    },
+    {
+      "name": "Scandinavian Defense",
+      "ply": 4,
+      "fen": "rnb1kbnr/ppp1pppp/8/3q4/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3",
+      "explorer_name": "Scandinavian Defense: Mieses-Kotroc Variation",
+      "eco": "B01",
+      "total_games": 16569,
+      "n_moves": 8
+    },
+    {
+      "name": "Scandinavian Defense",
+      "ply": 6,
+      "fen": "rnb1kbnr/ppp1pppp/8/q7/8/2N5/PPPP1PPP/R1BQKBNR w KQkq - 2 4",
+      "explorer_name": "Scandinavian Defense: Main Line",
+      "eco": "B01",
+      "total_games": 7775,
+      "n_moves": 8
+    },
+    {
+      "name": "Queen's Gambit Declined",
+      "ply": 2,
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+      "explorer_name": "Queen's Pawn Game",
+      "eco": "D00",
+      "total_games": 265860,
+      "n_moves": 8
+    },
+    {
+      "name": "Queen's Gambit Declined",
+      "ply": 4,
+      "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+      "explorer_name": "Queen's Gambit Declined",
+      "eco": "D30",
+      "total_games": 76577,
+      "n_moves": 8
+    },
+    {
+      "name": "Queen's Gambit Declined",
+      "ply": 6,
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "explorer_name": "Queen's Gambit Declined: Normal Defense",
+      "eco": "D35",
+      "total_games": 34287,
+      "n_moves": 8
+    },
+    {
+      "name": "Queen's Gambit Declined",
+      "ply": 8,
+      "fen": "rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR w KQkq - 4 5",
+      "explorer_name": "Queen's Gambit Declined",
+      "eco": "D53",
+      "total_games": 5245,
+      "n_moves": 7
+    },
+    {
+      "name": "Slav Defense",
+      "ply": 4,
+      "fen": "rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+      "explorer_name": "Slav Defense",
+      "eco": "D10",
+      "total_games": 104915,
+      "n_moves": 8
+    },
+    {
+      "name": "Slav Defense",
+      "ply": 6,
+      "fen": "rnbqkb1r/pp2pppp/2p2n2/3p4/2PP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 2 4",
+      "explorer_name": null,
+      "eco": null,
+      "total_games": 94315,
+      "n_moves": 8
+    },
+    {
+      "name": "Slav Defense",
+      "ply": 8,
+      "fen": "rnbqkb1r/pp2pppp/2p2n2/8/2pP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 0 5",
+      "explorer_name": "Slav Defense: Two Knights Attack",
+      "eco": "D15",
+      "total_games": 18796,
+      "n_moves": 8
+    },
+    {
+      "name": "King's Indian Defense",
+      "ply": 2,
+      "fen": "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2",
+      "explorer_name": "Indian Defense",
+      "eco": "A45",
+      "total_games": 626798,
+      "n_moves": 8
+    },
+    {
+      "name": "King's Indian Defense",
+      "ply": 4,
+      "fen": "rnbqkb1r/pppppp1p/5np1/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+      "explorer_name": "Indian Defense: West Indian Defense",
+      "eco": "E60",
+      "total_games": 151105,
+      "n_moves": 8
+    },
+    {
+      "name": "King's Indian Defense",
+      "ply": 6,
+      "fen": "rnbqk2r/ppppppbp/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "explorer_name": null,
+      "eco": null,
+      "total_games": 80289,
+      "n_moves": 8
+    },
+    {
+      "name": "King's Indian Defense",
+      "ply": 8,
+      "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 5",
+      "explorer_name": "King's Indian Defense: Normal Variation",
+      "eco": "E70",
+      "total_games": 75508,
+      "n_moves": 8
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 2",
+      "explorer_name": "English Opening: Symmetrical Variation",
+      "eco": "A30",
+      "total_games": 22207,
+      "n_moves": 8
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 4,
+      "fen": "rnbqkb1r/pp1ppppp/5n2/2p5/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq - 2 3",
+      "explorer_name": null,
+      "eco": null,
+      "total_games": 24183,
+      "n_moves": 8
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 6,
+      "fen": "rnbqkb1r/pp1ppp1p/5np1/2p5/2P5/5NP1/PP1PPP1P/RNBQKB1R w KQkq - 0 4",
+      "explorer_name": null,
+      "eco": null,
+      "total_games": 914,
+      "n_moves": 4
+    },
+    {
+      "name": "Scholar's Attack",
+      "ply": 3,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2",
+      "explorer_name": "King's Pawn Game: Wayward Queen Attack",
+      "eco": "C20",
+      "total_games": 48,
+      "n_moves": 4
+    },
+    {
+      "name": "Bongcloud",
+      "ply": 3,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR b kq - 1 2",
+      "explorer_name": "Bongcloud Attack",
+      "eco": "C20",
+      "total_games": 0,
+      "n_moves": 0
+    },
+    {
+      "name": "Grob",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/6P1/8/PPPPPP1P/RNBQKBNR b KQkq - 0 1",
+      "explorer_name": "Grob Opening",
+      "eco": "A00",
+      "total_games": 181,
+      "n_moves": 8
+    },
+    {
+      "name": "Barnes Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b KQkq - 0 1",
+      "explorer_name": "Barnes Opening",
+      "eco": "A00",
+      "total_games": 12,
+      "n_moves": 3
+    },
+    {
+      "name": "Desprez Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/7P/8/PPPPPPP1/RNBQKBNR b KQkq - 0 1",
+      "explorer_name": "Kádas Opening",
+      "eco": "A00",
+      "total_games": 53,
+      "n_moves": 6
+    },
+    {
+      "name": "Anderssen Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1",
+      "explorer_name": "Anderssen's Opening",
+      "eco": "A00",
+      "total_games": 838,
+      "n_moves": 8
+    },
+    {
+      "name": "Sodium Attack",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/N7/PPPPPPPP/R1BQKBNR b KQkq - 1 1",
+      "explorer_name": "Sodium Attack",
+      "eco": "A00",
+      "total_games": 18,
+      "n_moves": 5
+    },
+    {
+      "name": "Ware Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1",
+      "explorer_name": "Ware Opening",
+      "eco": "A00",
+      "total_games": 29,
+      "n_moves": 5
+    }
+  ]
+}
