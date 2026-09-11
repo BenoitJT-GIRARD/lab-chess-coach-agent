@@ -1,11 +1,12 @@
 """Tests for the Wikichess downloader.
 
-Only the parsing is tested, on a saved extract of a real page: the network is
-never touched.
+Only the parsing is tested, on a fixture that reproduces the markup of a page with
+invented text: the network is never touched, and nothing FICGS wrote is stored here.
 """
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from scripts.fetch_wikichess import (
@@ -13,6 +14,8 @@ from scripts.fetch_wikichess import (
     is_worth_keeping,
     parse,
     to_markdown,
+    write_articles,
+    write_manifest,
 )
 
 FIXTURE = Path(__file__).parent / "fixtures" / "wikichess_article.html"
@@ -32,7 +35,7 @@ def test_parse_reads_the_opening_and_its_eco_code() -> None:
 
     assert article.opening == "Sicilian defense"
     assert article.eco == "B20"
-    assert article.contributors == "Thibault de Vassal, Mark Noble"
+    assert article.contributors == "Ada Example, Blaise Testeur"
 
 
 def test_parse_keeps_only_the_explanatory_text() -> None:
@@ -69,7 +72,31 @@ def test_to_markdown_credits_the_source() -> None:
     assert document.startswith("# Sicilian defense")
     assert "https://ficgs.com/wikichess_3.html" in document
     assert "B20" in document
-    assert "Thibault de Vassal" in document
+    assert "Ada Example" in document
+
+
+def test_the_manifest_indexes_what_the_download_writes(tmp_path: Path) -> None:
+    """The articles are not redistributed, so the manifest is what the repository keeps.
+
+    It is written from the files themselves, so a download and the corpus already on
+    disk go through the same code.
+    """
+
+    write_articles([parse(3, load_fixture(), MOVES)], tmp_path)
+    manifest = write_manifest(tmp_path, downloaded="2026-09-08")
+
+    payload = json.loads(manifest.read_text(encoding="utf-8"))
+    assert payload["downloaded"] == "2026-09-08"
+    assert payload["articles"] == [
+        {
+            "file": "00003-sicilian-defense.md",
+            "article_id": 3,
+            "opening": "Sicilian defense",
+            "eco": "B20",
+            "moves": "1.e4 c5",
+            "url": "https://ficgs.com/wikichess_3.html",
+        }
+    ]
 
 
 def test_an_article_without_explanation_is_dropped() -> None:

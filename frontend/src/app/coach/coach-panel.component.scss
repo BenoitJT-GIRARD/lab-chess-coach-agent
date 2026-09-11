@@ -1,10 +1,10 @@
-.panneau {
+.panel {
   background: #ffffff;
   border-radius: var(--radius);
   min-height: 480px;
 }
 
-.etat {
+.state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,7 +26,7 @@
     margin: 0;
   }
 
-  &.erreur {
+  &.error {
     color: #a3342f;
 
     mat-icon {
@@ -35,7 +35,7 @@
   }
 }
 
-.entete {
+.header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -49,7 +49,7 @@
   }
 }
 
-.rarete {
+.rarity {
   display: flex;
   align-items: baseline;
   gap: 0.45rem;
@@ -73,14 +73,14 @@
   }
 }
 
-.recommandation {
+.recommendation {
   margin: 1rem 0 1.25rem;
   font-size: 0.98rem;
   line-height: 1.65;
   white-space: pre-line;
 }
 
-.bloc {
+.block {
   padding: 1.1rem 0;
 
   h3 {
@@ -102,7 +102,7 @@
   }
 }
 
-.coups {
+.moves {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -120,18 +120,18 @@
     border-radius: 8px;
   }
 
-  .coup {
+  .move {
     font-weight: 700;
     color: var(--navy);
   }
 
-  .coup-parties {
+  .move-games {
     font-size: 0.68rem;
     color: var(--muted);
   }
 }
 
-.parties,
+.games,
 .videos {
   list-style: none;
   margin: 0;
@@ -158,14 +158,14 @@
   }
 }
 
-.partie-resultat {
+.game-result {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   color: var(--gold);
 }
 
-.partie-annee,
-.video-chaine {
+.game-year,
+.video-channel {
   color: var(--muted);
   font-size: 0.78rem;
 }
@@ -176,7 +176,7 @@
   gap: 0.15rem;
 }
 
-.moteur .eval {
+.engine .eval {
   display: flex;
   align-items: baseline;
   gap: 1rem;
@@ -251,7 +251,7 @@
   color: var(--muted);
 }
 
-.ouverture-detectee {
+.detected-opening {
   margin-top: 1rem;
   padding: 0.85rem 1rem;
   background: var(--paper);
@@ -282,7 +282,7 @@
   }
 }
 
-.prochain-coup {
+.next-move {
   display: flex;
   align-items: center;
   gap: 0.9rem;
@@ -292,14 +292,14 @@
   border-radius: 8px;
   color: #ffffff;
 
-  .coup-san {
+  .move-san {
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--gold-soft);
     line-height: 1;
   }
 
-  .coup-texte {
+  .move-text {
     display: flex;
     flex-direction: column;
     line-height: 1.35;

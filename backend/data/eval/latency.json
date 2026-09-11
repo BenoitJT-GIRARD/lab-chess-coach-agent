@@ -1,0 +1,37 @@
+{
+  "measured": "2026-09-07",
+  "note": "Language model disabled: the agent answers from its deterministic template. Timing a billed call would make the bench cost money and its variance would swamp the local nodes.",
+  "positions": [
+    "Italian Game",
+    "Sicilian Defense",
+    "Scholar's Attack (out of theory)",
+    "Bongcloud (out of theory)"
+  ],
+  "repeats": 3,
+  "nodes": {
+    "context": {
+      "n": 12,
+      "median_ms": 18.0,
+      "p90_ms": 20.0,
+      "max_ms": 8257.4
+    },
+    "engine": {
+      "n": 6,
+      "median_ms": 346.1,
+      "p90_ms": 392.1,
+      "max_ms": 583.5
+    },
+    "theory": {
+      "n": 12,
+      "median_ms": 76.2,
+      "p90_ms": 80.4,
+      "max_ms": 141.5
+    },
+    "videos": {
+      "n": 12,
+      "median_ms": 276.1,
+      "p90_ms": 312.4,
+      "max_ms": 365.0
+    }
+  }
+}

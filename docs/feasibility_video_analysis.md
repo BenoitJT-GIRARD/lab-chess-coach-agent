@@ -1,91 +1,146 @@
-# Note de faisabilité — Système d'analyse vidéo pour la recherche de positions
+# Feasibility note — video analysis for position search
 
-> Analyse vidéo pour un agent d'échecs
-> Note technique préparatoire — conception d'un module avancé d'indexation vidéo par position
-> Version 1.0 — Juin 2026
-
----
-
-## 1. Contexte et objectif
-
-L'agent d'échecs accompagne aujourd'hui les joueurs et joueuses en analysant une partie en cours, en proposant des coups, en expliquant des plans et en orientant l'utilisateur vers des ressources pédagogiques. Parmi ces ressources, la vidéo occupe une place centrale : YouTube concentre une quantité considérable de contenus d'enseignement (analyses de grands maîtres, cours d'ouverture, finales théoriques, parties commentées). L'agent sait déjà recommander des vidéos, mais il le fait via une **requête textuelle classique** envoyée à l'API de recherche YouTube.
-
-Cette approche montre vite ses limites. Lorsqu'un utilisateur affronte une position précise — par exemple une structure de Défense Sicilienne Najdorf après le quinzième coup — l'agent ne peut renvoyer qu'une vidéo *thématique* : « Comprendre la Najdorf », d'une durée de 45 minutes. L'utilisateur doit alors la parcourir manuellement pour, peut-être, retrouver le passage pertinent. Le besoin réel n'est pas « une vidéo sur la Sicilienne » mais **« l'explication de CETTE position, à CETTE seconde précise »**. L'écart entre la granularité de la recherche (un titre de vidéo) et la granularité du besoin (un instant dans une vidéo) constitue le problème central traité par cette note.
-
-**Objectif du système proposé.** Concevoir un module capable d'analyser un catalogue de vidéos pédagogiques, d'en extraire automatiquement les positions d'échiquier affichées à l'écran, de les convertir en notation **FEN** (*Forsyth–Edwards Notation*), puis de les indexer en associant chaque position à un couple `(vidéo, timestamp)`. L'agent existant pourrait alors interroger ce module avec la **position exacte** de la partie en cours et recevoir un lien vidéo pointant directement sur la seconde où cette position est expliquée.
-
-Ce document est une **note de faisabilité de conception** : il décrit le système, son architecture cible autour d'un serveur **MCP (Model Context Protocol)**, ses bénéfices, ses limites, son chiffrage prévisionnel (CAPEX/OPEX), ses risques, des alternatives et une feuille de route. Il ne constitue pas une livraison logicielle ; aucun développement n'est engagé à ce stade.
-
-**Périmètre.** Le système se concentre sur les vidéos affichant un **échiquier 2D synthétique** (diagrammes générés par un logiciel d'analyse type Lichess, Chess.com, ChessBase), qui représentent l'écrasante majorité des contenus pédagogiques. Les échiquiers physiques filmés en perspective et les pièces 3D stylisées sont traités comme cas dégradés (voir §5).
+> Video analysis for a chess agent
+> Preparatory technical note — design of an advanced position-indexed video module
+> Version 1.0 — June 2026
 
 ---
 
-## 2. Description fonctionnelle du système
+## 1. Context and objective
 
-Le système rend deux services fonctionnellement distincts, qui correspondent à deux régimes d'exécution très différents : **l'ingestion** (hors ligne, par lots) et **la requête** (en ligne, temps réel).
+The chess agent today helps players by analysing a game in progress, suggesting moves,
+explaining plans, and pointing them at learning material. Video sits at the centre of that
+material: YouTube holds a considerable amount of teaching content — grandmaster analyses,
+opening courses, theoretical endgames, annotated games. The agent already recommends
+videos, but it does so through a **plain text query** sent to the YouTube search API.
 
-### 2.1 Ingestion du catalogue (hors ligne)
+That approach runs out of road quickly. When a user is facing a specific position — a
+Sicilian Najdorf structure after the fifteenth move, say — the agent can only return a
+*thematic* video: "Understanding the Najdorf", forty-five minutes long. The user then has
+to scrub through it to maybe find the relevant passage. The real need is not "a video about
+the Sicilian" but **"the explanation of THIS position, at THIS exact second"**. The gap
+between the granularity of the search (a video title) and the granularity of the need (a
+moment inside a video) is the problem this note addresses.
 
-1. **Gestion du catalogue.** Une liste d'URL YouTube est maintenue (identifiants de vidéos, métadonnées : titre, auteur, langue, thème, licence). Cette liste peut être enrichie manuellement ou par découverte automatique sur des chaînes de référence validées.
-2. **Récupération du flux vidéo.** Pour chaque vidéo, le flux est récupéré dans une résolution suffisante pour lire l'échiquier (720p est largement suffisant pour un diagramme 2D).
-3. **Échantillonnage de frames.** À l'aide de **ffmpeg**, on extrait une image à intervalle régulier (cadence de référence : **1 frame toutes les 5 secondes**). Une position d'échecs reste affichée plusieurs secondes à l'écran ; échantillonner chaque image serait inutile et coûteux.
-4. **Détection de l'échiquier.** Sur chaque frame, un détecteur localise la région contenant un échiquier (recadrage, correction de perspective si nécessaire). Les frames sans échiquier (visage du commentateur, écran de titre, publicité) sont écartées.
-5. **Conversion board-to-FEN.** Un **modèle de vision** (type *fenify-3D*, ou pipeline OpenCV de détection de grille + CNN de classification des 64 cases) reconnaît la pièce présente sur chaque case et produit une chaîne FEN décrivant la position.
-6. **Déduplication temporelle.** C'est un point structurant, pas un détail d'implémentation. Un formateur qui commente une position pendant huit minutes laisse le même diagramme à l'écran : à raison d'une frame toutes les cinq secondes, cette unique position produirait **96 enregistrements identiques**, et l'utilisateur se verrait proposer 96 fois la même vidéo. Les frames consécutives décrivant la même position sont donc regroupées en un seul enregistrement, qui conserve le **timestamp de première apparition** — l'instant où le formateur commence à en parler, c'est-à-dire précisément là où il faut envoyer l'utilisateur. Une position qui réapparaît plus tard dans la vidéo, après plusieurs autres positions, constitue en revanche un nouvel enregistrement : le formateur y revient pour une autre raison.
+**What the proposed system does.** Analyse a catalogue of teaching videos, automatically
+extract the chess positions displayed on screen, convert them to **FEN**
+(*Forsyth–Edwards Notation*), and index them so that every position is bound to a
+`(video, timestamp)` pair. The existing agent could then query the module with the
+**exact position** of the game in progress and receive a video link pointing straight at
+the second where that position is explained.
 
-   Ce qui est rendu à l'utilisateur n'est d'ailleurs jamais une frame. La frame est un artefact de traitement, supprimé après extraction ; ce qui compte pour lui est le **couple (vidéo, timestamp)**, restitué sous forme de lien horodaté.
-7. **Indexation.** Chaque position est stockée sous la forme d'un enregistrement `(FEN, video_id, timestamp_début, timestamp_fin, score_confiance, métadonnées)` dans une base interrogeable.
+This document is a **design feasibility note**: it describes the system, its target
+architecture around an **MCP (Model Context Protocol)** server, its benefits, its limits,
+its forecast costs (CAPEX/OPEX), its risks, alternatives, and a roadmap. It is not a
+software delivery; no development is committed at this stage.
 
-### 2.2 Requête de position (en ligne)
-
-Depuis l'agent existant, le flux est le suivant :
-
-1. L'agent connaît la **position courante** de la partie (il la possède déjà sous forme FEN dans son état interne).
-2. Il appelle l'outil de recherche du module en transmettant cette FEN.
-3. Le module interroge l'index et renvoie la liste des segments vidéo correspondant à cette position (ou à une position très proche), triés par pertinence et qualité de source.
-4. L'agent restitue à l'utilisateur un **lien profond** du type `https://youtu.be/<id>?t=<secondes>`, accompagné du titre et de l'auteur.
-
-La granularité descend ainsi de « une vidéo » à « une seconde dans une vidéo », ce qui répond directement au problème énoncé au §1.
-
-### 2.3 Normalisation et tolérance
-
-La FEN complète comprend le trait, les droits de roque, la case de prise en passant et les compteurs de coups. Pour la recherche pédagogique, seul le **placement des pièces** (premier champ de la FEN) et idéalement le trait sont pertinents : on indexe donc une **clé normalisée** (placement + trait). Une recherche par **position exacte** est la fonction principale ; une recherche **approchée** (positions à un ou deux coups de distance, ou structures de pions identiques) est prévue comme extension afin d'absorber les petites erreurs de reconnaissance et d'élargir le rappel.
+**Scope.** The system targets videos showing a **synthetic 2D board** — diagrams generated
+by an analysis tool such as Lichess, Chess.com or ChessBase — which is the overwhelming
+majority of teaching content. Physical boards filmed in perspective and stylised 3D pieces
+are treated as degraded cases (see §5).
 
 ---
 
-## 3. Architecture technique (serveur MCP)
+## 2. Functional description
 
-L'architecture sépare clairement la **chaîne d'ingestion** (traitement par lots, gourmande en calcul) de la **chaîne de requête** (légère, temps réel), les deux convergeant sur un **index de positions** commun. L'exposition vers l'agent se fait via un **serveur MCP** implémenté avec **FastMCP**, qui présente des outils standardisés et découplés de l'implémentation interne.
+The system provides two functionally distinct services, which correspond to two very
+different execution regimes: **ingestion** (offline, batched) and **query** (online, real
+time).
 
-### 3.1 Schéma d'architecture
+### 2.1 Catalogue ingestion (offline)
+
+1. **Catalogue management.** A list of YouTube URLs is maintained (video ids, metadata:
+   title, author, language, topic, licence). It can be enriched by hand or by automatic
+   discovery over a vetted set of channels.
+2. **Fetching the stream.** For each video, the stream is fetched at a resolution
+   sufficient to read the board — 720p is ample for a 2D diagram.
+3. **Frame sampling.** Using **ffmpeg**, one image is extracted at a fixed interval
+   (reference rate: **one frame every 5 seconds**). A chess position stays on screen for
+   several seconds; sampling every frame would be pointless and expensive.
+4. **Board detection.** On each frame, a detector locates the region holding a board
+   (cropping, perspective correction where needed). Frames with no board — the
+   commentator's face, a title card, an advert — are discarded.
+5. **Board-to-FEN conversion.** A **vision model** (something like *fenify-3D*, or an
+   OpenCV grid-detection pipeline followed by a CNN classifying the 64 squares) recognises
+   the piece on each square and produces a FEN string describing the position.
+6. **Temporal deduplication.** This is structural, not an implementation detail. A teacher
+   commenting on one position for eight minutes leaves the same diagram on screen: at one
+   frame every five seconds, that single position would produce **96 identical records**,
+   and the user would be offered the same video 96 times. Consecutive frames describing
+   the same position are therefore collapsed into a single record, which keeps the
+   **timestamp of first appearance** — the moment the teacher starts talking about it,
+   which is exactly where the user should be sent. A position that reappears later in the
+   video, after several others, is a new record: the teacher has come back to it for a
+   different reason.
+
+   What is returned to the user is never a frame. The frame is a processing artefact,
+   deleted after extraction; what matters is the **(video, timestamp) pair**, rendered as
+   a timestamped link.
+7. **Indexing.** Each position is stored as
+   `(FEN, video_id, start_timestamp, end_timestamp, confidence, metadata)` in a queryable
+   store.
+
+### 2.2 Position query (online)
+
+From the existing agent:
+
+1. The agent knows the **current position** — it already holds it as a FEN in its state.
+2. It calls the module's search tool with that FEN.
+3. The module queries the index and returns the video segments matching that position, or
+   one very close to it, sorted by relevance and source quality.
+4. The agent gives the user a **deep link** of the form
+   `https://youtu.be/<id>?t=<seconds>`, with the title and the author.
+
+The granularity drops from "a video" to "a second inside a video", which is the problem
+stated in §1.
+
+### 2.3 Normalisation and tolerance
+
+A full FEN carries the side to move, castling rights, the en-passant square and the move
+counters. For a teaching search only the **piece placement** — the first FEN field — and
+ideally the side to move are relevant, so what is indexed is a **normalised key**
+(placement + side to move). **Exact position** search is the main function; **approximate**
+search (positions one or two moves away, or identical pawn structures) is planned as an
+extension, to absorb small recognition errors and widen recall.
+
+---
+
+## 3. Technical architecture (MCP server)
+
+The architecture separates the **ingestion chain** (batched, compute-hungry) from the
+**query chain** (light, real time), the two meeting on a shared **position index**.
+Exposure to the agent goes through an **MCP server** implemented with **FastMCP**, which
+presents standardised tools decoupled from the internals.
+
+### 3.1 Architecture diagram
 
 ```mermaid
 flowchart TD
     subgraph SRC["Sources"]
-        YT["Catalogue YouTube<br/>(URLs + métadonnées)"]
+        YT["YouTube catalogue<br/>(URLs + metadata)"]
     end
 
-    subgraph ING["Pipeline d'ingestion (hors ligne, par lots)"]
-        FF["Extraction de frames<br/>ffmpeg — 1 frame / 5 s"]
-        DET["Détection d'échiquier<br/>(localisation + recadrage)"]
-        FEN["Board-to-FEN<br/>(modèle vision : OpenCV + CNN / fenify-3D)"]
-        DEDUP["Déduplication temporelle<br/>+ score de confiance"]
+    subgraph ING["Ingestion pipeline (offline, batched)"]
+        FF["Frame extraction<br/>ffmpeg — 1 frame / 5 s"]
+        DET["Board detection<br/>(locate + crop)"]
+        FEN["Board-to-FEN<br/>(vision model: OpenCV + CNN / fenify-3D)"]
+        DEDUP["Temporal deduplication<br/>+ confidence score"]
     end
 
-    subgraph IDX["Index de positions"]
-        DB[("Base SQL : FEN normalisée<br/>+ video_id + timestamp")]
-        VEC[("Index vectoriel<br/>(recherche approchée)")]
+    subgraph IDX["Position index"]
+        DB[("SQL store: normalised FEN<br/>+ video_id + timestamp")]
+        VEC[("Vector index<br/>(approximate search)")]
     end
 
-    subgraph MCP["Serveur MCP (FastMCP)"]
-        T1["Outil : search_position(fen)"]
-        T2["Outil : get_video_segment(id)"]
-        T3["Outil : ingest_video(url)"]
+    subgraph MCP["MCP server (FastMCP)"]
+        T1["Tool: search_position(fen)"]
+        T2["Tool: get_video_segment(id)"]
+        T3["Tool: ingest_video(url)"]
     end
 
     subgraph APP["Application"]
-        AGENT["Agent LangGraph<br/>(application existante)"]
-        USER["Utilisateur"]
+        AGENT["LangGraph agent<br/>(the existing application)"]
+        USER["User"]
     end
 
     YT --> FF --> DET --> FEN --> DEDUP --> DB
@@ -93,211 +148,317 @@ flowchart TD
     DB --> T1
     VEC --> T1
     DB --> T2
-    YT -.commande.-> T3 -.déclenche.-> FF
-    AGENT -->|requête FEN| T1
+    YT -.command.-> T3 -.triggers.-> FF
+    AGENT -->|FEN query| T1
     T1 -->|segments + timestamps| AGENT
     AGENT --> T2
     AGENT --> USER
 ```
 
-### 3.2 Version texte du schéma
+### 3.2 The same thing in words
 
-`Catalogue YouTube` → `ffmpeg (extraction 1 frame / 5 s)` → `Détection d'échiquier (recadrage / perspective)` → `Board-to-FEN (modèle vision)` → `Déduplication + score de confiance` → `Index (base SQL FEN+timestamp & index vectoriel)`. En parallèle, le **serveur MCP** lit cet index et expose trois outils. L'**agent LangGraph** appelle `search_position(fen)` avec la position courante, reçoit une liste de segments `(video, timestamp)`, et restitue un lien horodaté à l'**utilisateur**. La commande d'ingestion `ingest_video(url)` réinjecte une nouvelle vidéo en tête de pipeline.
+`YouTube catalogue` → `ffmpeg (1 frame / 5 s)` → `board detection (crop / perspective)` →
+`board-to-FEN (vision model)` → `deduplication + confidence` → `index (SQL FEN+timestamp
+and vector index)`. Alongside, the **MCP server** reads that index and exposes three tools.
+The **LangGraph agent** calls `search_position(fen)` with the current position, receives a
+list of `(video, timestamp)` segments, and hands the **user** a timestamped link. The
+ingestion command `ingest_video(url)` pushes a new video back to the head of the pipeline.
 
-### 3.3 Composants
+### 3.3 Components
 
-- **Gestionnaire de catalogue** : table des vidéos (id, URL, titre, auteur, langue, thème, licence, statut d'ingestion, date de dernier traitement). Sert de file de travail pour l'ingestion.
-- **Extracteur de frames (ffmpeg)** : invoqué avec un filtre de fréquence (`-vf fps=1/5`), il produit les images sans décoder l'intégralité du flux à pleine cadence. Étape CPU.
-- **Détecteur d'échiquier** : repère la grille 8×8, corrige l'orientation et le cadrage. Pour un diagramme 2D, la détection de contours et de lignes (Hough / OpenCV) suffit ; pour un échiquier filmé, une homographie est estimée.
-- **Modèle board-to-FEN** : cœur du système. Découpe l'échiquier en 64 cases et classe chacune parmi 13 états (6 pièces × 2 couleurs + case vide). Produit la FEN. Émet un **score de confiance** agrégé.
-- **Module de déduplication** : compare les FEN successives, fusionne les répétitions, conserve le premier timestamp et la confiance maximale.
-- **Index de positions** : une base **SQL** (table `positions`) pour la recherche par clé exacte (FEN normalisée indexée) ; un **index vectoriel** optionnel encodant la position (ex. vecteur 64 cases ou *embedding* de structure) pour la recherche approchée.
-- **Serveur MCP (FastMCP)** : couche d'exposition. Il ne contient pas de logique métier lourde ; il traduit les appels d'outils en requêtes sur l'index ou en commandes d'ingestion.
+- **Catalogue manager**: a table of videos (id, URL, title, author, language, topic,
+  licence, ingestion status, last processed). It doubles as the work queue.
+- **Frame extractor (ffmpeg)**: invoked with a rate filter (`-vf fps=1/5`), it produces the
+  images without decoding the whole stream at full rate. CPU step.
+- **Board detector**: finds the 8×8 grid, fixes orientation and framing. For a 2D diagram,
+  contour and line detection (Hough / OpenCV) is enough; for a filmed board, a homography
+  is estimated.
+- **Board-to-FEN model**: the heart of the system. Cuts the board into 64 squares and
+  classifies each into 13 states (6 pieces × 2 colours + empty). Emits the FEN and an
+  aggregate **confidence score**.
+- **Deduplication module**: compares successive FENs, merges repeats, keeps the first
+  timestamp and the highest confidence.
+- **Position index**: a **SQL** store (`positions` table) for exact-key lookup on the
+  indexed normalised FEN; an optional **vector index** encoding the position (a 64-square
+  vector, or a structure embedding) for approximate search.
+- **MCP server (FastMCP)**: the exposure layer. It holds no heavy domain logic; it
+  translates tool calls into index queries or ingestion commands.
 
-### 3.4 Outils MCP exposés
+### 3.4 Exposed MCP tools
 
-| Outil | Entrée | Sortie | Usage |
+| Tool | Input | Output | Use |
 |---|---|---|---|
-| `search_position` | `fen` (placement + trait), `tolérance` optionnelle | liste de `{video_id, titre, auteur, timestamp, url_horodatée, score}` | Appelé par l'agent pour la position courante |
-| `get_video_segment` | `video_id`, `timestamp` | métadonnées du segment, URL profonde, contexte (positions voisines) | Construction du rendu pour l'utilisateur |
-| `ingest_video` | `url` ou `video_id` | statut d'ingestion (file/encours/terminé), nb de positions extraites | Administration du catalogue |
+| `search_position` | `fen` (placement + side to move), optional `tolerance` | list of `{video_id, title, author, timestamp, timestamped_url, score}` | Called by the agent with the current position |
+| `get_video_segment` | `video_id`, `timestamp` | segment metadata, deep link, context (neighbouring positions) | Building what the user sees |
+| `ingest_video` | `url` or `video_id` | ingestion status (queued/running/done), positions extracted | Catalogue administration |
 
-### 3.5 Flux de données : ingestion vs requête
+### 3.5 Data flow: ingestion versus query
 
-- **Ingestion** : asynchrone, par lots, déclenchée à l'ajout d'une vidéo ou planifiée. Consomme du **GPU** (board-to-FEN) et du **CPU** (ffmpeg). Écrit dans l'index. Latence non critique (minutes par vidéo acceptables).
-- **Requête** : synchrone, déclenchée par l'agent. Ne consomme quasiment aucun calcul (une lecture indexée). Latence critique : **objectif < 200 ms** pour rester transparente dans la conversation.
+- **Ingestion**: asynchronous, batched, triggered when a video is added or on a schedule.
+  Consumes **GPU** (board-to-FEN) and **CPU** (ffmpeg). Writes to the index. Latency is not
+  critical — minutes per video are fine.
+- **Query**: synchronous, triggered by the agent. Consumes almost no compute (one indexed
+  read). Latency is critical: **target below 200 ms**, so that it stays invisible inside
+  the conversation.
 
-Cette séparation garantit que le coût GPU n'impacte jamais le temps de réponse de l'utilisateur final : tout le travail lourd est fait une seule fois, en amont.
-
----
-
-## 4. Bénéfices attendus
-
-- **Pertinence chirurgicale.** L'utilisateur reçoit la *seconde* exacte où sa position est expliquée, au lieu d'une vidéo entière à parcourir. C'est le gain central et différenciant.
-- **Réutilisation de l'état de l'agent.** L'agent possède déjà la FEN de la partie en cours ; aucune saisie supplémentaire n'est demandée à l'utilisateur. L'intégration est naturelle.
-- **Découplage par MCP.** En exposant le module via MCP, on l'isole de l'implémentation interne de l'agent. Le même serveur pourrait servir d'autres clients (interface web, autre assistant) sans réécriture.
-- **Valorisation d'un patrimoine existant.** Des milliers d'heures de cours de qualité dorment sur YouTube sans index fin. Le système crée une couche d'accès par position qui n'existe nulle part ailleurs.
-- **Capitalisation incrémentale.** Chaque vidéo ingérée enrichit définitivement l'index. La valeur croît avec le catalogue, pour un coût marginal d'ingestion faible (voir §6).
-- **Recherche approchée à terme.** Au-delà de la position exacte, l'index vectoriel ouvre la voie à « montre-moi des vidéos sur des structures de pions similaires », fonctionnalité pédagogique forte.
-- **Mesurabilité.** Le taux de couverture (positions courantes effectivement retrouvées dans l'index) et la précision du board-to-FEN sont des métriques suivables, qui objectivent la valeur livrée.
+That separation is what guarantees the GPU cost never touches the user's response time:
+all the heavy work happens once, upstream.
 
 ---
 
-## 5. Limites techniques et métier
+## 4. Expected benefits
 
-- **Précision du board-to-FEN.** C'est le facteur de risque dominant. Une seule case mal classée produit une FEN fausse, donc une clé d'index inexistante ou erronée. Les modèles 2D sur diagrammes propres atteignent des taux de bonne reconnaissance par case très élevés (souvent > 99 %), mais à 99 % par case, une position de 32 cases occupées a une probabilité d'être *entièrement* correcte d'environ 0,99³² ≈ **72 %**. Le score de confiance et un seuil de rejet sont donc indispensables pour ne pas polluer l'index.
-- **Diversité visuelle.** Thèmes de couleurs d'échiquier, jeux de pièces, surimpressions (flèches, cases colorées, *overlays* de la chaîne), bandeaux et logos perturbent la classification. Chaque style peut nécessiter une adaptation ou un ré-entraînement partiel.
-- **Angles de caméra et pièces 3D.** Les vidéos d'échiquiers physiques filmés en perspective, ou les rendus 3D stylisés, dégradent fortement la fiabilité. Ces cas sont hors périmètre prioritaire et seraient traités en phase ultérieure, voire écartés.
-- **Volumétrie de stockage.** Maîtrisée si l'on ne conserve pas les frames brutes. Voir le calcul au §6 : l'index lui-même est léger (quelques Go), les frames temporaires dominent mais sont effaçables après traitement.
-- **Coût de calcul GPU.** L'inférence board-to-FEN sur l'ensemble du catalogue est l'étape coûteuse. Elle reste cependant modeste en valeur absolue (voir §6) car ponctuelle et parallélisable.
-- **Droits et copyright YouTube.** Point **métier sensible**. Le téléchargement et le stockage de frames issues de vidéos tierces touchent au droit d'auteur et aux Conditions d'utilisation de YouTube. Stratégie recommandée : ne **pas rediffuser** le contenu, ne stocker durablement que la FEN et le timestamp (données *factuelles*, non protégeables), supprimer les frames après extraction, et ne renvoyer qu'un **lien profond** vers la vidéo d'origine (le créateur conserve vues et monétisation). Un cadrage juridique est nécessaire avant industrialisation.
-- **Maintenance du catalogue.** Les vidéos peuvent être supprimées, passées en privé, ou voir leur URL/horodatage invalidés (rééditions). Un contrôle périodique de validité des liens et une politique de réingestion sont requis.
-- **Latence d'ingestion vs fraîcheur.** Une vidéo nouvellement publiée n'est interrogeable qu'après son passage en pipeline. Acceptable pour un usage pédagogique, mais à documenter.
-- **Couverture incomplète.** Toutes les positions n'apparaissent pas en vidéo. Le système est un **complément** à valeur ajoutée, pas une garantie de réponse à chaque requête. Un repli (recherche textuelle classique) doit rester disponible.
+- **Surgical relevance.** The user gets the exact *second* where their position is
+  explained, instead of a whole video to scrub through. That is the central, differentiating
+  gain.
+- **Reuse of the agent's state.** The agent already holds the FEN of the game in progress;
+  the user is asked for nothing extra. The integration is natural.
+- **Decoupling through MCP.** Exposing the module over MCP isolates it from the agent's
+  internals. The same server could serve other clients — a web interface, another
+  assistant — with no rewrite.
+- **Value drawn from existing material.** Thousands of hours of good teaching sit on
+  YouTube with no fine-grained index. The system creates a position-level access layer that
+  exists nowhere else.
+- **Incremental accumulation.** Every ingested video enriches the index permanently. Value
+  grows with the catalogue, at a low marginal ingestion cost (see §6).
+- **Approximate search later.** Beyond the exact position, the vector index opens the way
+  to "show me videos about similar pawn structures", which is a strong teaching feature.
+- **Measurability.** Coverage — the share of current positions actually found in the index
+  — and board-to-FEN accuracy are trackable metrics, which turn the delivered value into a
+  number.
 
 ---
 
-## 6. Étude de faisabilité et estimation des coûts
+## 5. Technical and business limits
 
-### 6.1 Hypothèses de dimensionnement
+- **Board-to-FEN accuracy.** This is the dominant risk. A single misclassified square
+  produces a wrong FEN, hence a missing or wrong index key. 2D models on clean diagrams
+  reach very high per-square accuracy, often above 99 %, but at 99 % per square a position
+  with 32 occupied squares has roughly a 0.99³² ≈ **72 %** chance of being *entirely*
+  correct. A confidence score and a rejection threshold are therefore not optional if the
+  index is to stay clean.
+- **Visual diversity.** Board colour themes, piece sets, overlays (arrows, highlighted
+  squares, channel branding), banners and logos all disturb the classifier. Each style may
+  need adaptation or partial retraining.
+- **Camera angles and 3D pieces.** Videos of physical boards filmed in perspective, and
+  stylised 3D renders, degrade reliability sharply. They are out of the priority scope and
+  would be handled later, or dropped.
+- **Storage volume.** Under control as long as raw frames are not kept. See the arithmetic
+  in §6: the index itself is light — a few gigabytes — and the temporary frames dominate but
+  are deletable after processing.
+- **GPU cost.** Board-to-FEN inference over the whole catalogue is the expensive step. It
+  stays modest in absolute terms (see §6) because it is one-off and parallelisable.
+- **Copyright and YouTube's terms.** A **sensitive business point**. Downloading and storing
+  frames from third-party videos touches copyright and YouTube's terms of use. Recommended
+  strategy: do **not** redistribute the content; keep only the FEN and the timestamp
+  durably (*factual* data, not protectable); delete the frames after extraction; and return
+  only a **deep link** to the original video, so the creator keeps the views and the
+  monetisation. A legal review is needed before industrialisation.
+- **Catalogue maintenance.** Videos get deleted, turned private, or re-uploaded with URLs
+  and timestamps that no longer hold. Periodic link validation and a re-ingestion policy are
+  required.
+- **Ingestion latency versus freshness.** A newly published video is only searchable after
+  it has gone through the pipeline. Acceptable for teaching use, but it must be documented.
+- **Incomplete coverage.** Not every position appears in a video. The system is a
+  **complement** with real added value, not a guarantee of an answer to every query. A
+  fallback — the classic text search — has to stay available.
 
-| Paramètre | Valeur retenue | Justification |
+---
+
+## 6. Feasibility and cost estimate
+
+### 6.1 Sizing assumptions
+
+| Parameter | Value used | Why |
 |---|---|---|
-| Taille du catalogue initial | **1 000 vidéos** | Couvre les principales chaînes pédagogiques francophones et anglophones |
-| Durée moyenne d'une vidéo | **12 min** = 720 s | Ordre de grandeur typique d'un cours/analyse |
-| Cadence d'échantillonnage | **1 frame / 5 s** | Une position reste affichée plusieurs secondes |
-| Résolution de travail | 720p, JPEG ~**150 Ko**/frame | Suffisant pour lire un diagramme 2D |
-| Part de frames contenant un échiquier | **~40 %** | Le reste : commentateur, titres, transitions |
-| Positions uniques après déduplication | **~12 / vidéo** | Une vidéo enchaîne un nombre limité de positions clés |
-| Inférence board-to-FEN (détection + 64 cases) | **~0,2 s/frame** sur GPU T4 | Pipeline détection + CNN |
-| Coût stockage objet | **0,02 €/Go/mois** | Tarif S3/Blob standard 2026 |
-| Coût GPU T4 | **0,40 €/h** | Instance cloud à la demande 2026 |
-| Coût jour-homme (profil chargé) | **450 €/j** | Ingénieur junior, coût employeur |
+| Initial catalogue size | **1 000 videos** | Covers the main French- and English-language teaching channels |
+| Average video length | **12 min** = 720 s | Typical order of magnitude for a course or analysis |
+| Sampling rate | **1 frame / 5 s** | A position stays on screen for several seconds |
+| Working resolution | 720p, JPEG ~**150 KB**/frame | Enough to read a 2D diagram |
+| Share of frames holding a board | **~40 %** | The rest: commentator, titles, transitions |
+| Unique positions after deduplication | **~12 / video** | A video runs through a limited number of key positions |
+| Board-to-FEN inference (detection + 64 squares) | **~0.2 s/frame** on a GPU T4 | Detection + CNN pipeline |
+| Object storage | **€0.02/GB/month** | Standard S3/Blob pricing, 2026 |
+| GPU T4 | **€0.40/h** | On-demand cloud instance, 2026 |
+| Loaded day rate | **€450/day** | Junior engineer, employer cost |
 
-### 6.2 Calculs d'ordre de grandeur
+### 6.2 Order-of-magnitude arithmetic
 
-**Nombre de frames extraites** : 720 s ÷ 5 s = **144 frames/vidéo**, soit 144 × 1 000 = **144 000 frames** pour le catalogue.
+**Frames extracted**: 720 s ÷ 5 s = **144 frames/video**, so 144 × 1 000 = **144 000
+frames** for the catalogue.
 
-**Frames avec échiquier** : 144 000 × 40 % ≈ **57 600 frames** soumises au board-to-FEN utile (les autres sont écartées tôt, mais on facture le calcul sur l'ensemble par prudence).
+**Frames holding a board**: 144 000 × 40 % ≈ **57 600 frames** actually worth running
+board-to-FEN on. The others are dropped early, but the compute is budgeted over the whole
+set to stay on the safe side.
 
-**Positions indexées** : 12 × 1 000 = **~12 000 positions** uniques dans l'index. C'est l'unité de valeur du système.
+**Indexed positions**: 12 × 1 000 = **~12 000** unique positions. That is the system's unit
+of value.
 
-**Stockage.** Si l'on conservait *toutes* les frames : 144 000 × 150 Ko ≈ **21,6 Go** (bien en dessous du To). En pratique, les frames sont **supprimées après extraction de la FEN** ; on ne garde éventuellement qu'une **vignette par position indexée** : 12 000 × 150 Ko ≈ **1,8 Go**. L'index SQL (FEN + métadonnées) pèse quelques dizaines de Mo. **Budget stockage durable : ~2 Go.** La volumétrie n'est donc pas un facteur limitant.
+**Storage.** Keeping *every* frame would be 144 000 × 150 KB ≈ **21.6 GB** — well under a
+terabyte. In practice frames are **deleted once the FEN is extracted**; at most one
+thumbnail per indexed position is kept: 12 000 × 150 KB ≈ **1.8 GB**. The SQL index (FEN +
+metadata) weighs a few tens of megabytes. **Durable storage budget: ~2 GB.** Volume is not
+the limiting factor.
 
-**Calcul GPU d'ingestion (catalogue initial)** : 144 000 frames × 0,2 s = 28 800 s ≈ **8 heures GPU**. Avec marge (reprises, frames recadrées deux fois, overhead) : **~12 heures GPU**. À 0,40 €/h → **~5 €** pour traiter l'intégralité des 1 000 vidéos. Le calcul GPU, contre-intuitivement, est **négligeable** en valeur ; l'extraction ffmpeg (CPU) est du même ordre.
+**Ingestion GPU (initial catalogue)**: 144 000 frames × 0.2 s = 28 800 s ≈ **8 GPU hours**.
+With margin for retries, double-cropped frames and overhead: **~12 GPU hours**. At €0.40/h
+that is **~€5** to process all 1 000 videos. Counter-intuitively, the GPU cost is
+**negligible**; the ffmpeg extraction (CPU) is of the same order.
 
-### 6.3 Coûts de mise en place — CAPEX
+### 6.3 Setup costs — CAPEX
 
-| Poste | Description | Jours-homme | Coût (€) |
+| Item | Description | Days | Cost (€) |
 |---|---|---:|---:|
-| R&D modèle vision | Sélection/évaluation board-to-FEN, fine-tuning sur styles de diagrammes, jeu de test annoté, seuils de confiance | 25 | 11 250 |
-| Pipeline d'ingestion | Catalogue, extraction ffmpeg, orchestration par lots, déduplication | 15 | 6 750 |
-| Index de positions | Schéma SQL, normalisation FEN, index vectoriel, requêtes | 10 | 4 500 |
-| Serveur MCP (FastMCP) | Outils `search_position`, `get_video_segment`, `ingest_video`, tests | 12 | 5 400 |
-| Intégration agent LangGraph | Câblage de l'outil dans l'agent, rendu des liens horodatés | 8 | 3 600 |
-| Évaluation & qualité | Métriques de précision/rappel, jeu de validation, banc de test | 10 | 4 500 |
-| Documentation & déploiement | Doc technique, CI/CD, mise en production initiale | 5 | 2 250 |
-| **Sous-total main-d'œuvre** | | **85 j** | **38 250** |
-| Infra initiale & R&D | GPU de développement (~150 h), stockage, environnements | — | 2 000 |
-| **TOTAL CAPEX** | | | **≈ 40 250 €** |
+| Vision model R&D | Selecting and evaluating board-to-FEN, fine-tuning on diagram styles, annotated test set, confidence thresholds | 25 | 11 250 |
+| Ingestion pipeline | Catalogue, ffmpeg extraction, batch orchestration, deduplication | 15 | 6 750 |
+| Position index | SQL schema, FEN normalisation, vector index, queries | 10 | 4 500 |
+| MCP server (FastMCP) | `search_position`, `get_video_segment`, `ingest_video`, tests | 12 | 5 400 |
+| LangGraph integration | Wiring the tool into the agent, rendering timestamped links | 8 | 3 600 |
+| Evaluation and quality | Precision/recall metrics, validation set, test bench | 10 | 4 500 |
+| Documentation and deployment | Technical doc, CI/CD, first production rollout | 5 | 2 250 |
+| **Labour subtotal** | | **85 d** | **38 250** |
+| Initial infrastructure and R&D | Development GPU (~150 h), storage, environments | — | 2 000 |
+| **CAPEX TOTAL** | | | **≈ €40 250** |
 
-### 6.4 Coûts de fonctionnement mensuels — OPEX
+### 6.4 Monthly running costs — OPEX
 
-Hypothèse de croissance : **+200 nouvelles vidéos/mois** ingérées, plus une réingestion partielle de contrôle.
+Growth assumption: **+200 new videos a month** ingested, plus a partial control
+re-ingestion.
 
-| Poste | Hypothèse de calcul | Coût mensuel (€) |
+| Item | Basis | Monthly (€) |
 |---|---|---:|
-| Stockage objet (index + vignettes) | ~2 Go × 0,02 €/Go, croissance ~0,4 Go/mois | ~1 |
-| Calcul GPU d'ingestion | 200 vidéos × 144 frames × 0,2 s ≈ 1,6 h + marge ≈ 5 h × 0,40 € | ~2 |
-| Calcul CPU (ffmpeg) | Téléchargement + extraction, instance ponctuelle | ~5 |
-| Base de données (managée) | Petite instance SQL managée | ~25 |
-| Hébergement serveur MCP | VM légère permanente (1 vCPU / 1–2 Go) | ~30 |
-| Quotas API YouTube | API Data v3, quota gratuit largement suffisant à ce volume | 0 |
-| Supervision / logs | Monitoring de base | ~5 |
-| **TOTAL OPEX** | | **≈ 68 €/mois** |
+| Object storage (index + thumbnails) | ~2 GB × €0.02/GB, growing ~0.4 GB/month | ~1 |
+| Ingestion GPU | 200 videos × 144 frames × 0.2 s ≈ 1.6 h + margin ≈ 5 h × €0.40 | ~2 |
+| CPU (ffmpeg) | Download and extraction, on-demand instance | ~5 |
+| Managed database | Small managed SQL instance | ~25 |
+| MCP server hosting | Small always-on VM (1 vCPU / 1–2 GB) | ~30 |
+| YouTube API quota | Data API v3; the free quota is ample at this volume | 0 |
+| Monitoring and logs | Basic supervision | ~5 |
+| **OPEX TOTAL** | | **≈ €68/month** |
 
-### 6.5 Coût par position indexée
+### 6.5 Cost per indexed position
 
-Catalogue de **12 000 positions** la première année.
+A catalogue of **12 000 positions** in the first year.
 
-- **Première année** (CAPEX + 12 mois d'OPEX) : (40 250 + 12 × 68) ÷ 12 000 ≈ **3,42 €/position**.
-- **Régime établi** (OPEX seul, hors développement) : ~816 €/an ÷ ~14 400 positions (catalogue qui grossit) ≈ **0,06 €/position/an**.
+- **First year** (CAPEX + 12 months of OPEX): (40 250 + 12 × 68) ÷ 12 000 ≈
+  **€3.42/position**.
+- **Steady state** (OPEX only, development excluded): ~€816/year ÷ ~14 400 positions, on a
+  growing catalogue ≈ **€0.06/position/year**.
 
-**Lecture.** Le système est **dominé par le CAPEX** (la R&D du modèle de vision), tandis que son **exploitation est très bon marché** : le GPU, contrairement à l'intuition, ne pèse que quelques euros par mois grâce au sous-échantillonnage (1 frame/5 s) et à la déduplication. Le coût récurrent réel est l'**hébergement** (serveur MCP + base), pas le calcul. À l'échelle de 12 000 positions interrogeables au cœur de l'expérience utilisateur, le coût marginal est marginal : la faisabilité **économique** est favorable, le verrou étant la faisabilité **technique** (précision du board-to-FEN, §5).
+**How to read that.** The system is **CAPEX-dominated** — the vision model's R&D — while
+**running it is very cheap**: the GPU, against intuition, costs a few euros a month, thanks
+to the 1-frame-in-5-seconds sampling and the deduplication. The real recurring cost is
+**hosting** (the MCP server and the database), not compute. Against 12 000 positions
+searchable at the heart of the user experience, the marginal cost is marginal: **economic**
+feasibility is favourable, and the lock is **technical** feasibility — board-to-FEN
+accuracy, §5.
 
 ---
 
-## 7. Risques (techniques et métier)
+## 7. Risks
 
-| Risque | Probabilité | Impact | Mitigation |
+| Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
-| Board-to-FEN insuffisamment précis (FEN erronées) | Élevée | Élevé | Seuil de confiance + rejet des frames douteuses ; recherche approchée pour absorber les erreurs ; jeu de test annoté et suivi du taux d'exactitude |
-| Diversité de styles non couverte (overlays, thèmes) | Élevée | Moyen | Fine-tuning multi-styles ; normalisation visuelle ; restreindre d'abord le catalogue aux chaînes au rendu standard |
-| Échiquiers 3D / filmés en perspective | Moyenne | Moyen | Hors périmètre prioritaire ; filtrage en amont ; étiqueter ces vidéos comme non indexables |
-| Litige droit d'auteur / CGU YouTube | Moyenne | Élevé | Ne stocker que FEN+timestamp (données factuelles), effacer les frames, ne renvoyer que des liens profonds ; validation juridique |
-| Liens vidéo cassés / vidéos supprimées | Élevée | Faible | Contrôle périodique de validité ; statut « indisponible » ; réingestion planifiée |
-| Couverture trop faible (positions absentes du catalogue) | Moyenne | Moyen | Repli sur recherche textuelle ; prioriser l'ingestion par thèmes les plus demandés ; mesurer le taux de couverture |
-| Latence de requête trop élevée | Faible | Moyen | Index exact en clé primaire ; cache ; séparation stricte ingestion/requête |
-| Dépendance à une bibliothèque board-to-FEN externe | Moyenne | Moyen | Abstraction du modèle derrière une interface ; possibilité de remplacement ; jeu de test indépendant |
-| Dérive des coûts si montée en charge du catalogue | Faible | Faible | Coûts dominés par hébergement fixe ; le GPU reste linéaire et faible |
+| Board-to-FEN not accurate enough (wrong FENs) | High | High | Confidence threshold and rejection of doubtful frames; approximate search to absorb errors; annotated test set and tracked accuracy |
+| Uncovered visual styles (overlays, themes) | High | Medium | Multi-style fine-tuning; visual normalisation; restrict the catalogue first to channels with a standard look |
+| 3D boards / filmed in perspective | Medium | Medium | Out of priority scope; filtered upstream; those videos flagged as not indexable |
+| Copyright / YouTube terms dispute | Medium | High | Store only FEN + timestamp (factual data), delete frames, return deep links only; legal review |
+| Broken links / deleted videos | High | Low | Periodic validity check; "unavailable" status; scheduled re-ingestion |
+| Coverage too thin (positions absent from the catalogue) | Medium | Medium | Fall back on text search; prioritise ingestion by most-requested topics; measure coverage |
+| Query latency too high | Low | Medium | Exact index on the primary key; cache; strict ingestion/query separation |
+| Dependence on an external board-to-FEN library | Medium | Medium | Abstract the model behind an interface; keep it replaceable; independent test set |
+| Cost drift as the catalogue grows | Low | Low | Costs dominated by fixed hosting; GPU stays linear and small |
 
 ---
 
-## 8. Alternatives envisagées
+## 8. Alternatives considered
 
-### 8.1 Alternative A — Sans vision : chapitres et transcripts YouTube
+### 8.1 Alternative A — No vision: YouTube chapters and transcripts
 
-YouTube expose pour beaucoup de vidéos des **chapitres** et une **transcription horodatée** (sous-titres). Une approche purement textuelle indexerait ces transcripts et chercherait par mots-clés (« Najdorf », « poussée b5 », noms de coups en notation algébrique évoqués à l'oral).
+YouTube exposes **chapters** and a **timestamped transcript** (subtitles) for many videos. A
+purely textual approach would index those transcripts and search by keyword — "Najdorf",
+"the b5 push", move names spoken aloud in algebraic notation.
 
-- **Coût** : très faible. Pas de GPU, pas de modèle de vision, pas de R&D lourde. CAPEX réduit d'un ordre de grandeur (~10–15 j-homme).
-- **Valeur** : limitée et imprécise. Le formateur ne **prononce pas** la position complète ; il parle de « plans » et de « coups » sans énoncer les 32 pièces. On ne peut donc **pas** retrouver une **position exacte**, seulement un thème — c'est-à-dire reproduire, à peine affiné, le problème actuel (§1).
-- **Verdict** : utile comme **socle économique** et comme **repli**, mais ne résout pas le besoin de pointage par position.
+- **Cost**: very low. No GPU, no vision model, no heavy R&D. CAPEX an order of magnitude
+  smaller (~10–15 days).
+- **Value**: limited and imprecise. A teacher does not **speak** the full position; they
+  talk about plans and moves without enumerating 32 pieces. So an **exact position** cannot
+  be found, only a theme — which reproduces, barely refined, the present problem (§1).
+- **Verdict**: useful as an **economic base** and as a **fallback**, but it does not solve
+  position-level pointing.
 
-### 8.2 Alternative B — Approche hybride transcript + vision ciblée
+### 8.2 Alternative B — Hybrid: transcripts plus targeted vision
 
-On utilise d'abord les transcripts/chapitres pour **pré-filtrer** les vidéos et les passages pertinents, puis on n'applique le board-to-FEN (coûteux) que sur ces **sous-segments**, et non sur l'intégralité du catalogue.
+Use transcripts and chapters first to **pre-filter** the videos and the relevant passages,
+then run the expensive board-to-FEN only on those **sub-segments** rather than on the whole
+catalogue.
 
-- **Coût** : intermédiaire. Réduit fortement le volume de frames analysées (on cible les segments où un échiquier est probablement discuté), donc le GPU et l'effort d'annotation. CAPEX modéré.
-- **Valeur** : élevée. On conserve la **précision par position** de la vision là où elle compte, tout en exploitant le signal textuel gratuit pour la couverture et le recadrage sémantique (titre du chapitre = thème).
-- **Verdict** : **meilleur rapport coût/valeur**. C'est l'approche recommandée à terme : démarrer en vision pure sur un catalogue restreint (pour valider la précision), puis basculer sur l'hybride pour passer à l'échelle économiquement.
+- **Cost**: intermediate. Sharply reduces the number of frames analysed — the segments
+  where a board is probably being discussed — hence the GPU and the annotation effort.
+  Moderate CAPEX.
+- **Value**: high. It keeps vision's **position-level precision** where it matters, while
+  using the free textual signal for coverage and semantic framing (a chapter title is a
+  topic).
+- **Verdict**: **best value for money**. This is the recommended endpoint: start with pure
+  vision on a restricted catalogue to validate accuracy, then switch to the hybrid to scale
+  economically.
 
-| Critère | Solution proposée (vision) | A — Transcripts seuls | B — Hybride |
+| Criterion | Proposed solution (vision) | A — Transcripts only | B — Hybrid |
 |---|---|---|---|
-| Recherche position exacte | Oui | Non | Oui |
-| CAPEX | Élevé | Faible | Moyen |
-| OPEX | Faible | Très faible | Faible |
-| Couverture du catalogue | Moyenne | Élevée | Élevée |
-| Complexité technique | Élevée | Faible | Moyenne-élevée |
+| Exact position search | Yes | No | Yes |
+| CAPEX | High | Low | Medium |
+| OPEX | Low | Very low | Low |
+| Catalogue coverage | Medium | High | High |
+| Technical complexity | High | Low | Medium-high |
 
 ---
 
-## 9. Roadmap de développement
+## 9. Development roadmap
 
-| Phase | Objectif | Durée | Jalons | Critère de passage |
+| Phase | Objective | Duration | Milestones | Gate |
 |---|---|---|---|---|
-| **0 — Cadrage** | Périmètre, validation juridique YouTube, sélection des chaînes pilotes | 2 sem. | Liste de 20–30 vidéos pilotes, accord juridique de principe | Périmètre et conformité validés |
-| **1 — POC** | Prouver la faisabilité du board-to-FEN sur diagrammes 2D | 3 sem. | Pipeline ffmpeg → board-to-FEN sur 20 vidéos ; mesure de précision par case et par position | **Exactitude position ≥ 70 %** sur le jeu pilote |
-| **2 — MVP** | Chaîne complète ingestion → index → MCP → agent | 5 sem. | 200 vidéos ingérées ; outils `search_position` / `get_video_segment` opérationnels ; intégration LangGraph ; latence < 200 ms | Démonstration de bout en bout : position courante → lien horodaté correct |
-| **3 — Évaluation** | Mesurer couverture et précision sur usage réel | 2 sem. | Jeu de validation, taux de couverture, taux de faux positifs ; seuils de confiance calibrés | Précision et couverture jugées suffisantes |
-| **4 — Industrialisation** | Passage à l'échelle (1 000+ vidéos), robustesse, exploitation | 6 sem. | Approche hybride (§8.2), ingestion planifiée, contrôle de validité des liens, monitoring, CI/CD | Système en production, OPEX maîtrisé, supervision active |
-| **5 — Extensions** | Recherche approchée, multi-styles, autres clients MCP | continu | Index vectoriel, structures de pions similaires | Backlog priorisé selon usage |
+| **0 — Framing** | Scope, YouTube legal review, pilot channel selection | 2 weeks | 20–30 pilot videos listed, legal agreement in principle | Scope and compliance validated |
+| **1 — POC** | Prove board-to-FEN feasibility on 2D diagrams | 3 weeks | ffmpeg → board-to-FEN pipeline over 20 videos; per-square and per-position accuracy measured | **Position accuracy ≥ 70 %** on the pilot set |
+| **2 — MVP** | Full chain: ingestion → index → MCP → agent | 5 weeks | 200 videos ingested; `search_position` / `get_video_segment` working; LangGraph integration; latency < 200 ms | End-to-end demonstration: current position → correct timestamped link |
+| **3 — Evaluation** | Measure coverage and precision on real use | 2 weeks | Validation set, coverage rate, false-positive rate; calibrated confidence thresholds | Precision and coverage judged sufficient |
+| **4 — Industrialisation** | Scale (1 000+ videos), robustness, operations | 6 weeks | Hybrid approach (§8.2), scheduled ingestion, link validation, monitoring, CI/CD | In production, OPEX under control, supervision active |
+| **5 — Extensions** | Approximate search, multi-style, other MCP clients | ongoing | Vector index, similar pawn structures | Backlog prioritised by usage |
 
-Durée cumulée jusqu'à l'industrialisation : **~18 semaines** (≈ 4,5 mois), cohérente avec l'estimation de 85 jours-homme du §6 sur une équipe réduite.
+Cumulative duration to industrialisation: **~18 weeks** (≈ 4.5 months), consistent with the
+85-day estimate in §6 for a small team.
 
-**Logique de progression.** Le **POC** purge le risque numéro un (la précision du board-to-FEN) avant tout investissement lourd : s'il échoue, on s'arrête ou on bascule vers l'alternative A à moindre coût. Le **MVP** valide la chaîne complète et l'expérience utilisateur de bout en bout. L'**industrialisation** n'est engagée qu'une fois la valeur démontrée, et adopte l'approche hybride pour maîtriser le coût à grande échelle.
-
----
-
-## 10. Conclusion et recommandation
-
-Le système d'analyse vidéo proposé répond à un **besoin réel et précisément identifié** : passer d'une recommandation « une vidéo sur un thème » à un pointage « la bonne seconde pour la position exacte ». L'architecture autour d'un **serveur MCP** est saine : elle découple proprement le module de l'agent existant, sépare l'ingestion lourde (GPU, hors ligne) de la requête légère (temps réel), et expose des outils stables et réutilisables.
-
-L'analyse économique est **favorable** : le coût d'exploitation est faible (≈ **68 €/mois**), dominé par l'hébergement et non par le calcul, et le coût en régime établi descend à quelques **centimes par position indexée**. L'investissement est concentré sur le **CAPEX** (≈ **40 k€**), c'est-à-dire la R&D du modèle de vision.
-
-Le **verrou principal n'est pas le coût mais la précision** du board-to-FEN sur la diversité des styles vidéo réels. C'est pourquoi la recommandation est de **valider d'abord ce risque par un POC** (phase 1, exactitude position ≥ 70 % visée) avant tout engagement d'industrialisation, puis d'adopter l'**approche hybride transcript + vision** (alternative B) pour passer à l'échelle au meilleur rapport coût/valeur. Un **repli sur la recherche textuelle** doit rester disponible pour les positions hors catalogue.
-
-**Recommandation** : engager les phases 0 et 1 (cadrage + POC, ~5 semaines, faible coût) comme **étape de décision**. Les résultats du POC conditionneront la poursuite vers le MVP et l'industrialisation. Le risque est ainsi maîtrisé, l'investissement progressif, et la valeur démontrée avant tout déploiement à grande échelle.
+**Why that order.** The **POC** clears risk number one — board-to-FEN accuracy — before any
+heavy investment: if it fails, the project stops or falls back to alternative A at low cost.
+The **MVP** validates the full chain and the end-to-end user experience. **Industrialisation**
+is only committed once the value is demonstrated, and adopts the hybrid approach to keep
+cost under control at scale.
 
 ---
 
-*Fin de la note de faisabilité.*
+## 10. Conclusion and recommendation
+
+The proposed video-analysis system answers a **real and precisely identified need**: moving
+from "a video about a topic" to "the right second for the exact position". The architecture
+around an **MCP server** is sound: it decouples the module cleanly from the existing agent,
+separates heavy ingestion (GPU, offline) from light queries (real time), and exposes stable,
+reusable tools.
+
+The economics are **favourable**: running cost is low (≈ **€68/month**), dominated by
+hosting rather than compute, and in steady state it comes down to a few **cents per indexed
+position**. The investment is concentrated in **CAPEX** (≈ **€40k**), which is the vision
+model's R&D.
+
+**The lock is not cost, it is accuracy** — board-to-FEN across the diversity of real video
+styles. Hence the recommendation: **validate that risk with a POC first** (phase 1, target
+position accuracy ≥ 70 %) before committing to industrialisation, then adopt the **hybrid
+transcript-plus-vision approach** (alternative B) to scale at the best value for money. A
+**fallback to text search** must stay available for positions outside the catalogue.
+
+**Recommendation**: commit to phases 0 and 1 — framing and POC, about five weeks, low cost —
+as a **decision gate**. The POC results decide whether to continue to MVP and
+industrialisation. The risk is contained, the investment is staged, and the value is
+demonstrated before any large-scale rollout.
+
+---
+
+*End of the feasibility note.*

@@ -1,10 +1,11 @@
-# Chess Coach — orchestration de la démonstration locale.
+# The whole stack, locally.
 #
-# Six services : la base vectorielle Milvus (avec ses dépendances etcd et
-# MinIO), la base documentaire MongoDB, le backend FastAPI qui héberge l'agent
-# LangGraph, et le frontend Angular servi par nginx.
+# Six services: the Milvus vector store with its two dependencies, etcd and MinIO; MongoDB
+# for the interaction history; the FastAPI backend hosting the LangGraph agent; and the
+# Angular frontend served by nginx.
 #
 #   docker compose up -d --build
+#   docker compose run --rm backend python -m scripts.ingest_wikichess
 services:
   # --- Vector database (Milvus standalone) ---
   etcd:
@@ -90,6 +91,10 @@ services:
       - HF_HOME=/cache/huggingface
     volumes:
       - hf_cache:/cache/huggingface
+      # The Wikichess articles are not redistributed, so they are not in the image
+      # either. Mounting the folder lets the download land on the host and be indexed
+      # without rebuilding anything.
+      - ./backend/data/wikichess:/app/data/wikichess
     ports:
       - "8000:8000"
     restart: unless-stopped

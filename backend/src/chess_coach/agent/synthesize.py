@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 class Recommendation:
     """What the coach hands to the player, and how it was produced."""
 
-    # Deux ou trois phrases sur l'ouverture reconnue : ce qu'elle est, son idée.
+    # Two or three sentences on the opening that was recognised: what it is, its idea.
     opening_summary: str
     # Le conseil sur la position courante.
     text: str
@@ -86,10 +86,10 @@ def build_template_opening_summary(state: AgentState) -> str:
     return " ".join(phrases)
 
 
-# Ces mots reviennent dans la moitié des noms d'ouverture. Les compter comme
-# une correspondance rapprocherait « King's Gambit » de « Queen's Gambit », ou
-# « Défense française » de « Défense sicilienne ».
-MOTS_GENERIQUES = {
+# These words appear in half the opening names. Counting them as a match would bring
+# "King's Gambit" close to "Queen's Gambit", or the French Defence close to the
+# Sicilian. Both languages are listed because the corpus is bilingual.
+GENERIC_WORDS = {
     "attack",
     "attaque",
     "chess",
@@ -112,11 +112,11 @@ MOTS_GENERIQUES = {
 }
 
 
-def _mots_significatifs(nom: str) -> set[str]:
+def _identifying_words(name: str) -> set[str]:
     """Return the words of an opening name that actually identify it."""
 
-    mots = re.split(r"[^\w]+", nom.lower())
-    return {mot for mot in mots if len(mot) > 3 and mot not in MOTS_GENERIQUES}
+    words = re.split(r"[^\w]+", name.lower())
+    return {word for word in words if len(word) > 3 and word not in GENERIC_WORDS}
 
 
 def _matching_passage(state: AgentState, max_chars: int = 320) -> str:
@@ -128,12 +128,12 @@ def _matching_passage(state: AgentState, max_chars: int = 320) -> str:
     is worse than saying nothing.
     """
 
-    mots = _mots_significatifs(state.get("opening_name") or "")
+    mots = _identifying_words(state.get("opening_name") or "")
     if not mots:
         return ""
 
     for passage in state.get("passages") or []:
-        if mots & _mots_significatifs(passage.get("opening", "")):
+        if mots & _identifying_words(passage.get("opening", "")):
             texte = passage["text"].replace("\n", " ").strip()
             return texte[:max_chars].rstrip() + ("…" if len(texte) > max_chars else "")
     return ""
@@ -233,9 +233,9 @@ def build_llm_prompt(state: AgentState) -> str:
             lines.append("Coups théoriques, avec le nombre de parties de maîtres :")
             for move in moves:
                 lines.append(f"  - {move['san']} ({move.get('total', 0)} parties)")
-            # L'interface met le premier coup en avant sous le titre « Prochain
-            # coup ». Le dire au modèle évite qu'il commente un autre coup que
-            # celui que le joueur a sous les yeux.
+            # The interface puts the first move forward under "Prochain coup". Telling
+            # the model which one keeps it from commenting on a different move than the
+            # one the player is looking at.
             lines.append(
                 f"Coup mis en avant dans l'interface : {moves[0]['san']}, "
                 "le plus joué en parties de maîtres."

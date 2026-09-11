@@ -13,12 +13,12 @@ describe('AppComponent', () => {
     }).compileComponents();
   });
 
-  it('affiche le nom du projet et son commanditaire', () => {
+  it('shows the name of the application and its subtitle', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
 
-    const texte = fixture.nativeElement.textContent as string;
-    expect(texte).toContain('Chess Coach');
-    expect(texte).toContain("Coach d'ouvertures");
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('Chess Coach');
+    expect(text).toContain("Coach d'ouvertures");
   });
 });

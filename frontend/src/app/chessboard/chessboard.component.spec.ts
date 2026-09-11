@@ -6,7 +6,7 @@ import { ChessboardComponent } from './chessboard.component';
 import { AgentService } from '../services/agent.service';
 import { AgentResponse, HistoryResponse } from '../models/agent.models';
 
-const HISTORIQUE: HistoryResponse = {
+const HISTORY: HistoryResponse = {
   total: 7,
   interactions: [
     {
@@ -35,7 +35,7 @@ class FakeAgentService {
   }
 
   history(): Observable<HistoryResponse> {
-    return of(HISTORIQUE);
+    return of(HISTORY);
   }
 }
 
@@ -53,30 +53,30 @@ describe('ChessboardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('propose les positions préparées pour la démonstration', () => {
-    const texte = fixture.nativeElement.textContent as string;
+  it('offers the prepared demonstration positions', () => {
+    const text = fixture.nativeElement.textContent as string;
 
-    expect(texte).toContain('Ouverture italienne');
-    expect(texte).toContain('Partie espagnole');
-    expect(texte).toContain('Hors théorie (2.Dh5)');
+    expect(text).toContain('Ouverture italienne');
+    expect(text).toContain('Partie espagnole');
+    expect(text).toContain('Hors théorie (2.Dh5)');
   });
 
-  it('affiche les dernières analyses enregistrées', () => {
-    const texte = fixture.nativeElement.textContent as string;
+  it('shows the last analyses recorded', () => {
+    const text = fixture.nativeElement.textContent as string;
 
-    expect(texte).toContain('Sicilian Defense');
-    expect(texte).toContain('Hors théorie');
-    expect(texte).toContain('7 au total');
+    expect(text).toContain('Sicilian Defense');
+    expect(text).toContain('Hors théorie');
+    expect(text).toContain('7 au total');
   });
 
-  it("rejoue une position de l'historique", () => {
-    fixture.componentInstance.rejouer(HISTORIQUE.interactions[0]);
+  it('replays a position from the history', () => {
+    fixture.componentInstance.replay(HISTORY.interactions[0]);
 
-    expect(agent.analyseeAvec).toBe(HISTORIQUE.interactions[0].fen);
+    expect(agent.analyseeAvec).toBe(HISTORY.interactions[0].fen);
   });
 
-  it("n'affiche que l'heure des analyses", () => {
-    expect(fixture.componentInstance.heure('2026-09-02T09:30:00+00:00')).toMatch(/^\d{2}:\d{2}$/);
-    expect(fixture.componentInstance.heure('pas une date')).toBe('');
+  it('shows only the time of an analysis, not its date', () => {
+    expect(fixture.componentInstance.timeOf('2026-09-02T09:30:00+00:00')).toMatch(/^\d{2}:\d{2}$/);
+    expect(fixture.componentInstance.timeOf('pas une date')).toBe('');
   });
 });

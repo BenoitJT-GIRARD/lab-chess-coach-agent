@@ -5,7 +5,7 @@ description = "Chess Coach: a LangGraph chess-opening coaching agent"
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
 license = { text = "MIT" }
-authors = [{ name = "Benoit Girard" }]
+authors = [{ name = "Benoît J. T. GIRARD", email = "53222414+BenoitJT-GIRARD@users.noreply.github.com" }]
 keywords = [
     "chess",
     "openings",
@@ -54,6 +54,10 @@ dev = [
     "pytest>=8.3",
     "pytest-cov>=6.0",
     "respx>=0.21",
+    # starlette's TestClient asks for httpx2 and falls back to httpx with a deprecation
+    # warning. The application itself still speaks httpx, and respx mocks that side; the
+    # two clients do not meet.
+    "httpx2>=0.29",
     "ruff>=0.7",
     "bandit>=1.7",
     "pre-commit>=4.0",
@@ -115,11 +119,11 @@ line-ending = "lf"
 minversion = "8.0"
 addopts = "-ra -q --strict-markers"
 testpaths = ["tests"]
-filterwarnings = [
-    "ignore::DeprecationWarning",
-    "ignore::UserWarning",
-    "ignore::PendingDeprecationWarning",
-]
+# Warnings are errors. Three categories used to be silenced wholesale, which on a stack
+# made of six fast-moving libraries meant never hearing that one of them was about to
+# change its API. Every exemption below names the message it silences and the library it
+# comes from.
+filterwarnings = ["error"]
 
 [tool.coverage.run]
 source = ["src/chess_coach"]

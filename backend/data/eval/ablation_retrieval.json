@@ -1,0 +1,450 @@
+{
+  "measured": "2026-09-07",
+  "corpus": {
+    "wikichess": "data/wikichess",
+    "openings": "data/openings",
+    "collection": "chess_openings"
+  },
+  "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "n_cases": 14,
+  "top_k": 10,
+  "served_variant": "french-question",
+  "variants": {
+    "name-only": {
+      "scores": {
+        "n": 14.0,
+        "recall@1": 0.9285714285714286,
+        "recall@3": 1.0,
+        "recall@5": 1.0,
+        "mrr": 0.9642857142857143
+      },
+      "cases": [
+        {
+          "case": "ruy-lopez",
+          "query": "Ruy Lopez",
+          "rank": 1,
+          "first": "openings/partie-espagnole.md",
+          "rr": 1.0
+        },
+        {
+          "case": "italian-game",
+          "query": "Italian Game",
+          "rank": 2,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.5
+        },
+        {
+          "case": "sicilian",
+          "query": "Sicilian Defense",
+          "rank": 1,
+          "first": "openings/defense-sicilienne.md",
+          "rr": 1.0
+        },
+        {
+          "case": "french",
+          "query": "French Defense",
+          "rank": 1,
+          "first": "wikichess/00021-french-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "scandinavian",
+          "query": "Scandinavian Defense",
+          "rank": 1,
+          "first": "openings/defense-scandinave.md",
+          "rr": 1.0
+        },
+        {
+          "case": "scotch",
+          "query": "Scotch Game",
+          "rank": 1,
+          "first": "wikichess/00046-scotch-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "petrov",
+          "query": "Petrov Defense",
+          "rank": 1,
+          "first": "wikichess/00013-petrov-s-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "queens-gambit",
+          "query": "Queen's Gambit Declined",
+          "rank": 1,
+          "first": "openings/gambit-dame.md",
+          "rr": 1.0
+        },
+        {
+          "case": "slav",
+          "query": "Slav Defense",
+          "rank": 1,
+          "first": "wikichess/00017-qgd-slav-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "kings-indian",
+          "query": "King's Indian Defense",
+          "rank": 1,
+          "first": "wikichess/00044-king-s-indian-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "english",
+          "query": "English Opening",
+          "rank": 1,
+          "first": "wikichess/00029-english-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "reti",
+          "query": "Réti Opening",
+          "rank": 1,
+          "first": "wikichess/00004-reti-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "caro-kann",
+          "query": "Caro-Kann Defense",
+          "rank": 1,
+          "first": "openings/defense-caro-kann.md",
+          "rr": 1.0
+        },
+        {
+          "case": "london",
+          "query": "London System",
+          "rank": 1,
+          "first": "openings/systeme-de-londres.md",
+          "rr": 1.0
+        }
+      ]
+    },
+    "french-question": {
+      "scores": {
+        "n": 14.0,
+        "recall@1": 0.9285714285714286,
+        "recall@3": 1.0,
+        "recall@5": 1.0,
+        "mrr": 0.9642857142857143
+      },
+      "cases": [
+        {
+          "case": "ruy-lopez",
+          "query": "ouverture Ruy Lopez, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00012-ruy-lopez-spanish-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "italian-game",
+          "query": "ouverture Italian Game, idées et plans",
+          "rank": 2,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.5
+        },
+        {
+          "case": "sicilian",
+          "query": "ouverture Sicilian Defense, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00003-sicilian-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "french",
+          "query": "ouverture French Defense, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00021-french-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "scandinavian",
+          "query": "ouverture Scandinavian Defense, idées et plans",
+          "rank": 1,
+          "first": "openings/defense-scandinave.md",
+          "rr": 1.0
+        },
+        {
+          "case": "scotch",
+          "query": "ouverture Scotch Game, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00046-scotch-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "petrov",
+          "query": "ouverture Petrov Defense, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00013-petrov-s-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "queens-gambit",
+          "query": "ouverture Queen's Gambit Declined, idées et plans",
+          "rank": 1,
+          "first": "openings/gambit-dame.md",
+          "rr": 1.0
+        },
+        {
+          "case": "slav",
+          "query": "ouverture Slav Defense, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00017-qgd-slav-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "kings-indian",
+          "query": "ouverture King's Indian Defense, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00044-king-s-indian-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "english",
+          "query": "ouverture English Opening, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00029-english-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "reti",
+          "query": "ouverture Réti Opening, idées et plans",
+          "rank": 1,
+          "first": "wikichess/00004-reti-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "caro-kann",
+          "query": "ouverture Caro-Kann Defense, idées et plans",
+          "rank": 1,
+          "first": "openings/defense-caro-kann.md",
+          "rr": 1.0
+        },
+        {
+          "case": "london",
+          "query": "ouverture London System, idées et plans",
+          "rank": 1,
+          "first": "openings/systeme-de-londres.md",
+          "rr": 1.0
+        }
+      ]
+    },
+    "english-verbose": {
+      "scores": {
+        "n": 14.0,
+        "recall@1": 0.5714285714285714,
+        "recall@3": 0.7857142857142857,
+        "recall@5": 0.9285714285714286,
+        "mrr": 0.7209183673469388
+      },
+      "cases": [
+        {
+          "case": "ruy-lopez",
+          "query": "chess opening Ruy Lopez: main ideas, plans and typical moves",
+          "rank": 5,
+          "first": "wikichess/00016-queen-s-gambit.md",
+          "rr": 0.2
+        },
+        {
+          "case": "italian-game",
+          "query": "chess opening Italian Game: main ideas, plans and typical moves",
+          "rank": 2,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.5
+        },
+        {
+          "case": "sicilian",
+          "query": "chess opening Sicilian Defense: main ideas, plans and typical moves",
+          "rank": 1,
+          "first": "wikichess/00003-sicilian-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "french",
+          "query": "chess opening French Defense: main ideas, plans and typical moves",
+          "rank": 2,
+          "first": "wikichess/00016-queen-s-gambit.md",
+          "rr": 0.5
+        },
+        {
+          "case": "scandinavian",
+          "query": "chess opening Scandinavian Defense: main ideas, plans and typical moves",
+          "rank": 2,
+          "first": "wikichess/00003-sicilian-defense.md",
+          "rr": 0.5
+        },
+        {
+          "case": "scotch",
+          "query": "chess opening Scotch Game: main ideas, plans and typical moves",
+          "rank": 1,
+          "first": "wikichess/00046-scotch-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "petrov",
+          "query": "chess opening Petrov Defense: main ideas, plans and typical moves",
+          "rank": 1,
+          "first": "wikichess/00013-petrov-s-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "queens-gambit",
+          "query": "chess opening Queen's Gambit Declined: main ideas, plans and typical moves",
+          "rank": 1,
+          "first": "wikichess/00016-queen-s-gambit.md",
+          "rr": 1.0
+        },
+        {
+          "case": "slav",
+          "query": "chess opening Slav Defense: main ideas, plans and typical moves",
+          "rank": 4,
+          "first": "wikichess/00016-queen-s-gambit.md",
+          "rr": 0.25
+        },
+        {
+          "case": "kings-indian",
+          "query": "chess opening King's Indian Defense: main ideas, plans and typical moves",
+          "rank": 1,
+          "first": "wikichess/00044-king-s-indian-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "english",
+          "query": "chess opening English Opening: main ideas, plans and typical moves",
+          "rank": 1,
+          "first": "wikichess/00029-english-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "reti",
+          "query": "chess opening Réti Opening: main ideas, plans and typical moves",
+          "rank": 1,
+          "first": "wikichess/00004-reti-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "caro-kann",
+          "query": "chess opening Caro-Kann Defense: main ideas, plans and typical moves",
+          "rank": 1,
+          "first": "openings/defense-caro-kann.md",
+          "rr": 1.0
+        },
+        {
+          "case": "london",
+          "query": "chess opening London System: main ideas, plans and typical moves",
+          "rank": 7,
+          "first": "wikichess/00016-queen-s-gambit.md",
+          "rr": 0.1429
+        }
+      ]
+    },
+    "name-and-eco": {
+      "scores": {
+        "n": 14.0,
+        "recall@1": 1.0,
+        "recall@3": 1.0,
+        "recall@5": 1.0,
+        "mrr": 1.0
+      },
+      "cases": [
+        {
+          "case": "ruy-lopez",
+          "query": "Ruy Lopez C60",
+          "rank": 1,
+          "first": "openings/partie-espagnole.md",
+          "rr": 1.0
+        },
+        {
+          "case": "italian-game",
+          "query": "Italian Game C50",
+          "rank": 1,
+          "first": "wikichess/00048-giuoco-piano.md",
+          "rr": 1.0
+        },
+        {
+          "case": "sicilian",
+          "query": "Sicilian Defense B40",
+          "rank": 1,
+          "first": "openings/defense-sicilienne.md",
+          "rr": 1.0
+        },
+        {
+          "case": "french",
+          "query": "French Defense C00",
+          "rank": 1,
+          "first": "wikichess/00021-french-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "scandinavian",
+          "query": "Scandinavian Defense B01",
+          "rank": 1,
+          "first": "openings/defense-scandinave.md",
+          "rr": 1.0
+        },
+        {
+          "case": "scotch",
+          "query": "Scotch Game C45",
+          "rank": 1,
+          "first": "wikichess/00046-scotch-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "petrov",
+          "query": "Petrov Defense C42",
+          "rank": 1,
+          "first": "wikichess/00013-petrov-s-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "queens-gambit",
+          "query": "Queen's Gambit Declined D30",
+          "rank": 1,
+          "first": "openings/gambit-dame.md",
+          "rr": 1.0
+        },
+        {
+          "case": "slav",
+          "query": "Slav Defense D10",
+          "rank": 1,
+          "first": "wikichess/00017-qgd-slav-defense.md",
+          "rr": 1.0
+        },
+        {
+          "case": "kings-indian",
+          "query": "King's Indian Defense E60",
+          "rank": 1,
+          "first": "openings/defense-est-indienne.md",
+          "rr": 1.0
+        },
+        {
+          "case": "english",
+          "query": "English Opening A10",
+          "rank": 1,
+          "first": "openings/partie-anglaise.md",
+          "rr": 1.0
+        },
+        {
+          "case": "reti",
+          "query": "Réti Opening A04",
+          "rank": 1,
+          "first": "wikichess/00004-reti-opening.md",
+          "rr": 1.0
+        },
+        {
+          "case": "caro-kann",
+          "query": "Caro-Kann Defense B10",
+          "rank": 1,
+          "first": "openings/defense-caro-kann.md",
+          "rr": 1.0
+        },
+        {
+          "case": "london",
+          "query": "London System D02",
+          "rank": 1,
+          "first": "openings/systeme-de-londres.md",
+          "rr": 1.0
+        }
+      ]
+    }
+  }
+}

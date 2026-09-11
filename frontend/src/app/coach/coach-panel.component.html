@@ -1,23 +1,23 @@
-<mat-card class="panneau" appearance="outlined">
+<mat-card class="panel" appearance="outlined">
   <mat-card-content>
-    @if (chargement) {
-      <div class="etat">
+    @if (loading) {
+      <div class="state">
         <mat-spinner diameter="36"></mat-spinner>
         <p>L'agent analyse la position…</p>
       </div>
-    } @else if (erreur) {
-      <div class="etat erreur">
+    } @else if (error) {
+      <div class="state error">
         <mat-icon>error_outline</mat-icon>
-        <p>{{ erreur }}</p>
+        <p>{{ error }}</p>
       </div>
-    } @else if (resultat) {
-      <header class="entete">
-        <h2>{{ resultat.opening_name || 'Position hors théorie' }}</h2>
+    } @else if (result) {
+      <header class="header">
+        <h2>{{ result.opening_name || 'Position hors théorie' }}</h2>
         <mat-chip-set>
-          @if (resultat.opening_eco) {
-            <mat-chip highlighted color="accent">{{ resultat.opening_eco }}</mat-chip>
+          @if (result.opening_eco) {
+            <mat-chip highlighted color="accent">{{ result.opening_eco }}</mat-chip>
           }
-          @if (resultat.in_theory) {
+          @if (result.in_theory) {
             <mat-chip highlighted color="primary">Théorie</mat-chip>
           } @else {
             <mat-chip highlighted color="warn">Hors théorie</mat-chip>
@@ -25,46 +25,46 @@
         </mat-chip-set>
       </header>
 
-      @if (resultat.opening_summary) {
-        <section class="ouverture-detectee">
+      @if (result.opening_summary) {
+        <section class="detected-opening">
           <h3><mat-icon>emoji_objects</mat-icon> Ouverture détectée</h3>
-          <p>{{ resultat.opening_summary }}</p>
+          <p>{{ result.opening_summary }}</p>
         </section>
       }
 
-      @if (prochainCoup; as coup) {
-        <section class="prochain-coup">
-          <span class="coup-san">{{ coup.san }}</span>
-          <span class="coup-texte">
+      @if (nextMove; as coup) {
+        <section class="next-move">
+          <span class="move-san">{{ coup.san }}</span>
+          <span class="move-text">
             <strong>Prochain coup</strong>
-            <em>{{ coup.raison }}</em>
+            <em>{{ coup.reason }}</em>
           </span>
         </section>
       }
 
-      @if (!resultat.in_theory && resultat.total_games) {
-        <p class="rarete">
+      @if (!result.in_theory && result.total_games) {
+        <p class="rarity">
           <mat-icon>info_outline</mat-icon>
           <span>
             Ligne connue, mais rarement jouée :
-            <strong>{{ nombreDeParties(resultat.total_games) }} parties de maîtres</strong>.
+            <strong>{{ gameCount(result.total_games) }} parties de maîtres</strong>.
             L'agent laisse donc parler le moteur.
           </span>
         </p>
       }
 
-      <p class="recommandation">{{ resultat.recommendation }}</p>
+      <p class="recommendation">{{ result.recommendation }}</p>
 
-      @if (resultat.in_theory && resultat.theory_moves.length) {
+      @if (result.in_theory && result.theory_moves.length) {
         <mat-divider></mat-divider>
-        <section class="bloc">
+        <section class="block">
           <h3><mat-icon>menu_book</mat-icon> Coups théoriques</h3>
-          <ul class="coups">
-            @for (coup of resultat.theory_moves; track coup.uci) {
+          <ul class="moves">
+            @for (coup of result.theory_moves; track coup.uci) {
               <li>
-                <span class="coup">{{ coup.san }}</span>
+                <span class="move">{{ coup.san }}</span>
                 @if (coup.total) {
-                  <span class="coup-parties">{{ nombreDeParties(coup.total) }} parties</span>
+                  <span class="move-games">{{ gameCount(coup.total) }} parties</span>
                 }
               </li>
             }
@@ -72,20 +72,20 @@
         </section>
       }
 
-      @if (resultat.reference_games.length) {
+      @if (result.reference_games.length) {
         <mat-divider></mat-divider>
-        <section class="bloc">
+        <section class="block">
           <h3><mat-icon>military_tech</mat-icon> Parties de référence</h3>
-          <ul class="parties">
-            @for (partie of resultat.reference_games; track partie.game_id) {
+          <ul class="games">
+            @for (partie of result.reference_games; track partie.game_id) {
               <li>
                 <a [href]="partie.url" target="_blank" rel="noopener">
                   {{ partie.white }} ({{ partie.white_rating }}) &ndash;
                   {{ partie.black }} ({{ partie.black_rating }})
                 </a>
-                <span class="partie-resultat">{{ partie.result }}</span>
+                <span class="game-result">{{ partie.result }}</span>
                 @if (partie.year) {
-                  <span class="partie-annee">{{ partie.year }}</span>
+                  <span class="game-year">{{ partie.year }}</span>
                 }
               </li>
             }
@@ -93,25 +93,25 @@
         </section>
       }
 
-      @if (resultat.evaluation) {
+      @if (result.evaluation) {
         <mat-divider></mat-divider>
-        <section class="bloc moteur">
+        <section class="block engine">
           <h3><mat-icon>memory</mat-icon> Évaluation Stockfish</h3>
           <div class="eval">
-            <span class="eval-score">{{ libelleEvaluation() }}</span>
+            <span class="eval-score">{{ evaluationLabel() }}</span>
             <span class="eval-detail">
-              Meilleur coup : <strong>{{ resultat.evaluation.best_move_san }}</strong>
-              <em>(profondeur {{ resultat.evaluation.depth }})</em>
+              Meilleur coup : <strong>{{ result.evaluation.best_move_san }}</strong>
+              <em>(profondeur {{ result.evaluation.depth }})</em>
             </span>
           </div>
         </section>
       }
 
-      @if (resultat.passages.length) {
+      @if (result.passages.length) {
         <mat-divider></mat-divider>
-        <section class="bloc">
+        <section class="block">
           <h3><mat-icon>auto_stories</mat-icon> Pour approfondir</h3>
-          @for (passage of resultat.passages; track passage.source) {
+          @for (passage of result.passages; track passage.source) {
             <article class="passage">
               <span class="passage-source">{{ passage.opening }}</span>
               <p>{{ passage.text }}</p>
@@ -120,42 +120,42 @@
         </section>
       }
 
-      @if (resultat.videos.length) {
+      @if (result.videos.length) {
         <mat-divider></mat-divider>
-        <section class="bloc">
+        <section class="block">
           <h3><mat-icon>smart_display</mat-icon> Vidéos explicatives</h3>
           <div class="video">
             <iframe
-              [src]="urlIntegration(resultat.videos[0].video_id)"
+              [src]="embedUrl(result.videos[0].video_id)"
               title="Vidéo explicative"
               frameborder="0"
               allowfullscreen
             ></iframe>
           </div>
           <ul class="videos">
-            @for (video of resultat.videos; track video.video_id) {
+            @for (video of result.videos; track video.video_id) {
               <li>
                 <a [href]="video.url" target="_blank" rel="noopener">{{ video.title }}</a>
-                <span class="video-chaine">{{ video.channel }}</span>
+                <span class="video-channel">{{ video.channel }}</span>
               </li>
             }
           </ul>
         </section>
       }
 
-      @if (resultat.sources_used.length) {
+      @if (result.sources_used.length) {
         <mat-divider></mat-divider>
         <footer class="sources">
           <span>Outils utilisés :</span>
           <mat-chip-set>
-            @for (source of resultat.sources_used; track source) {
-              <mat-chip>{{ libelleSource(source) }}</mat-chip>
+            @for (source of result.sources_used; track source) {
+              <mat-chip>{{ sourceLabel(source) }}</mat-chip>
             }
           </mat-chip-set>
         </footer>
       }
     } @else {
-      <div class="etat vide">
+      <div class="state empty">
         <mat-icon>touch_app</mat-icon>
         <p>
           Jouez un coup sur l'échiquier, ou choisissez une position de démonstration,

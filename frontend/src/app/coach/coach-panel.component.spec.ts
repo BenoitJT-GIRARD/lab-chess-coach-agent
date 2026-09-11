@@ -4,7 +4,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CoachPanelComponent } from './coach-panel.component';
 import { AgentResponse } from '../models/agent.models';
 
-const REPONSE: AgentResponse = {
+const ANSWER: AgentResponse = {
   fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3',
   valid: true,
   opening_name: 'Italian Game',
@@ -42,7 +42,7 @@ const REPONSE: AgentResponse = {
 describe('CoachPanelComponent', () => {
   let fixture: ComponentFixture<CoachPanelComponent>;
 
-  const texte = (): string => fixture.nativeElement.textContent as string;
+  const text = (): string => fixture.nativeElement.textContent as string;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,85 +51,85 @@ describe('CoachPanelComponent', () => {
     fixture = TestBed.createComponent(CoachPanelComponent);
   });
 
-  it('invite à jouer un coup tant que rien n\'a été analysé', () => {
+  it('invites a move while nothing has been analysed', () => {
     fixture.detectChanges();
 
-    expect(texte()).toContain('Jouez un coup');
+    expect(text()).toContain('Jouez un coup');
   });
 
-  it('affiche un indicateur pendant l\'analyse', () => {
-    fixture.componentInstance.chargement = true;
+  it('shows a spinner while the analysis runs', () => {
+    fixture.componentInstance.loading = true;
     fixture.detectChanges();
 
-    expect(texte()).toContain("L'agent analyse la position");
+    expect(text()).toContain("L'agent analyse la position");
     expect(fixture.nativeElement.querySelector('mat-spinner')).toBeTruthy();
   });
 
-  it('affiche le message quand le backend ne répond pas', () => {
-    fixture.componentInstance.erreur = 'Impossible de contacter l\'agent.';
+  it('shows the message when the backend does not answer', () => {
+    fixture.componentInstance.error = 'Impossible de contacter l\'agent.';
     fixture.detectChanges();
 
-    expect(texte()).toContain('Impossible de contacter');
+    expect(text()).toContain('Impossible de contacter');
   });
 
-  it("présente l'ouverture, les coups et les parties de référence", () => {
-    fixture.componentInstance.resultat = REPONSE;
+  it('renders the opening, the moves and the reference games', () => {
+    fixture.componentInstance.result = ANSWER;
     fixture.detectChanges();
 
-    const rendu = texte();
-    expect(rendu).toContain('Italian Game');
-    expect(rendu).toContain('C50');
-    expect(rendu).toContain('Bc5');
-    expect(rendu).toContain('Caruana');
-    expect(rendu).toContain('0-1');
-    expect(rendu).toContain('Le fou en c4 vise la case f7.');
+    const rendered = text();
+    expect(rendered).toContain('Italian Game');
+    expect(rendered).toContain('C50');
+    expect(rendered).toContain('Bc5');
+    expect(rendered).toContain('Caruana');
+    expect(rendered).toContain('0-1');
+    expect(rendered).toContain('Le fou en c4 vise la case f7.');
   });
 
-  it('signale une ligne connue mais rarement jouée', () => {
-    fixture.componentInstance.resultat = {
-      ...REPONSE,
+  it('flags a line that is named but rarely played', () => {
+    fixture.componentInstance.result = {
+      ...ANSWER,
       in_theory: false,
       opening_name: "King's Pawn Game: Wayward Queen Attack",
       total_games: 48,
     };
     fixture.detectChanges();
 
-    const rendu = texte();
-    expect(rendu).toContain('Wayward Queen Attack');
-    expect(rendu).toContain('Hors théorie');
-    expect(rendu).toContain('48 parties de maîtres');
+    const rendered = text();
+    expect(rendered).toContain('Wayward Queen Attack');
+    expect(rendered).toContain('Hors théorie');
+    expect(rendered).toContain('48 parties de maîtres');
   });
 
-  it("présente l'ouverture détectée", () => {
-    fixture.componentInstance.resultat = REPONSE;
+  it('presents the detected opening', () => {
+    fixture.componentInstance.result = ANSWER;
     fixture.detectChanges();
 
-    const rendu = texte();
-    expect(rendu).toContain('Ouverture détectée');
-    expect(rendu).toContain("le fou en c4 vise la case f7");
+    const rendered = text();
+    expect(rendered).toContain('Ouverture détectée');
+    expect(rendered).toContain("le fou en c4 vise la case f7");
   });
 
-  it('met en avant le coup le plus joué quand on est dans la théorie', () => {
-    fixture.componentInstance.resultat = REPONSE;
+  it('puts the most played move forward inside theory', () => {
+    fixture.componentInstance.result = ANSWER;
     fixture.detectChanges();
 
-    // Le séparateur de milliers français est une espace insécable fine : on
-    // le reconstruit plutôt que de le figer dans le test.
-    const parties = (25481).toLocaleString('fr-FR');
-    expect(fixture.componentInstance.prochainCoup).toEqual({
+    // The French thousands separator is a narrow no-break space: rebuild it rather than
+    // freezing it into the test.
+    const games = (25481).toLocaleString('fr-FR');
+    expect(fixture.componentInstance.nextMove).toEqual({
       san: 'Bc5',
-      raison: `le plus joué en parties de maîtres (${parties})`,
+      reason: `le plus joué en parties de maîtres (${games})`,
     });
-    expect(texte()).toContain('Prochain coup');
+    expect(text()).toContain('Prochain coup');
   });
 
-  it('met en avant le coup du moteur quand on sort de la théorie', () => {
-    fixture.componentInstance.resultat = {
-      ...REPONSE,
+  it('puts the engine move forward outside theory', () => {
+    fixture.componentInstance.result = {
+      ...ANSWER,
       in_theory: false,
       theory_moves: [],
       evaluation: {
-        fen: REPONSE.fen,
+        fen: ANSWER.fen,
         evaluation_type: 'cp',
         value: 29,
         perspective: 'white',
@@ -140,40 +140,40 @@ describe('CoachPanelComponent', () => {
     };
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.prochainCoup).toEqual({
+    expect(fixture.componentInstance.nextMove).toEqual({
       san: 'Nc6',
-      raison: 'recommandé par Stockfish (profondeur 15)',
+      reason: 'recommandé par Stockfish (profondeur 15)',
     });
   });
 
-  it("n'invente pas de coup quand il n'y en a aucun", () => {
-    fixture.componentInstance.resultat = {
-      ...REPONSE,
+  it('invents no move when there is none', () => {
+    fixture.componentInstance.result = {
+      ...ANSWER,
       in_theory: false,
       theory_moves: [],
       evaluation: null,
     };
 
-    expect(fixture.componentInstance.prochainCoup).toBeNull();
+    expect(fixture.componentInstance.nextMove).toBeNull();
   });
 
-  it('nomme les outils utilisés en clair', () => {
-    fixture.componentInstance.resultat = REPONSE;
+  it('names the tools that were used, in plain words', () => {
+    fixture.componentInstance.result = ANSWER;
     fixture.detectChanges();
 
-    const rendu = texte();
-    expect(rendu).toContain('Théorie Lichess');
-    expect(rendu).toContain('Base Wikichess');
-    expect(rendu).toContain('Modèle de langage');
+    const rendered = text();
+    expect(rendered).toContain('Théorie Lichess');
+    expect(rendered).toContain('Base Wikichess');
+    expect(rendered).toContain('Modèle de langage');
   });
 
-  it('met en forme les évaluations du moteur', () => {
+  it('formats the engine evaluations', () => {
     const composant = fixture.componentInstance;
 
-    composant.resultat = {
-      ...REPONSE,
+    composant.result = {
+      ...ANSWER,
       evaluation: {
-        fen: REPONSE.fen,
+        fen: ANSWER.fen,
         evaluation_type: 'cp',
         value: 29,
         perspective: 'white',
@@ -182,12 +182,12 @@ describe('CoachPanelComponent', () => {
         depth: 15,
       },
     };
-    expect(composant.libelleEvaluation()).toBe('+0.29');
+    expect(composant.evaluationLabel()).toBe('+0.29');
 
-    composant.resultat = {
-      ...composant.resultat,
-      evaluation: { ...composant.resultat.evaluation!, evaluation_type: 'mate', value: -3 },
+    composant.result = {
+      ...composant.result,
+      evaluation: { ...composant.result.evaluation!, evaluation_type: 'mate', value: -3 },
     };
-    expect(composant.libelleEvaluation()).toBe('Mat en 3');
+    expect(composant.evaluationLabel()).toBe('Mat en 3');
   });
 });

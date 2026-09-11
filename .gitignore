@@ -1,7 +1,7 @@
 # --- Python ---
-# Les dossiers d'empaquetage sont ancrés à la racine du dépôt : sans la barre
-# oblique de tête, « lib/ » ou « build/ » masqueraient aussi du code source
-# rangé dans un dossier du même nom.
+# The packaging folders are anchored at the root of the repository: without the
+# leading slash, "lib/" or "build/" would also hide source code that happens to
+# live in a folder of that name.
 __pycache__/
 *.py[cod]
 *$py.class
@@ -79,8 +79,8 @@ logs/
 # --- Docker / data volumes (named volumes only, never committed) ---
 volumes/
 
-# --- Modèles entraînés et artefacts ---
-# Ancré : frontend/src/app/models/ contient du code, pas des poids de modèle.
+# --- Trained models and artefacts ---
+# Anchored: frontend/src/app/models/ holds code, not model weights.
 /models/
 *.tar.gz
 *.pkl
@@ -95,9 +95,8 @@ volumes/
 # --- Project-specific ---
 infos/
 data/raw/
-# Dossier assemblé à la demande, jamais versionné
-Mettez_en_place_un_Agent_IA_Girard_Benoit/
-Mettez_en_place_un_Agent_IA_Girard_Benoit*.zip
 
-# --- Revue interne (non versionnée) ---
-PLAN_AUDIT.md
+# The Wikichess corpus. FICGS keeps every right on the text of its site, so the
+# articles are not redistributed here: only the manifest that lists them is, and
+# scripts/fetch_wikichess.py downloads them again into this folder.
+backend/data/wikichess/*.md

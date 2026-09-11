@@ -3,7 +3,7 @@
 The Opening Explorer answers, for a given position, with the moves that have
 actually been played, their win/draw/loss statistics, the name of the opening,
 and a handful of reference games. It is the agent's source of *theoretical*
-moves and of the reference games the brief asks for.
+moves and of the reference games shown beside them.
 
 Two databases are available. ``lichess`` aggregates every rated game played on
 the site — hundreds of millions, including a lot of beginner improvisation —

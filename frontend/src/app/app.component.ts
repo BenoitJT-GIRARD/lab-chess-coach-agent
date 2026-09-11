@@ -19,5 +19,5 @@ import { ChessboardComponent } from './chessboard/chessboard.component';
 })
 export class AppComponent {
   readonly titre = 'Chess Coach';
-  readonly sousTitre = "Coach d'ouvertures";
+  readonly subtitle = "Coach d'ouvertures";
 }

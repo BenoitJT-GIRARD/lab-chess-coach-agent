@@ -1,22 +1,22 @@
-<div class="ecran">
+<div class="screen">
   <!-- À gauche : l'échiquier et ses commandes -->
-  <mat-card class="carte-echiquier" appearance="outlined">
+  <mat-card class="board-card" appearance="outlined">
     <mat-card-content>
-      <div class="echiquier">
+      <div class="board">
         <ngx-chess-board
           #board
-          [size]="taille"
-          [lightTileColor]="caseClaire"
-          [darkTileColor]="caseSombre"
-          (moveChange)="auCoupJoue()"
+          [size]="boardSize"
+          [lightTileColor]="lightSquare"
+          [darkTileColor]="darkSquare"
+          (moveChange)="onMovePlayed()"
         ></ngx-chess-board>
       </div>
 
-      <div class="commandes">
+      <div class="controls">
         <button
           mat-flat-button
           color="primary"
-          (click)="auCoupJoue()"
+          (click)="onMovePlayed()"
           matTooltip="Demander l'analyse de la position affichée"
         >
           <mat-icon>psychology</mat-icon>
@@ -26,7 +26,7 @@
         <button
           mat-icon-button
           color="primary"
-          (click)="annulerCoup()"
+          (click)="undoMove()"
           matTooltip="Annuler le dernier coup"
           aria-label="Annuler le dernier coup"
         >
@@ -36,7 +36,7 @@
         <button
           mat-icon-button
           color="primary"
-          (click)="retourner()"
+          (click)="flipBoard()"
           matTooltip="Retourner l'échiquier"
           aria-label="Retourner l'échiquier"
         >
@@ -46,7 +46,7 @@
         <button
           mat-icon-button
           color="accent"
-          (click)="reinitialiser()"
+          (click)="resetBoard()"
           matTooltip="Revenir à la position de départ"
           aria-label="Revenir à la position de départ"
         >
@@ -55,34 +55,34 @@
       </div>
 
       <div class="demos">
-        <span class="demos-titre">Positions de démonstration</span>
+        <span class="demos-heading">Positions de démonstration</span>
         <mat-chip-set aria-label="Positions de démonstration">
-          @for (position of positionsDemo; track position.fen) {
-            <mat-chip (click)="chargerDemo(position)">{{ position.libelle }}</mat-chip>
+          @for (position of demoPositions; track position.fen) {
+            <mat-chip (click)="loadDemo(position)">{{ position.label }}</mat-chip>
           }
         </mat-chip-set>
       </div>
 
-      @if (fenCourante) {
-        <p class="fen"><strong>FEN</strong> {{ fenCourante }}</p>
+      @if (currentFen) {
+        <p class="fen"><strong>FEN</strong> {{ currentFen }}</p>
       }
     </mat-card-content>
   </mat-card>
 
   <!-- Sous l'échiquier : ce que l'agent a déjà analysé (MongoDB) -->
-  @if (historique.length) {
-    <mat-card class="carte-historique" appearance="outlined">
+  @if (history.length) {
+    <mat-card class="history-card" appearance="outlined">
       <mat-card-content>
         <h3>
           <mat-icon>history</mat-icon>
           Dernières analyses
-          <span class="total">{{ totalAnalyses }} au total</span>
+          <span class="total">{{ analysisCount }} au total</span>
         </h3>
         <ul>
-          @for (analyse of historique; track analyse.created_at) {
-            <li (click)="rejouer(analyse)">
-              <span class="ouverture">{{ analyse.opening_name || 'Hors théorie' }}</span>
-              <span class="heure">{{ heure(analyse.created_at) }}</span>
+          @for (entry of history; track entry.created_at) {
+            <li (click)="replay(entry)">
+              <span class="opening">{{ entry.opening_name || 'Hors théorie' }}</span>
+              <span class="time">{{ timeOf(entry.created_at) }}</span>
             </li>
           }
         </ul>
@@ -92,8 +92,8 @@
 
   <!-- À droite : ce que répond l'agent -->
   <app-coach-panel
-    [chargement]="chargement"
-    [erreur]="erreur"
-    [resultat]="resultat"
+    [loading]="loading"
+    [error]="error"
+    [result]="result"
   ></app-coach-panel>
 </div>

@@ -21,7 +21,7 @@ describe('AgentService', () => {
 
   afterEach(() => http.verify());
 
-  it("envoie la position à l'agent sur un chemin relatif", () => {
+  it('sends the position to the agent on a relative path', () => {
     service.analyze(FEN).subscribe();
 
     const requete = http.expectOne('/api/v1/agent');
@@ -30,9 +30,9 @@ describe('AgentService', () => {
     requete.flush({});
   });
 
-  it("remonte la réponse de l'agent telle quelle", () => {
+  it('returns the agent answer unchanged', () => {
     let recu: AgentResponse | undefined;
-    service.analyze(FEN).subscribe((reponse) => (recu = reponse));
+    service.analyze(FEN).subscribe((response) => (recu = response));
 
     http.expectOne('/api/v1/agent').flush({ fen: FEN, opening_name: 'Italian Game' });
 

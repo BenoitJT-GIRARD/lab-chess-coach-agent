@@ -1,147 +1,290 @@
-# Chess Coach — agent d'aide à l'apprentissage des ouvertures
+# Chess opening coach
 
-Chess Coach est un agent conversationnel qui aide les jeunes joueurs à travailler
-leurs **ouvertures**. Pour une position donnée (au format FEN), il combine
-plusieurs outils spécialisés dans un graphe [LangGraph](https://langchain-ai.github.io/langgraph/) :
+An agent that helps a young player work on their openings. Give it a position; it finds
+the theory, the master games behind it, an explanatory article and a video — and when the
+position has left theory, it says so and hands over to an engine.
 
-- **la théorie** — les coups et les parties de référence issus de la base de
-  parties de maîtres, via
-  [l'Opening Explorer de Lichess](https://lichess.org/api#tag/Opening-Explorer) ;
-- **le moteur** — une évaluation [Stockfish](https://stockfishchess.org/) quand
-  la partie sort des sentiers battus ;
-- **le contexte** — une recherche augmentée (RAG) sur les articles
-  [Wikichess](https://ficgs.com/wikichess.html), vectorisés avec
-  [sentence-transformers](https://www.sbert.net/) et indexés dans
-  [Milvus](https://milvus.io/) ;
-- **les vidéos** — des tutoriels pertinents remontés par
-  [l'API YouTube Data v3](https://developers.google.com/youtube/v3).
+![The coach on the Ruy Lopez: opening detected, next move, theory, reference games and the retrieved passage](docs/images/coach-in-theory.png)
 
-Un modèle de langage rédige ensuite la recommandation à partir de ces seuls
-éléments. Il ne décide rien : les coups viennent de Lichess, l'évaluation de
-Stockfish, le contexte de Milvus. Sans clé d'API, ou si l'appel échoue, un
-gabarit déterministe prend le relais et l'agent répond quand même.
+**Project status** — finished, and archived in a runnable state. The whole stack comes up
+with one `docker compose up`. The CI is frozen to manual trigger so that nothing here
+decays into a red badge on a project nobody maintains.
 
-Le projet est un agent d'aide à l'apprentissage des ouvertures, écrit pour
-des joueurs de club. Il se présente comme une pile conteneurisée —
-**FastAPI + LangGraph + Milvus + MongoDB + Angular** — qui démarre
-entièrement avec un seul `docker compose up`.
+## The problem
 
-## Organisation du dépôt
+A club coach can look at a position and say three different things depending on what it
+is. *This is the Ruy Lopez, and here is the idea behind it.* Or: *this is a sideline,
+nobody plays it, let us see what the engine thinks.* Or: *here is a video that explains it
+better than I will.*
+
+A language model asked the same question will answer all three at once, fluently, and
+invent the move counts. That is the failure mode this repository is arranged against: not
+that the model writes badly, but that **it has no way of knowing which of the three
+situations it is in**, and no source for the numbers it will quote anyway.
+
+So the model is not the system here. It is the last node of a graph that has already
+decided. Theory comes from a database of master games, the evaluation from an engine, the
+explanation from a corpus of articles, the videos from a search API. The model is handed
+those facts and asked to write four sentences.
+
+Which leaves the two decisions the system actually takes, and this repository is built
+around measuring them: **when is a position still theory, and how do you ask a knowledge
+base a question it can answer.**
+
+## What it does
+
+Six containers, one command. A LangGraph agent routes a position through four sources and
+writes the answer.
 
 ```
-ffe/
-├── backend/                    # API FastAPI et agent LangGraph
-│   ├── src/chess_coach/
-│   │   ├── config.py           # Réglages lus dans l'environnement
-│   │   ├── services/           # Lichess, Stockfish, YouTube, Milvus, MongoDB
-│   │   ├── rag/                # Préparation et indexation du corpus
-│   │   ├── agent/              # État, nœuds et graphe LangGraph
-│   │   └── api/                # Routes FastAPI
-│   ├── data/                   # Base de connaissances sur les ouvertures
-│   ├── scripts/                # Ingestion du corpus
-│   ├── tests/                  # Suite pytest
-│   ├── Dockerfile
-│   └── pyproject.toml
-├── frontend/                   # Interface Angular Material (ngx-chess-board)
-├── docs/                       # Architecture et note de faisabilité
-├── notebooks/
-│   └── chess_coach_mission.ipynb    # Déroulé de la démarche
-├── docker-compose.yml          # Orchestration des six services
-└── README.md
+START → identify → theory ──in theory──→ context → videos → synthesize → persist → END
+                     │                      ↑
+                     └──out of theory──→ engine
 ```
 
-La séparation `backend/` / `frontend/` est celle demandée à l'étape 1 du brief.
-Chaque moitié se construit et se teste indépendamment ; `docker-compose.yml` les
-assemble.
+- **Theory** — the [Lichess Opening Explorer](https://lichess.org/api#tag/Opening-Explorer)
+  over the master-games database, with a local opening book behind it so the agent still
+  answers without a token.
+- **Engine** — [Stockfish](https://stockfishchess.org/), called only when the position has
+  left theory.
+- **Context** — retrieval over 32 articles indexed in [Milvus](https://milvus.io/):
+  21 [Wikichess](https://ficgs.com/wikichess.html) pages in English and 11 notes written
+  in French, 146 chunks, embedded with a multilingual sentence-transformer. FICGS keeps
+  every right on the text of its site, so the pages themselves are not in this
+  repository; one command downloads them again.
+- **Videos** — the YouTube Data API.
+- **Synthesis** — an OpenAI-compatible model writes the recommendation from those facts
+  and nothing else. Without a key, or when the call fails, a deterministic French template
+  takes over and the agent still answers.
 
-## Démarrage rapide
+Every analysis is written to MongoDB, so the last positions looked at come back in the
+interface.
 
-Docker Desktop doit être lancé.
+When the position is not theory, the same screen changes source and says so:
+
+![The same interface on 1.e4 e5 2.Qh5: out of theory, the engine speaks](docs/images/coach-out-of-theory.png)
+
+Eight routes, documented by the generated OpenAPI schema:
+
+![The API surface at /docs](docs/images/api-docs.png)
+
+## The result
+
+### Asking the knowledge base the right way is worth 36 points of recall
+
+Retrieval is scored on 14 hand-written questions, each labelled with the article that
+should come back — a hard label, no judge. Four query formulations, same corpus, same
+index:
+
+| Variant | recall@1 | recall@3 | MRR |
+|---|---|---|---|
+| `name-only` — the opening name alone | 0.93 | 1.00 | 0.964 |
+| **`french-question`** — what the agent sends | **0.93** | **1.00** | **0.964** |
+| `english-verbose` — "chess opening X: main ideas, plans and typical moves" | 0.57 | 0.79 | 0.721 |
+| `name-and-eco` — the name plus its ECO code | 1.00 | 1.00 | 1.000 |
+
+**Padding the query is what hurts.** The verbose English wording drops recall@1 from 0.93
+to 0.57 — five questions out of fourteen. Its generic words are exactly the vocabulary
+every article of the corpus shares, so it pulls the most general pages to the top: asked
+about the Ruy Lopez it returns the King's Pawn article, and the London System falls to
+rank 7.
+
+**The French wording is not what helps.** It scores exactly the same as the bare opening
+name, case for case. What matters is not the phrasing, it is not drowning the name.
+
+**Adding the ECO code takes it to 14 out of 14** — and that is one question better than
+what ships. On 14 cases one question is worth 0.07 of recall, so this is inside the noise
+and is *not* claimed as an improvement. It is left in the table because a promising lead
+that cannot be established is worth publishing too.
+
+Reproduce it: `data/eval/ablation_retrieval.md`, regenerated by
+`scripts/run_retrieval_ablation.py`.
+
+### The routing threshold sits on a plateau
+
+`theory_min_games = 1000` is the agent's only conditional edge: above it the answer comes
+from theory, below it Stockfish is called and the wording changes. It was set from two
+positions looked at by hand.
+
+Swept over a frozen reading of 54 positions — main lines at five depths, plus eight lines
+nobody plays:
+
+| Threshold | In theory | Positions that flipped |
+|---|---|---|
+| 100 | 48 | 1 |
+| 500 | 47 | 0 |
+| **1 000** *(served)* | **45** | 2 |
+| 2 500 | 45 | 0 |
+| 5 000 | 45 | 0 |
+| 10 000 | 41 | 4 |
+| 25 000 | 28 | 13 |
+
+**Divide the served threshold by three and two positions out of 54 change side; multiply
+it by three and none do.** The routing is flat from 500 to 5 000, which is where the
+number sits. It was chosen from two examples and it happens to be robust — that is a
+result worth having, and it is not the one the method deserved.
+
+The reading is dated and versioned (`data/eval/theory_positions.json`) because the
+Explorer is a living database: the counts move, and a sweep that queried it live would
+never replay.
+
+### What a question costs
+
+Measured inside the deployed configuration, four positions, three repeats:
+
+| Node | Median | p90 |
+|---|---|---|
+| `context` — embedding + Milvus | **18 ms** | 20 ms |
+| `theory` — Lichess Explorer | 76 ms | 80 ms |
+| `videos` — YouTube Data API | 276 ms | 312 ms |
+| `engine` — Stockfish, depth 15 | **346 ms** | 392 ms |
+
+The retrieval — the part one worries about on a stack with a vector database — is the
+cheapest node by a factor of four. What a request costs is the engine and YouTube, and
+the engine only runs when the position has left theory.
+
+The language model is excluded: it is billed per call, and the variance of a third-party
+endpoint would swamp everything else. In practice it is the dominant cost of a real
+request.
+
+## Why these numbers can be believed
+
+**The retrieval claim already existed, and had no artefact.** The docstring of
+`build_context_query` asserted that a short French question beats a padded English one,
+and the commit that introduced it said "verified on six openings". The observation was
+right — the ablation above confirms it and puts 36 points on it — but nothing in the
+repository recorded which six openings, what came back, or what was compared to what.
+Nobody could replay it, and nothing would have said when it stopped being true.
+
+**The evaluation questions are written by hand, never generated from their target.** A
+question drawn from the article it is supposed to retrieve measures string matching, not
+retrieval. The label is the file name, so the score needs no judge and costs nothing.
+
+**Several files can be right for one opening.** The corpus holds two Ruy Lopez articles and
+a French note on the same opening; the label is a set. Scoring against one of them picked
+arbitrarily would punish a retrieval that returned the other, which is not a defect.
+
+**Chunks are deduplicated before the cut at k.** An article is indexed as several
+fragments, so one opening can occupy an entire top-3. Counting fragments would inflate
+recall at every k and make the ablation compare noise.
+
+**Warnings are errors.** The test configuration used to silence `DeprecationWarning`,
+`UserWarning` and `PendingDeprecationWarning` wholesale, on a stack made of six libraries
+that move fast. Switching to `filterwarnings = ["error"]` surfaced one on the first run:
+starlette 1.3 asks for `httpx2` in its test client and falls back to `httpx` with a
+deprecation. The deprecation is followed rather than silenced, and the suite needs no
+exemption at all.
+
+**87 tests, no network.** Every external service is faked, and the only test that needs the
+downloaded corpus skips when it is absent. Three of them guard the evaluation itself: that
+no case points at an article the corpus cannot hold, that the
+`french-question` variant calls the agent's own function rather than a copy of it, and
+that raising the threshold never puts *more* positions into theory.
+
+## Running it
+
+Docker Desktop must be running.
 
 ```powershell
-# 1. Copier le modèle d'environnement et y coller ses clés
-copy .env.example .env
-
-# 2. Construire et démarrer toute la pile
+copy .env.example .env       # optional keys: Lichess, YouTube, a language model
 docker compose up -d --build
 
-# 3. Charger la base de connaissances dans Milvus (une seule fois :
-#    le volume Milvus la conserve d'un redémarrage à l'autre)
-docker compose run --rm backend python -m scripts.ingest_wikichess
+# download the Wikichess articles, which are not redistributed here — see Licence and data
+docker compose run --rm backend python -m scripts.fetch_wikichess
 
-# 4. Ouvrir les interfaces
-#    - Application Angular ..... http://localhost:4200
-#    - Documentation de l'API .. http://localhost:8000/docs
+# load the knowledge base into Milvus, once — the volume keeps it
+docker compose run --rm backend python -m scripts.ingest_wikichess
 ```
 
-Les six services (`etcd`, `minio`, `milvus`, `mongo`, `backend`, `frontend`)
-démarrent dans l'ordre grâce aux sondes de santé. Tout l'état vit dans des
-volumes nommés (`docker volume ls`) : arrêter puis relancer la pile conserve la
-base vectorielle et l'historique des interactions.
+- Interface — <http://localhost:4200>
+- API documentation — <http://localhost:8000/docs>
 
-Pour tout arrêter : `docker compose down`. Pour repartir de zéro, volumes
-compris : `docker compose down -v`.
+Everything works without a single key: the local opening book replaces the Explorer, the
+template replaces the model, and the videos section stays empty. What each missing key
+costs is in [`docs/architecture.md`](docs/architecture.md).
 
-## Ce qu'on peut montrer en démonstration
+Reproduce the measurements:
 
-Ouvrir <http://localhost:4200>, jouer des coups sur l'échiquier ou cliquer sur
-les positions préparées.
+```powershell
+cd backend
+uv sync --extra dev
+uv run python -m scripts.run_retrieval_ablation     # needs the stack up and ingested
+uv run python -m scripts.sweep_theory_threshold     # reads the frozen Explorer reading
+uv run python -m scripts.sample_theory_positions    # re-takes that reading; needs a token
+docker compose exec backend python -m scripts.bench_agent
+```
 
-| Position | Ce que fait l'agent |
-| --- | --- |
-| Position de départ | Reconnaît la famille d'ouverture et liste les premiers coups |
-| Italienne (après 3.Fc4 Fc5) | Nomme l'ouverture, montre la théorie, le contexte Wikichess et des vidéos |
-| Sicilienne (après 1.e4 c5) | Remonte les articles et tutoriels sur la sicilienne |
-| Hors théorie (après 1.e4 e5 2.Dh5) | Bascule sur Stockfish et explique l'évaluation |
+Checks: `uv run pytest` (87 tests), `uv run ruff check .`,
+`uv run bandit -c pyproject.toml -r src`, and `npm test -- --watch=false
+--browsers=ChromeHeadless` in `frontend/`.
 
-## Les routes de l'API
+## Structure
 
-| Route | Rôle |
-| --- | --- |
-| `GET /api/v1/healthcheck` | Vérifie que le service répond |
-| `GET /api/v1/position/{fen}` | Décrit une position (trait, coups légaux, diagramme) |
-| `GET /api/v1/moves/{fen}` | Coups théoriques et parties de référence (Lichess), ou le livre local |
-| `GET /api/v1/evaluate/{fen}` | Évaluation Stockfish et meilleur coup |
-| `GET /api/v1/vector-search?q=` | Recherche vectorielle dans la base de connaissances |
-| `GET /api/v1/videos/{opening}` | Vidéos explicatives YouTube |
-| `POST /api/v1/agent` | Exécute le graphe complet sur une position |
-| `GET /api/v1/history` | Dernières positions analysées (MongoDB) |
+```
+├── backend/
+│   ├── data/
+│   │   ├── wikichess/        the index of the 21 FICGS articles, downloaded on demand
+│   │   ├── openings/         11 notes written in French, the local opening book's prose
+│   │   └── eval/             the published measurements and the cases behind them
+│   ├── scripts/              ingestion, the three measurement scripts, the PDF build
+│   ├── src/chess_coach/
+│   │   ├── agent/            LangGraph state, nodes, graph, synthesis
+│   │   ├── api/              FastAPI routes and schemas
+│   │   ├── evaluation/       the metrics, the query variants, the threshold sweep
+│   │   ├── rag/              chunking and indexing
+│   │   ├── services/         Lichess, Stockfish, YouTube, Milvus, MongoDB, the opening book
+│   │   └── config.py         every tunable, read from the environment
+│   └── tests/                87 tests, no network
+├── frontend/                 Angular Material and ngx-chess-board
+├── docs/                     architecture, and a feasibility study on video analysis
+├── notebooks/                the walkthrough, from ingestion to the agent
+└── docker-compose.yml        the six services
+```
 
-## En cas de souci
+Python 3.12 · FastAPI · LangGraph · Milvus · MongoDB · Stockfish · sentence-transformers ·
+Angular 17 · Angular Material · nginx · uv · Docker.
 
-- **Pas de vidéos** — la clé `YOUTUBE_API_KEY` manque ou son quota est épuisé.
-  Le reste de la réponse fonctionne quand même.
-- **Pas de théorie, seulement le moteur** — l'Opening Explorer de Lichess exige
-  un jeton. Sans `LICHESS_TOKEN`, le livre d'ouvertures local couvre les
-  grandes lignes et les positions plus profondes basculent sur Stockfish.
-- **`vector-search` ne renvoie rien** — l'ingestion (étape 3) n'a pas été jouée.
+## What this does not prove
 
-## Développement sans Docker
+**Fourteen questions is a small set.** One question is worth 0.07 of recall, so the
+ablation separates a wide gap from a narrow one and nothing finer. It is enough to
+establish that padding the query costs five questions; it is not enough to rank the three
+variants that scored within one case of each other.
 
-Les commandes Python se lancent depuis `backend/` (voir `backend/README.md`).
-Le frontend se lance depuis `frontend/` avec `npm start`.
+**Thirty-two articles is a small corpus.** On a base this size the right answer is often
+within reach, and a high recall@3 says more about the corpus than about the retrieval.
+What remains measurable — and is measured — is the sensitivity to how the question is
+worded.
 
-## Contrôles qualité
+**Nothing here checks that the model obeys.** The prompt forbids inventing a move and
+forbids mentioning the engine when no evaluation was requested. That is the right
+instruction in the right place, and a test with a faked model can only verify that the
+*prompt* carries it. Measuring compliance means running a real model over the evaluation
+positions and counting the moves it cites outside the list it was given — designed, costed,
+and not run: the calls are billed and the decision to spend belongs to whoever owns the
+key.
 
-| Outil | Configuration | Commande |
-| --- | --- | --- |
-| Ruff | `backend/pyproject.toml` | `uv run ruff check src tests` |
-| Bandit | `backend/pyproject.toml` | `uv run bandit -c pyproject.toml -r src` |
-| Pytest | `backend/pyproject.toml` | `uv run pytest` |
-| Pre-commit | `.pre-commit-config.yaml` | `uv run pre-commit run --all-files` |
-| Karma (frontend) | `frontend/angular.json` | `npm test -- --watch=false --browsers=ChromeHeadless` |
+**The corpus is taken as it comes.** The Wikichess articles are indexed with their source
+and their contributors, and this repository measures which one is returned, not whether
+what it says is right.
 
-Le crochet pre-commit enchaîne `ruff --fix`, `ruff-format`, `bandit` et
-`nbstripout` : les notebooks sont versionnés sans sortie d'exécution.
+**Nothing measures the quality of the written answer.** It would take a judge, and a judge
+mostly measures the judge.
 
-## Documentation
+## Licence and data
 
-- Le raisonnement complet est déroulé dans `notebooks/chess_coach_mission.ipynb`.
-- Le schéma d'architecture est dans `docs/architecture.md`.
-- L'étude du système d'analyse vidéo (bénéfices, limites, architecture MCP et
-  coûts) est dans `docs/feasibility_video_analysis.md`, avec sa version
-  paginée `docs/feasibility_video_analysis.pdf` (13 pages).
+Code under [MIT](LICENSE).
 
-## Licence
+**No third-party data is redistributed.** The knowledge base is built from
+[Wikichess](https://ficgs.com/wikichess.html), and FICGS keeps every right on it: its
+terms reserve "the general structure, texts, images, graphism, documents, databases and
+every element of the site" and allow copying games only, in PGN. So the 21 articles are
+not here. What is here is their index — `backend/data/wikichess/MANIFEST.json`, which
+names each one and the page it comes from — and `scripts/fetch_wikichess.py`, which
+downloads them again into a folder git ignores. The eleven French notes are written for
+this repository.
 
-MIT.
+The Lichess Opening Explorer, Stockfish and the YouTube Data API are called at run time
+and each keeps its own terms; no key is shipped. The measurements under `data/eval/` are
+derived numbers and carry no third-party content — except the frozen Explorer reading,
+which holds counts of public games with the date they were read.
