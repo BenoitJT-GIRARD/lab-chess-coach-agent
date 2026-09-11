@@ -149,9 +149,9 @@ request.
 
 ### The model writes up; it does not choose
 
-The prompt forbids it in one line: *ne cite que les coups qui te sont donnés, n'en invente
-aucun*. Twenty-one positions — every line of the frozen reading that had left theory, plus
-the twelve shallowest that had not — each answered twice by `gpt-4o-mini`: 42 billed calls.
+The prompt says it in one line: cite only the moves you are handed, *n'en invente aucun*.
+Twenty-one positions — every line of the frozen reading that had left theory, plus the
+twelve shallowest that had not — each answered twice by `gpt-4o-mini`: 42 billed calls.
 
 | Moves cited | Given in the prompt | Told as a line | Legal, not given | No such move |
 |---|---|---|---|---|
