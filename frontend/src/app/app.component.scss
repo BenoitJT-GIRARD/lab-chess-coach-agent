@@ -1,4 +1,4 @@
-.barre {
+.toolbar {
   gap: 0.85rem;
   position: sticky;
   top: 0;
@@ -12,20 +12,20 @@
   height: 1.9rem;
 }
 
-.titres {
+.titles {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
   overflow: hidden;
 }
 
-.titre {
+.title {
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 
-.sous-titre {
+.subtitle {
   font-size: 0.78rem;
   color: var(--gold-soft);
   white-space: nowrap;

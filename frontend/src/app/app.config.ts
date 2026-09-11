@@ -6,7 +6,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     // Les composants Angular Material (info-bulles, puces, indicateur de
-    // chargement) s'appuient sur le module d'animations.
+    // loading) s'appuient sur le module d'animations.
     provideAnimations(),
   ],
 };

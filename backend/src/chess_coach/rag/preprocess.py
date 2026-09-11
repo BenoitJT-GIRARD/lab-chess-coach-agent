@@ -68,9 +68,9 @@ def strip_markdown(text: str) -> str:
     for line in text.splitlines():
         line = re.sub(r"^\s{0,3}#{1,6}\s*", "", line)  # titres de section
         line = re.sub(r"^\s{0,3}>\s?", "", line)  # bloc de métadonnées
-        line = line.replace("**", "").replace("__", "")  # gras
+        line = line.replace("**", "").replace("__", "")  # bold
         lines.append(line.rstrip())
-    # Deux sauts de ligne au maximum : le découpage se fait sur les paragraphes.
+    # At most two newlines: the chunking splits on paragraphs.
     return re.sub(r"\n{3,}", "\n\n", "\n".join(lines)).strip()
 
 

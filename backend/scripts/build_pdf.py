@@ -13,7 +13,7 @@ appear as pictures rather than as blocks of code.
 Usage (from the ``backend/`` folder)::
 
     python -m scripts.build_pdf ../docs/feasibility_video_analysis.md
-    python -m scripts.build_pdf ../docs/architecture.md --titre "Architecture"
+    python -m scripts.build_pdf ../docs/architecture.md --title "Architecture"
 """
 
 from __future__ import annotations
@@ -36,7 +36,7 @@ CHEMINS_CHROME = [
     "/usr/bin/chromium",
 ]
 
-FEUILLE_DE_STYLE = """
+STYLESHEET = """
 @page { size: A4; margin: 18mm 16mm; }
 
 body {
@@ -98,15 +98,15 @@ pre.mermaid {
 hr { border: 0; border-top: 1px solid #e2ddd2; margin: 1.8em 0; }
 """
 
-GABARIT = """<!doctype html>
+TEMPLATE = """<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>{titre}</title>
+<title>{title}</title>
 <style>{style}</style>
 </head>
 <body>
-{corps}
+{body}
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
   mermaid.initialize({{ startOnLoad: true, theme: 'neutral' }});
@@ -137,19 +137,19 @@ def markdown_vers_html(source: Path) -> str:
         capture_output=True,
         check=True,
     )
-    corps = resultat.stdout.decode("utf-8")
+    body = resultat.stdout.decode("utf-8")
 
     # Pandoc wraps a fenced block in <pre><code>. Mermaid wants the text
     # directly inside an element carrying the "mermaid" class.
     return re.sub(
         r'<pre class="mermaid"><code>(.*?)</code></pre>',
         lambda bloc: '<pre class="mermaid">' + bloc.group(1) + "</pre>",
-        corps,
+        body,
         flags=re.S,
     )
 
 
-def html_vers_pdf(html: str, sortie: Path) -> None:
+def html_to_pdf(html: str, output: Path) -> None:
     """Print the HTML page to PDF with headless Chrome."""
 
     chrome = trouver_chrome()
@@ -162,9 +162,9 @@ def html_vers_pdf(html: str, sortie: Path) -> None:
                 "--headless",
                 "--disable-gpu",
                 "--no-pdf-header-footer",
-                # Laisse le temps à Mermaid de dessiner les schémas.
+                # Give Mermaid time to draw the diagrams before printing.
                 "--virtual-time-budget=20000",
-                f"--print-to-pdf={sortie}",
+                f"--print-to-pdf={output}",
                 page.as_uri(),
             ],
             capture_output=True,
@@ -174,24 +174,24 @@ def html_vers_pdf(html: str, sortie: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Convertit un document Markdown en PDF.")
-    parser.add_argument("source", type=Path, help="fichier Markdown à convertir")
-    parser.add_argument("--sortie", type=Path, help="fichier PDF produit (par défaut : même nom)")
-    parser.add_argument("--titre", default=None, help="titre de la page HTML")
+    parser.add_argument("source", type=Path, help="the Markdown file to convert")
+    parser.add_argument("--output", type=Path, help="the PDF to write (default: the same name)")
+    parser.add_argument("--title", default=None, help="title de la page HTML")
     args = parser.parse_args()
 
     source = args.source.resolve()
     if not source.exists():
         raise SystemExit(f"Fichier introuvable : {source}")
-    sortie = (args.sortie or source.with_suffix(".pdf")).resolve()
+    output = (args.output or source.with_suffix(".pdf")).resolve()
 
     print(f"Conversion de {source.name}...")
-    corps = markdown_vers_html(source)
-    html = GABARIT.format(titre=args.titre or source.stem, style=FEUILLE_DE_STYLE, corps=corps)
-    html_vers_pdf(html, sortie)
+    body = markdown_vers_html(source)
+    html = TEMPLATE.format(title=args.title or source.stem, style=STYLESHEET, body=body)
+    html_to_pdf(html, output)
 
-    if not sortie.exists():
-        raise SystemExit("La conversion a échoué : aucun PDF produit.")
-    print(f"PDF écrit : {sortie} ({sortie.stat().st_size // 1024} Ko)")
+    if not output.exists():
+        raise SystemExit("Conversion failed: no PDF was produced.")
+    print(f"PDF written: {output} ({output.stat().st_size // 1024} KB)")
 
 
 if __name__ == "__main__":

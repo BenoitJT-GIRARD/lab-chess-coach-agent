@@ -86,15 +86,15 @@ def test_the_local_book_takes_over_when_lichess_finds_nothing() -> None:
     assert all(move.source == "book" for move in result.moves)
 
 
-# 1.e4 e5 2.Dh5 : l'attaque du berger. Le livre local l'ignore, et la base des
-# maîtres n'en compte qu'une poignée de parties.
-FEN_BERGER = "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2"
+# 1.e4 e5 2.Qh5, the Scholar's Attack. The local book does not know it, and the master
+# database counts a handful of games.
+FEN_SCHOLARS_ATTACK = "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2"
 
 
 def test_a_named_but_rare_line_is_out_of_theory_and_keeps_its_name() -> None:
     lichess = FakeLichess(
         OpeningExplorerResult(
-            fen=FEN_BERGER,
+            fen=FEN_SCHOLARS_ATTACK,
             opening_name="King's Pawn Game: Wayward Queen Attack",
             opening_eco="C20",
             total_games=48,
@@ -104,12 +104,12 @@ def test_a_named_but_rare_line_is_out_of_theory_and_keeps_its_name() -> None:
     )
     service = TheoryService(settings=Settings(lichess_token="lip_test"), lichess=lichess)
 
-    result = service.get_theoretical_moves(FEN_BERGER)
+    result = service.get_theoretical_moves(FEN_SCHOLARS_ATTACK)
 
-    # Le moteur doit prendre la main : la ligne n'est pas de la théorie établie.
+    # The engine has to take over: the line is not established theory.
     assert result.in_theory is False
-    # Mais on garde ce que Lichess sait. « Attaque du berger, 48 parties »
-    # apprend plus au joueur que « position inconnue ».
+    # But what Lichess knows is kept: "Scholar's Attack, 48 games" teaches the player
+    # more than "unknown position".
     assert result.opening_name == "King's Pawn Game: Wayward Queen Attack"
     assert result.total_games == 48
 
@@ -117,7 +117,7 @@ def test_a_named_but_rare_line_is_out_of_theory_and_keeps_its_name() -> None:
 def test_an_unknown_position_returns_nothing_at_all() -> None:
     lichess = FakeLichess(
         OpeningExplorerResult(
-            fen=FEN_BERGER,
+            fen=FEN_SCHOLARS_ATTACK,
             opening_name=None,
             opening_eco=None,
             total_games=0,
@@ -127,7 +127,7 @@ def test_an_unknown_position_returns_nothing_at_all() -> None:
     )
     service = TheoryService(settings=Settings(lichess_token="lip_test"), lichess=lichess)
 
-    result = service.get_theoretical_moves(FEN_BERGER)
+    result = service.get_theoretical_moves(FEN_SCHOLARS_ATTACK)
 
     assert result.in_theory is False
     assert result.opening_name is None

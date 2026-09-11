@@ -1,69 +1,94 @@
-# Backend — API FastAPI et agent LangGraph
+# Backend — FastAPI service and LangGraph agent
 
-Cette partie du projet contient tout le code Python : l'agent, ses outils et
-l'API qui les expose. Le frontend Angular vit dans `../frontend`, et
-l'orchestration des deux dans `../docker-compose.yml`.
+All the Python lives here: the agent, its tools, the API that exposes them, and the
+harness that measures the two decisions the agent takes. The Angular interface is in
+`../frontend`, and `../docker-compose.yml` assembles the two.
 
-## Organisation
+## Layout
 
 ```
 backend/
 ├── src/chess_coach/
-│   ├── config.py          # Réglages lus dans l'environnement
-│   ├── services/          # Un module par système externe
-│   ├── rag/               # Préparation et indexation du corpus
-│   ├── agent/             # État, nœuds et graphe LangGraph
-│   └── api/               # Routes FastAPI
-├── data/                  # Base de connaissances sur les ouvertures
-├── scripts/               # Ingestion, présentation, packaging
-├── tests/                 # Suite pytest
+│   ├── config.py          # every tunable, read from the environment
+│   ├── services/          # one module per external system
+│   ├── rag/               # chunking and indexing of the corpus
+│   ├── agent/             # LangGraph state, nodes, graph, synthesis
+│   ├── evaluation/        # metrics, query variants, threshold sweep
+│   └── api/               # FastAPI routes and schemas
+├── data/
+│   ├── wikichess/         # 21 articles, English, each citing its source
+│   ├── openings/          # 11 notes written in French
+│   └── eval/              # the published measurements and the cases behind them
+├── scripts/               # ingestion, the measurement scripts, the PDF build
+├── tests/                 # 87 tests, no network
 ├── Dockerfile
 └── pyproject.toml
 ```
 
-La règle de dépendance est simple : l'API et l'agent appellent les services,
-jamais l'inverse.
+The dependency rule is one line: the API and the agent call the services, never the
+reverse. `evaluation/` depends on both, and nothing depends on `evaluation/`.
 
-## Lancer le backend seul
+## Running the backend on its own
 
-Les commandes se lancent depuis ce dossier.
+From this directory.
 
 ```powershell
-# Installer les dépendances (uv lit .python-version et uv.lock)
-uv sync --all-extras
-
-# Jouer la suite de tests
+uv sync --extra dev                          # uv reads .python-version and uv.lock
 uv run pytest
-
-# Servir l'API (Milvus et MongoDB doivent être joignables)
-uv run uvicorn chess_coach.api.main:app --reload
+uv run uvicorn chess_coach.api.main:app --reload   # Milvus and MongoDB must be reachable
 ```
 
-Documentation interactive de l'API : <http://localhost:8000/docs>.
+Interactive API documentation: <http://localhost:8000/docs>.
 
-## Charger la base de connaissances
+## Loading the knowledge base
 
 ```powershell
-uv run python -m scripts.fetch_wikichess    # télécharge les articles Wikichess
-uv run python -m scripts.ingest_wikichess   # les indexe dans Milvus
+uv run python -m scripts.fetch_wikichess     # downloads the Wikichess articles
+uv run python -m scripts.ingest_wikichess    # chunks and indexes them into Milvus
 ```
 
-Les articles téléchargés sont versionnés avec le projet : la première commande
-n'est à rejouer que pour rafraîchir le corpus.
+The downloaded articles are versioned with the project, so the first command is only for
+refreshing the corpus. The second is the one to run after a fresh `docker compose up`:
+the Milvus volume keeps the index between restarts, but it starts empty.
 
-## Fabriquer les documents
+## Reproducing the measurements
+
+```powershell
+uv run python -m scripts.run_retrieval_ablation   # four query formulations, 14 cases
+uv run python -m scripts.sweep_theory_threshold   # reads the frozen Explorer reading
+uv run python -m scripts.sample_theory_positions  # re-takes it; the only script needing a token
+```
+
+The ablation needs the stack up and the corpus ingested. The sweep touches no network by
+design: the Explorer is a living database, so its reading is taken once, dated, and
+committed, and everything downstream runs on the file.
+
+The latency bench belongs inside the container, where Stockfish is installed:
+
+```powershell
+docker compose exec backend python -m scripts.bench_agent
+```
+
+Results land in `data/eval/`, and the README at the root quotes them.
+
+## Building the documents
 
 ```powershell
 uv run python -m scripts.build_pdf ../docs/feasibility_video_analysis.md
 ```
 
-`build_pdf` s'appuie sur Pandoc et sur Chrome en mode sans interface ; les
-schémas Mermaid sont dessinés par le navigateur avant l'impression.
+`build_pdf` drives Pandoc and headless Chrome; the Mermaid diagrams are drawn by the
+browser before printing rather than left as code blocks.
 
-## Contrôles qualité
+## Quality gates
 
-| Outil | Commande |
+| Tool | Command |
 | --- | --- |
-| Ruff (lint et format) | `uv run ruff check src tests` |
-| Bandit (sécurité) | `uv run bandit -c pyproject.toml -r src` |
+| Ruff — lint | `uv run ruff check .` |
+| Ruff — format | `uv run ruff format --check .` |
+| Bandit | `uv run bandit -c pyproject.toml -r src` |
 | Pytest | `uv run pytest` |
+
+Warnings are errors: `filterwarnings = ["error"]`, with no exemption. The stack is made of
+six fast-moving libraries, and the configuration used to silence three whole warning
+categories — including the one libraries use to announce a breaking change.

@@ -9,18 +9,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AgentResponse } from '../models/agent.models';
 
-/** Le coup mis en avant, avec la raison qui le justifie. */
-interface ProchainCoup {
+/** The move put forward, and why. */
+interface NextMove {
   san: string;
-  raison: string;
+  reason: string;
 }
 
 /**
- * Affiche la réponse de l'agent : ouverture, coups théoriques, parties de
- * référence, évaluation du moteur, extraits de la base et vidéos.
+ * Renders the agent's answer: opening, theoretical moves, reference games, engine
+ * evaluation, retrieved passages and videos.
  *
- * Composant purement présentatif : il ne fait aucun appel réseau et se contente
- * de mettre en forme ce qu'on lui passe.
+ * Purely presentational: it makes no network call and only formats what it is handed.
+ * A panel that fetched its own data would give the board and the panel two states that
+ * can disagree.
  */
 @Component({
   selector: 'app-coach-panel',
@@ -37,81 +38,81 @@ interface ProchainCoup {
   styleUrl: './coach-panel.component.scss',
 })
 export class CoachPanelComponent {
-  @Input() chargement = false;
-  @Input() erreur: string | null = null;
-  @Input() resultat: AgentResponse | null = null;
+  @Input() loading = false;
+  @Input() error: string | null = null;
+  @Input() result: AgentResponse | null = null;
 
   constructor(private readonly sanitizer: DomSanitizer) {}
 
   /**
-   * Le coup à jouer maintenant.
+   * The move to play now.
    *
-   * Dans la théorie, c'est le coup le plus joué en parties de maîtres. Hors
-   * théorie, c'est celui que recommande le moteur. Les deux cas s'excluent :
-   * l'agent n'appelle Stockfish que lorsqu'il sort de la théorie.
+   * Inside theory, the one most played in master games; outside it, the one the engine
+   * recommends. The two cases are exclusive: the agent only calls Stockfish once the
+   * position has left theory.
    */
-  get prochainCoup(): ProchainCoup | null {
-    const resultat = this.resultat;
-    if (!resultat) {
+  get nextMove(): NextMove | null {
+    const result = this.result;
+    if (!result) {
       return null;
     }
 
-    if (resultat.in_theory && resultat.theory_moves.length) {
-      const coup = resultat.theory_moves[0];
-      const parties = this.nombreDeParties(coup.total);
+    if (result.in_theory && result.theory_moves.length) {
+      const move = result.theory_moves[0];
+      const games = this.gameCount(move.total);
       return {
-        san: coup.san,
-        raison: parties
-          ? `le plus joué en parties de maîtres (${parties})`
+        san: move.san,
+        reason: games
+          ? `le plus joué en parties de maîtres (${games})`
           : 'coup principal de la théorie',
       };
     }
 
-    const evaluation = resultat.evaluation;
+    const evaluation = result.evaluation;
     if (evaluation?.best_move_san) {
       return {
         san: evaluation.best_move_san,
-        raison: `recommandé par Stockfish (profondeur ${evaluation.depth})`,
+        reason: `recommandé par Stockfish (profondeur ${evaluation.depth})`,
       };
     }
 
     return null;
   }
 
-  /** Construit l'URL d'intégration de la première vidéo proposée. */
-  urlIntegration(videoId: string): SafeResourceUrl {
+  /** Build the embed URL of the first suggested video. */
+  embedUrl(videoId: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `https://www.youtube.com/embed/${videoId}`,
     );
   }
 
-  /** Met l'évaluation Stockfish sous une forme lisible. */
-  libelleEvaluation(): string {
-    const evaluation = this.resultat?.evaluation;
+  /** Render the Stockfish evaluation in a readable form. */
+  evaluationLabel(): string {
+    const evaluation = this.result?.evaluation;
     if (!evaluation) {
       return '';
     }
     if (evaluation.evaluation_type === 'mate') {
       return `Mat en ${Math.abs(evaluation.value)}`;
     }
-    const pions = evaluation.value / 100;
-    return `${pions >= 0 ? '+' : ''}${pions.toFixed(2)}`;
+    const pawns = evaluation.value / 100;
+    return `${pawns >= 0 ? '+' : ''}${pawns.toFixed(2)}`;
   }
 
-  /** Nombre de parties dans lesquelles un coup a été joué, formaté. */
-  nombreDeParties(total: number): string {
+  /** How many games a move was played in, formatted. */
+  gameCount(total: number): string {
     return total > 0 ? total.toLocaleString('fr-FR') : '';
   }
 
-  /** Nom lisible d'un outil utilisé par l'agent. */
-  libelleSource(source: string): string {
-    const libelles: Record<string, string> = {
+  /** Readable name for one of the tools the agent used. */
+  sourceLabel(source: string): string {
+    const labels: Record<string, string> = {
       theory: 'Théorie Lichess',
       engine: 'Moteur Stockfish',
       rag: 'Base Wikichess',
       youtube: 'API YouTube',
       llm: 'Modèle de langage',
     };
-    return libelles[source] ?? source;
+    return labels[source] ?? source;
   }
 }

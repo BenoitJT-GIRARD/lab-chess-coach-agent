@@ -11,17 +11,17 @@ import { AgentService } from '../services/agent.service';
 import { AgentResponse, Interaction } from '../models/agent.models';
 import { CoachPanelComponent } from '../coach/coach-panel.component';
 
-/** Une position préparée pour la démonstration. */
-interface PositionDemo {
-  libelle: string;
+/** One of the prepared demonstration positions. */
+interface DemoPosition {
+  label: string;
   fen: string;
 }
 
 /**
- * L'écran de travail : l'échiquier à gauche, le panneau du coach à droite.
+ * The working screen: the board on the left, the coach panel on the right.
  *
- * Ce composant tient l'état de la partie et parle au backend. Le panneau, lui,
- * ne fait qu'afficher ce qu'on lui donne.
+ * This component holds the state of the game and talks to the backend. The panel only
+ * renders what it is given.
  */
 @Component({
   selector: 'app-chessboard',
@@ -42,119 +42,119 @@ interface PositionDemo {
 export class ChessboardComponent {
   @ViewChild('board') board!: NgxChessBoardView;
 
-  /** Taille de l'échiquier, en pixels. */
-  readonly taille = 420;
-  readonly caseClaire = '#f4f1ea';
-  readonly caseSombre = '#7d8a99';
+  /** Board size, in pixels. */
+  readonly boardSize = 420;
+  readonly lightSquare = '#f4f1ea';
+  readonly darkSquare = '#7d8a99';
 
-  chargement = false;
-  erreur: string | null = null;
-  resultat: AgentResponse | null = null;
-  fenCourante = '';
+  loading = false;
+  error: string | null = null;
+  result: AgentResponse | null = null;
+  currentFen = '';
 
-  /** Dernières positions analysées, relues depuis MongoDB. */
-  historique: Interaction[] = [];
-  totalAnalyses = 0;
+  /** The last positions analysed, read back from MongoDB. */
+  history: Interaction[] = [];
+  analysisCount = 0;
 
-  /** Quelques positions parlantes pour la démonstration au client. */
-  readonly positionsDemo: PositionDemo[] = [
+  /** A few positions that show what the agent does. */
+  readonly demoPositions: DemoPosition[] = [
     {
-      libelle: 'Position de départ',
+      label: 'Position de départ',
       fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
     },
     {
-      libelle: 'Ouverture italienne',
+      label: 'Ouverture italienne',
       fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3',
     },
     {
-      libelle: 'Partie espagnole',
+      label: 'Partie espagnole',
       fen: 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3',
     },
     {
-      libelle: 'Défense sicilienne',
+      label: 'Défense sicilienne',
       fen: 'rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2',
     },
     {
-      libelle: 'Hors théorie (2.Dh5)',
+      label: 'Hors théorie (2.Dh5)',
       fen: 'rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2',
     },
   ];
 
   constructor(private readonly agent: AgentService) {
-    this.rafraichirHistorique();
+    this.refreshHistory();
   }
 
-  /** Relit les dernières analyses enregistrées par l'agent. */
-  rafraichirHistorique(): void {
+  /** Read back the last analyses the agent recorded. */
+  refreshHistory(): void {
     this.agent.history(5).subscribe({
-      next: (reponse) => {
-        this.historique = reponse.interactions;
-        this.totalAnalyses = reponse.total;
+      next: (response) => {
+        this.history = response.interactions;
+        this.analysisCount = response.total;
       },
-      // L'historique est un confort : son absence ne doit rien casser.
+      // The history is a convenience: losing it must break nothing.
       error: () => undefined,
     });
   }
 
-  /** Recharge une position déjà analysée. */
-  rejouer(interaction: Interaction): void {
+  /** Reload a position that has already been analysed. */
+  replay(interaction: Interaction): void {
     this.board.setFEN(interaction.fen);
-    this.analyser(interaction.fen);
+    this.analyse(interaction.fen);
   }
 
-  /** N'affiche que l'heure : l'historique porte sur la session en cours. */
-  heure(horodatage: string): string {
-    const date = new Date(horodatage);
+  /** Time only: the history covers the current session. */
+  timeOf(timestamp: string): string {
+    const date = new Date(timestamp);
     return isNaN(date.getTime())
       ? ''
       : date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
   }
 
-  /** Appelé à chaque coup joué sur l'échiquier. */
-  auCoupJoue(): void {
-    this.analyser(this.board.getFEN());
+  /** Called on every move played on the board. */
+  onMovePlayed(): void {
+    this.analyse(this.board.getFEN());
   }
 
-  /** Charge une position de démonstration puis l'analyse. */
-  chargerDemo(position: PositionDemo): void {
+  /** Load a demonstration position, then analyse it. */
+  loadDemo(position: DemoPosition): void {
     this.board.setFEN(position.fen);
-    this.analyser(position.fen);
+    this.analyse(position.fen);
   }
 
-  /** Revient au coup précédent. */
-  annulerCoup(): void {
+  /** Step back one move. */
+  undoMove(): void {
     this.board.undo();
-    this.analyser(this.board.getFEN());
+    this.analyse(this.board.getFEN());
   }
 
-  /** Retourne l'échiquier, pour se mettre du point de vue des Noirs. */
-  retourner(): void {
+  /** Flip the board, to see it from Black's side. */
+  flipBoard(): void {
     this.board.reverse();
   }
 
-  /** Remet la position de départ et vide le panneau. */
-  reinitialiser(): void {
+  /** Back to the starting position, and clear the panel. */
+  resetBoard(): void {
     this.board.reset();
-    this.resultat = null;
-    this.erreur = null;
-    this.fenCourante = '';
+    this.result = null;
+    this.error = null;
+    this.currentFen = '';
   }
 
-  /** Demande au backend l'analyse de la position courante. */
-  analyser(fen: string): void {
-    this.chargement = true;
-    this.erreur = null;
-    this.fenCourante = fen;
+  /** Ask the backend to analyse the current position. */
+  analyse(fen: string): void {
+    this.loading = true;
+    this.error = null;
+    this.currentFen = fen;
     this.agent.analyze(fen).subscribe({
-      next: (reponse) => {
-        this.resultat = reponse;
-        this.chargement = false;
-        // L'agent vient d'écrire une ligne de plus dans MongoDB.
-        this.rafraichirHistorique();
+      next: (response) => {
+        this.result = response;
+        this.loading = false;
+        // The agent has just written one more row to MongoDB.
+        this.refreshHistory();
       },
       error: () => {
-        this.erreur = "Impossible de contacter l'agent. Vérifiez que le backend est démarré.";
-        this.chargement = false;
+        this.error = "Impossible de contacter l'agent. Vérifiez que le backend est démarré.";
+        this.loading = false;
       },
     });
   }

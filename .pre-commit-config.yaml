@@ -1,7 +1,7 @@
-# Note sur les entrees "python -m ..." : les lanceurs .exe que pip genere pour
-# certains de ces crochets sont bloques par la strategie de controle
-# d'application de Windows sur le poste de developpement. Appeler le module
-# directement evite le lanceur sans rien changer au controle effectue, et reste
+# On the "python -m ..." entries: the .exe launchers pip generates for some of these
+# hooks are blocked by the Windows application-control policy on the development
+# machine. Calling the module directly avoids the launcher without changing what the
+# hook checks, and stays
 # valable sur les autres systemes.
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -32,9 +32,9 @@ repos:
     rev: 1.7.10
     hooks:
       - id: bandit
-        # Appelé en tant que module plutôt que par son exécutable : le
-        # lanceur .exe généré par pip est bloqué par la stratégie de contrôle
-        # d'application de Windows sur le poste de développement.
+        # Called as a module rather than through its executable: the .exe launcher
+        # pip generates is blocked by the Windows application-control policy on the
+        # development machine.
         entry: python -m bandit
         args: ["-c", "backend/pyproject.toml", "-q"]
         additional_dependencies: ["bandit[toml]"]

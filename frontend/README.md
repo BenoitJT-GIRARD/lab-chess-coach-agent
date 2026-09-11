@@ -1,50 +1,49 @@
-# Frontend — interface Angular
+# Frontend — the Angular interface
 
-L'interface présente un échiquier interactif et le panneau de conseils de
-l'agent. Elle parle au backend FastAPI par un chemin relatif (`/api/v1`), ce qui
-lui permet de fonctionner aussi bien derrière le proxy nginx du conteneur que
-derrière le proxy de `ng serve`.
+An interactive chessboard and the coach's answer panel. It talks to the FastAPI backend
+through a relative path (`/api/v1`), which is what lets the same build run behind the
+container's nginx proxy and behind the `ng serve` dev proxy without a rebuild.
 
-## D'où vient cette interface
+## What it is built on
 
-Deux briques viennent d'une interface de démonstration publique :
-un projet Angular Material public. On lui
-reprend deux choses :
+Two public bricks, and the attribution matters more than the line count:
 
-- la librairie d'échiquier **[ngx-chess-board](https://www.npmjs.com/package/ngx-chess-board)**,
-  avec ses entrées `[size]`, `[lightTileColor]`, `[darkTileColor]` et sa sortie
-  `(moveChange)` ;
-- l'habillage **Angular Material** : barre d'outils, cartes, boutons, info-bulles
-  et indicateur de chargement.
+- **[ngx-chess-board](https://www.npmjs.com/package/ngx-chess-board)** — the board itself,
+  with its `[size]`, `[lightTileColor]`, `[darkTileColor]` inputs and its `(moveChange)`
+  output. Version 3.0.0 ships sources only on npm, so the build pins the Ivy-compiled
+  2.2.3, which Angular 17 accepts through legacy peer resolution.
+- **[Angular Material](https://material.angular.io/)** — toolbar, cards, buttons, chips,
+  tooltips and the loading indicator.
 
-Le thème Material est reconstruit sur un bleu nuit et un or
-(`src/styles.scss`). La police d'icônes est
-embarquée dans le paquet `material-icons`, pour que l'application reste
-utilisable sans accès à internet pendant la démonstration.
+The Material theme is built on a navy and a gold (`src/styles.scss`). The icon font is
+bundled through the `material-icons` package rather than loaded from Google Fonts, so the
+interface stays usable with no internet access — which is also what a demonstration on a
+conference network needs.
 
-## Organisation
+## Layout
 
 ```
 src/app/
-├── app.component.*              # Coquille : barre de titre
-├── chessboard/                  # Échiquier, commandes, positions de démo
-├── coach/                       # Panneau de réponse de l'agent
-├── models/agent.models.ts       # Types miroir des réponses de l'API
-└── services/agent.service.ts    # Appels HTTP vers le backend
+├── app.component.*              # shell: the title bar
+├── chessboard/                  # the board, its controls, the demo positions
+├── coach/                       # the answer panel
+├── models/agent.models.ts       # types mirroring the API responses
+└── services/agent.service.ts    # HTTP calls to the backend
 ```
 
-Le découpage est volontairement simple : `chessboard` tient l'état de la partie
-et appelle le backend, `coach-panel` ne fait qu'afficher ce qu'on lui passe.
+The split is deliberately blunt: `chessboard` holds the state of the game and calls the
+backend, `coach-panel` only renders what it is handed. A panel that fetched its own data
+would make the board's state and the panel's state two things that can disagree.
 
-## Lancer l'interface
+## Running it
 
 ```powershell
 npm install
-npm start          # http://localhost:4200, proxy vers http://localhost:8000
+npm start          # http://localhost:4200, proxying to http://localhost:8000
 ```
 
-Le backend doit tourner à côté (voir `../backend/README.md` ou le
-`docker compose up` décrit à la racine).
+The backend has to be running alongside — see `../backend/README.md`, or the
+`docker compose up` described at the root.
 
 ## Tests
 
@@ -52,15 +51,15 @@ Le backend doit tourner à côté (voir `../backend/README.md` ou le
 npm test -- --watch=false --browsers=ChromeHeadless
 ```
 
-Les tests couvrent le service HTTP et le panneau de conseils : états de
-chargement et d'erreur, affichage de l'ouverture, des coups théoriques, des
-parties de référence et des outils utilisés par l'agent.
+They cover the HTTP service and the answer panel: loading and error states, the detected
+opening, the theoretical moves, the reference games, and the list of tools the agent
+actually used.
 
-## Construire l'image
+## Building the image
 
 ```powershell
-docker build -t chess_coach-frontend .
+docker build -t chess-coach-frontend .
 ```
 
-Le `Dockerfile` compile l'application avec Node puis la sert avec nginx, qui
-relaie `/api/` vers le backend.
+The `Dockerfile` builds the application with Node, then serves it with nginx, which
+forwards `/api/` to the backend.

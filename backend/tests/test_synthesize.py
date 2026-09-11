@@ -126,8 +126,8 @@ def test_the_prompt_carries_the_position_and_the_facts() -> None:
     assert "Italian Game (C50)" in prompt
     assert "103572421 parties" in prompt
     assert "Carlsen - Caruana, 1-0, 2019" in prompt
-    # Le modèle doit savoir quel coup l'interface met en avant, sinon il en
-    # commente un autre que celui affiché au joueur.
+    # The model has to know which move the interface puts forward, or it comments on
+    # a different one from the one shown to the player.
     assert "Coup mis en avant dans l'interface : Nf6" in prompt
     assert "Le fou en c4 vise la case f7." in prompt
 
@@ -198,8 +198,8 @@ def test_the_template_presentation_quotes_a_matching_passage() -> None:
 
 
 def test_the_template_presentation_ignores_an_unrelated_passage() -> None:
-    # Le RAG répond toujours quelque chose ; décrire la mauvaise ouverture
-    # serait pire que de ne rien dire.
+    # Retrieval always answers something; describing the wrong opening would be worse
+    # than saying nothing.
     etat = {
         **STATE_IN_THEORY,
         "opening_name": "King's Gambit",
