@@ -126,7 +126,7 @@ def trouver_chrome() -> str:
     raise SystemExit("Chrome introuvable. Renseigne la variable CHROME_BIN.")
 
 
-def markdown_vers_html(source: Path) -> str:
+def markdown_to_html(source: Path) -> str:
     """Convert the Markdown into an HTML fragment with Pandoc."""
 
     if shutil.which("pandoc") is None:
@@ -181,11 +181,11 @@ def main() -> None:
 
     source = args.source.resolve()
     if not source.exists():
-        raise SystemExit(f"Fichier introuvable : {source}")
+        raise SystemExit(f"File not found: {source}")
     output = (args.output or source.with_suffix(".pdf")).resolve()
 
-    print(f"Conversion de {source.name}...")
-    body = markdown_vers_html(source)
+    print(f"Converting {source.name}...")
+    body = markdown_to_html(source)
     html = TEMPLATE.format(title=args.title or source.stem, style=STYLESHEET, body=body)
     html_to_pdf(html, output)
 

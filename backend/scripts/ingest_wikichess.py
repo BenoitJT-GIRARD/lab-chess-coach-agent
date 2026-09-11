@@ -18,12 +18,12 @@ def main() -> None:
     settings = get_settings()
     print(f"Embedding model : {settings.embedding_model}")
     print(f"Milvus          : {settings.milvus_host}:{settings.milvus_port}")
-    print("Base de connaissances :")
+    print("Knowledge base:")
     for directory in knowledge_directories(settings):
         print(f"  - {directory}")
 
     count = ingest()
-    print(f"\n{count} chunks indexés dans la collection '{settings.milvus_collection}'.")
+    print(f"\n{count} chunks indexed in collection '{settings.milvus_collection}'.")
 
 
 if __name__ == "__main__":

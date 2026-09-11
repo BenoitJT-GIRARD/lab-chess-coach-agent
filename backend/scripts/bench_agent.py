@@ -65,7 +65,7 @@ def measure_one(deps: AgentDeps, timed, name: str, fen: str) -> None:
     timed("context", lambda: deps.rag.search(query, top_k=3))
     if deps.youtube.is_configured:
         timed("videos", lambda: deps.youtube.search_videos(opening, max_results=4))
-    print(f"  {name:36s} {'théorie' if theory.in_theory else 'moteur'}")
+    print(f"  {name:36s} {'theory' if theory.in_theory else 'engine'}")
 
 
 def main() -> None:
