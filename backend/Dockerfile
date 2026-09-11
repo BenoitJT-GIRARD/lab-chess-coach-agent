@@ -28,7 +28,9 @@ COPY src ./src
 COPY scripts ./scripts
 RUN uv sync --frozen --no-dev
 
-# Wikichess knowledge base, ingested into Milvus at runtime.
+# The knowledge base, ingested into Milvus at runtime. The Wikichess articles are
+# not redistributed: only their manifest is here, and docker-compose mounts the folder
+# the download fills.
 COPY data ./data
 
 EXPOSE 8000

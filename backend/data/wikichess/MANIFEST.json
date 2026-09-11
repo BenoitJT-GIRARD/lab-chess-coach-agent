@@ -1,0 +1,175 @@
+{
+  "about": "Index of the Wikichess corpus. The articles themselves are not redistributed: FICGS reserves the rights on the text of its site. Run `python -m scripts.fetch_wikichess` to download them again into this folder.",
+  "source": "https://ficgs.com/wikichess.html",
+  "downloaded": "2026-09-02",
+  "articles": [
+    {
+      "file": "00001-king-s-pawn-opening.md",
+      "article_id": 1,
+      "opening": "King's pawn Opening",
+      "eco": "B00",
+      "moves": "1.e4",
+      "url": "https://ficgs.com/wikichess_1.html"
+    },
+    {
+      "file": "00002-queen-s-pawn.md",
+      "article_id": 2,
+      "opening": "Queen's pawn",
+      "eco": "A40",
+      "moves": "1.d4",
+      "url": "https://ficgs.com/wikichess_2.html"
+    },
+    {
+      "file": "00003-sicilian-defense.md",
+      "article_id": 3,
+      "opening": "Sicilian defense",
+      "eco": "B20",
+      "moves": "1.e4 c5",
+      "url": "https://ficgs.com/wikichess_3.html"
+    },
+    {
+      "file": "00004-reti-opening.md",
+      "article_id": 4,
+      "opening": "Reti Opening",
+      "eco": "A04",
+      "moves": "1.Nf3",
+      "url": "https://ficgs.com/wikichess_4.html"
+    },
+    {
+      "file": "00005-king-s-pawn-game.md",
+      "article_id": 5,
+      "opening": "King's pawn game",
+      "eco": "C20",
+      "moves": "1.e4 e5",
+      "url": "https://ficgs.com/wikichess_5.html"
+    },
+    {
+      "file": "00006-sicilian-defense.md",
+      "article_id": 6,
+      "opening": "Sicilian defense",
+      "eco": "B27",
+      "moves": "1.e4 c5 2.Nf3",
+      "url": "https://ficgs.com/wikichess_6.html"
+    },
+    {
+      "file": "00008-king-s-knight-opening.md",
+      "article_id": 8,
+      "opening": "King's knight Opening",
+      "eco": "C40",
+      "moves": "1.e4 e5 2.Nf3",
+      "url": "https://ficgs.com/wikichess_8.html"
+    },
+    {
+      "file": "00012-ruy-lopez-spanish-opening.md",
+      "article_id": 12,
+      "opening": "Ruy Lopez (Spanish Opening)",
+      "eco": "C60",
+      "moves": "1.e4 e5 2.Nf3 Nc6 3.Bb5",
+      "url": "https://ficgs.com/wikichess_12.html"
+    },
+    {
+      "file": "00013-petrov-s-defense.md",
+      "article_id": 13,
+      "opening": "Petrov's defense",
+      "eco": "C42",
+      "moves": "1.e4 e5 2.Nf3 Nf6",
+      "url": "https://ficgs.com/wikichess_13.html"
+    },
+    {
+      "file": "00014-queen-s-pawn-game.md",
+      "article_id": 14,
+      "opening": "Queen's pawn game",
+      "eco": "A45",
+      "moves": "1.d4 Nf6",
+      "url": "https://ficgs.com/wikichess_14.html"
+    },
+    {
+      "file": "00016-queen-s-gambit.md",
+      "article_id": 16,
+      "opening": "Queen's Gambit",
+      "eco": "D06",
+      "moves": "1.d4 d5 2.c4",
+      "url": "https://ficgs.com/wikichess_16.html"
+    },
+    {
+      "file": "00017-qgd-slav-defense.md",
+      "article_id": 17,
+      "opening": "QGD Slav defense",
+      "eco": "D10",
+      "moves": "1.d4 d5 2.c4 c6",
+      "url": "https://ficgs.com/wikichess_17.html"
+    },
+    {
+      "file": "00021-french-defense.md",
+      "article_id": 21,
+      "opening": "French defense",
+      "eco": "C00",
+      "moves": "1.e4 e6",
+      "url": "https://ficgs.com/wikichess_21.html"
+    },
+    {
+      "file": "00029-english-opening.md",
+      "article_id": 29,
+      "opening": "English Opening",
+      "eco": "A10",
+      "moves": "1.c4",
+      "url": "https://ficgs.com/wikichess_29.html"
+    },
+    {
+      "file": "00044-king-s-indian-defense.md",
+      "article_id": 44,
+      "opening": "King's Indian defense",
+      "eco": "E60",
+      "moves": "1.d4 Nf6 2.c4 g6",
+      "url": "https://ficgs.com/wikichess_44.html"
+    },
+    {
+      "file": "00045-king-s-pawn-game.md",
+      "article_id": 45,
+      "opening": "King's pawn game",
+      "eco": "C50",
+      "moves": "1.e4 e5 2.Nf3 Nc6 3.Bc4",
+      "url": "https://ficgs.com/wikichess_45.html"
+    },
+    {
+      "file": "00046-scotch-opening.md",
+      "article_id": 46,
+      "opening": "Scotch Opening",
+      "eco": "C44",
+      "moves": "1.e4 e5 2.Nf3 Nc6 3.d4",
+      "url": "https://ficgs.com/wikichess_46.html"
+    },
+    {
+      "file": "00048-giuoco-piano.md",
+      "article_id": 48,
+      "opening": "Giuoco Piano",
+      "eco": "C50",
+      "moves": "1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5",
+      "url": "https://ficgs.com/wikichess_48.html"
+    },
+    {
+      "file": "00144-king-s-indian-defense-3-nc3.md",
+      "article_id": 144,
+      "opening": "King's Indian defense, 3.Nc3",
+      "eco": "E61",
+      "moves": "1.d4 Nf6 2.c4 g6 3.Nc3 Bg7",
+      "url": "https://ficgs.com/wikichess_144.html"
+    },
+    {
+      "file": "00297-ruy-lopez-spanish-opening.md",
+      "article_id": 297,
+      "opening": "Ruy Lopez (Spanish Opening)",
+      "eco": "C60",
+      "moves": "1.e4 e5 2.Nf3 Nc6 3.Bb5 a6",
+      "url": "https://ficgs.com/wikichess_297.html"
+    },
+    {
+      "file": "00502-scandinavian-centre-counter-defense.md",
+      "article_id": 502,
+      "opening": "Scandinavian (centre counter) defense",
+      "eco": "B01",
+      "moves": "1.e4 d5",
+      "url": "https://ficgs.com/wikichess_502.html"
+    }
+  ]
+}

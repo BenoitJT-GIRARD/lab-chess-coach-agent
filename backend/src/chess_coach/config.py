@@ -41,10 +41,14 @@ class Settings(BaseSettings):
     lichess_database: str = "masters"
     # Number of reference games shown alongside the theoretical moves.
     lichess_reference_games: int = 3
-    # Below this number of master games, a position is treated as out of
-    # theory. The master database answers for almost any legal position, so a
-    # threshold is what separates a studied line from a curiosity: the Italian
-    # Game is backed by about 49 000 games, 1.e4 e5 2.Qh5 by 48.
+    # Below this number of master games, a position is treated as out of theory. The
+    # master database answers for almost any legal position, so a threshold is what
+    # separates a studied line from a curiosity: the Italian Game after 3.Bc4 Bc5 is
+    # backed by 25 559 games, 1.e4 e5 2.Qh5 by 48 — read on 2026-09-07, and the counts
+    # move because the database is alive.
+    #
+    # Swept over a frozen reading of 54 positions, the routing does not change between
+    # 500 and 5 000: this value sits in a plateau. See data/eval/theory_threshold_sweep.md.
     theory_min_games: int = 1000
 
     # --- Stockfish ---
@@ -62,7 +66,9 @@ class Settings(BaseSettings):
 
     # The knowledge base is made of two folders of Markdown articles, both
     # relative to the working directory.
-    #   - wikichess: articles downloaded from FICGS Wikichess, in English;
+    #   - wikichess: articles downloaded from FICGS Wikichess, in English,
+    #     not redistributed with the project: the folder is filled by
+    #     scripts.fetch_wikichess;
     #   - openings: complementary notes written in French for young players.
     wikichess_dir: str = "data/wikichess"
     openings_dir: str = "data/openings"

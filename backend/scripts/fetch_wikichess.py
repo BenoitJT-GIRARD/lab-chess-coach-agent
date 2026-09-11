@@ -14,8 +14,11 @@ openings — the same lines the local opening book is built from — and keeps
 every documented article met along the way. Following a line with python-chess
 also gives us, for free, the move sequence and the FEN of each article.
 
-The download happens once and its result is committed with the project, so
-indexing the corpus into Milvus never needs the network.
+The articles themselves are not redistributed: FICGS reserves the rights on
+the text of its site. What the repository keeps of the corpus is the manifest
+this script writes next to them — which files a download produces, and where
+each one comes from — so the evaluation labels can be checked without the
+articles being there.
 
 Usage (from the ``backend/`` folder)::
 
@@ -26,10 +29,12 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import re
 import time
 import unicodedata
 from dataclasses import dataclass, field
+from datetime import date
 from pathlib import Path
 
 import chess
@@ -50,6 +55,14 @@ MIN_TEXT_LENGTH = 400
 
 # The separator Wikichess puts between the article text and its footer.
 FOOTER_SEPARATOR = "============"
+
+# The index of the corpus, written beside the articles and versioned in their place.
+MANIFEST_NAME = "MANIFEST.json"
+MANIFEST_ABOUT = (
+    "Index of the Wikichess corpus. The articles themselves are not redistributed: "
+    "FICGS reserves the rights on the text of its site. Run "
+    "`python -m scripts.fetch_wikichess` to download them again into this folder."
+)
 
 
 @dataclass(slots=True)
@@ -237,14 +250,14 @@ def follow_line(
         article = parse(article_id, cache[article_id], played)
         if article.article_id not in kept and is_worth_keeping(article):
             kept[article.article_id] = article
-            print(f"  gardé   #{article.article_id:<6} {article.move_line} — {article.opening}")
+            print(f"  kept    #{article.article_id:<6} {article.move_line} — {article.opening}")
 
         if move_san is None:
             return
 
         next_id = next((cid for move, cid in article.children if move == move_san), None)
         if next_id is None:
-            print(f"  arrêt   après {article.move_line or '(départ)'} : {move_san} absent")
+            print(f"  stopped after {article.move_line or '(start)'}: no {move_san} from here")
             return
 
         article_id = next_id
@@ -259,7 +272,7 @@ def collect(client: httpx.Client, lines: list[list[str]]) -> list[WikichessArtic
 
     for index, moves_san in enumerate(lines, start=1):
         print()
-        print(f"Ligne {index}/{len(lines)} : {' '.join(moves_san)}")
+        print(f"Line {index}/{len(lines)}: {' '.join(moves_san)}")
         follow_line(client, moves_san, cache=cache, kept=kept)
 
     return sorted(kept.values(), key=lambda article: article.article_id)
@@ -306,23 +319,70 @@ def write_articles(articles: list[WikichessArticle], directory: Path) -> None:
             handle.write(to_markdown(article))
 
 
+def build_manifest(directory: Path, *, downloaded: str) -> dict:
+    """Index the articles of ``directory``, read back from their own headers.
+
+    Reading the files rather than the objects that produced them keeps one code path:
+    the same function indexes a fresh download and the corpus already on disk.
+    """
+
+    articles = []
+    for path in sorted(directory.glob("*.md")):
+        lines = path.read_text(encoding="utf-8").splitlines()
+        title = lines[0][2:].strip() if lines and lines[0].startswith("# ") else path.stem
+        header: dict[str, str] = {}
+        for line in lines[1:]:
+            if not line.startswith(">"):
+                if header:
+                    break
+                continue
+            key, _, value = line[1:].strip().partition(" : ")
+            header[key] = value.strip()
+        articles.append(
+            {
+                "file": path.name,
+                "article_id": int(path.name.split("-", 1)[0]),
+                "opening": title,
+                "eco": header.get("Code ECO", ""),
+                "moves": header.get("Coups", ""),
+                "url": header.get("Source", ""),
+            }
+        )
+    return {
+        "about": MANIFEST_ABOUT,
+        "source": "https://ficgs.com/wikichess.html",
+        "downloaded": downloaded,
+        "articles": articles,
+    }
+
+
+def write_manifest(directory: Path, *, downloaded: str) -> Path:
+    """Write the index of ``directory`` beside the articles, and return its path."""
+
+    path = directory / MANIFEST_NAME
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        json.dump(
+            build_manifest(directory, downloaded=downloaded), handle, ensure_ascii=False, indent=2
+        )
+        handle.write("\n")
+    return path
+
+
 # --------------------------------------------------------------------------
 # 5. Entry point
 # --------------------------------------------------------------------------
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Télécharge la base Wikichess.")
-    parser.add_argument(
-        "--out", type=Path, default=Path("data/wikichess"), help="dossier de sortie"
-    )
+    parser = argparse.ArgumentParser(description="Download the Wikichess corpus.")
+    parser.add_argument("--out", type=Path, default=Path("data/wikichess"), help="output folder")
     args = parser.parse_args()
 
-    # Les lignes suivies sont celles du livre d'ouvertures local : les deux
-    # sources de connaissance couvrent ainsi exactement le même répertoire.
+    # The lines followed are the local opening book's, so both sources of knowledge
+    # cover exactly the same repertoire.
     lines = [moves_san for _, _, moves_san in OPENING_LINES]
 
-    print(f"Parcours de {len(lines)} lignes d'ouverture sur Wikichess...")
+    print(f"Walking {len(lines)} opening lines on Wikichess...")
     with httpx.Client(
         headers={"User-Agent": USER_AGENT},
         timeout=30.0,
@@ -331,8 +391,10 @@ def main() -> None:
         articles = collect(client, lines)
 
     write_articles(articles, args.out)
+    manifest = write_manifest(args.out, downloaded=date.today().isoformat())
     print()
-    print(f"{len(articles)} articles écrits dans {args.out}/")
+    print(f"{len(articles)} articles written to {args.out}/")
+    print(f"manifest written to {manifest}")
 
 
 if __name__ == "__main__":

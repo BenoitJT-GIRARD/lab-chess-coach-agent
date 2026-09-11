@@ -51,6 +51,11 @@ def corpus_sources(settings=None) -> set[str]:
 
     Used by the tests: a case pointing at a file that is not in the corpus is a label
     nothing can ever satisfy, and it would silently drag recall down for good.
+
+    The Wikichess articles are not redistributed, so their folder holds nothing but its
+    manifest until ``scripts.fetch_wikichess`` has run. The manifest lists exactly what
+    the download writes, which is what the labels are checked against; the files
+    themselves are added when they are there.
     """
 
     settings = settings or get_settings()
@@ -59,6 +64,10 @@ def corpus_sources(settings=None) -> set[str]:
         directory = Path(folder)
         if not directory.is_dir():
             continue
+        manifest = directory / "MANIFEST.json"
+        if manifest.is_file():
+            listed = json.loads(manifest.read_text(encoding="utf-8"))
+            found.update(f"{directory.name}/{a['file']}" for a in listed["articles"])
         for article in sorted(directory.glob("*.md")):
             found.add(f"{directory.name}/{article.name}")
     return found

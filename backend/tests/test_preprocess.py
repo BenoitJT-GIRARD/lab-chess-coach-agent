@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
+
+import pytest
 
 from chess_coach.rag.preprocess import (
     Article,
@@ -74,7 +77,7 @@ def test_strip_markdown_keeps_the_words_and_drops_the_markers() -> None:
     assert "#" not in nettoye
     assert ">" not in nettoye
     assert "**" not in nettoye
-    # Les mots, eux, restent : le code ECO et la ligne de coups aident la recherche.
+    # The words stay: the ECO code and the move line both help retrieval.
     assert "Sicilian defense" in nettoye
     assert "Code ECO : B20" in nettoye
     assert "immediatement" in nettoye
@@ -90,11 +93,29 @@ def test_load_the_french_opening_notes() -> None:
     assert all(article.collection == "openings" for article in articles)
 
 
+def test_the_manifest_indexes_the_corpus() -> None:
+    """The articles are not redistributed; their index is what the repository holds.
+
+    Without it nothing would say which corpus the published measurements were taken on,
+    and the evaluation labels would point at files no one could name.
+    """
+
+    payload = json.loads((WIKICHESS_DIR / "MANIFEST.json").read_text(encoding="utf-8"))
+
+    assert len(payload["articles"]) == 21
+    assert all(article["file"].endswith(".md") for article in payload["articles"])
+    assert all(
+        article["url"].startswith("https://ficgs.com/wikichess_") for article in payload["articles"]
+    )
+
+
+@pytest.mark.skipif(
+    not any(WIKICHESS_DIR.glob("*.md")),
+    reason="corpus not downloaded: run `python -m scripts.fetch_wikichess`",
+)
 def test_load_the_wikichess_corpus() -> None:
     articles = load_articles(WIKICHESS_DIR)
 
-    # The corpus downloaded by scripts.fetch_wikichess is committed with the
-    # project, so the ingestion never needs the network.
     assert len(articles) >= 10
     assert all(article.collection == "wikichess" for article in articles)
     # Every downloaded article credits the page it came from.
