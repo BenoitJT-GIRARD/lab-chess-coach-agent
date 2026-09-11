@@ -147,6 +147,36 @@ The language model is excluded: it is billed per call, and the variance of a thi
 endpoint would swamp everything else. In practice it is the dominant cost of a real
 request.
 
+### The model writes up; it does not choose
+
+The prompt forbids it in one line: *ne cite que les coups qui te sont donnés, n'en invente
+aucun*. Twenty-one positions — every line of the frozen reading that had left theory, plus
+the twelve shallowest that had not — each answered twice by `gpt-4o-mini`: 42 billed calls.
+
+| Moves cited | Given in the prompt | Told as a line | Legal, not given | No such move |
+|---|---|---|---|---|
+| 116 | 68 | 45 | **1** | **2** |
+
+**Not one move was made up.** Three citations fell outside what the prompt had given, and
+all three were read:
+
+- *Caro-Kann* — « préparer une expansion avec e5 dans le futur ». A legal move of the
+  position, named as a plan. This is the only case where the model put forward a move no
+  tool had handed it.
+- *Italian* — « si les Noirs jouent a6 pour chasser ton fou ». A reply in a line not yet
+  played: illegal *now* because it is Black's move in a future position.
+- *Scholar's Attack* — « les Blancs ont joué Qh5 ». The move that created the position on
+  the board. Correct, and illegal now for the same reason.
+
+So the two "no such move" flags are an artefact of judging every citation against the
+current board — a coach talks about moves already played and moves that might be. What the
+run establishes is the claim the interface depends on: **the moves come from the tools.**
+Of 116 citations, 113 were either given in the prompt or part of the opening's own line.
+
+Reproduce it: `data/eval/move_invention.md`, with the 42 answers kept beside it in the
+JSON. `scripts/check_move_invention.py --rejudge` reads them again without calling
+anything.
+
 ## Why these numbers can be believed
 
 **The retrieval claim already existed, and had no artefact.** The docstring of
@@ -175,7 +205,18 @@ starlette 1.3 asks for `httpx2` in its test client and falls back to `httpx` wit
 deprecation. The deprecation is followed rather than silenced, and the suite needs no
 exemption at all.
 
-**87 tests, no network.** Every external service is faked, and the only test that needs the
+**The first reading of those answers was wrong, in the direction that accuses.** It flagged
+ten citations as moves that do not exist. All ten were read, and all ten were defects of
+the reader: five were the second move of a line being narrated (« commence par 1.e4 d5 » —
+Black's reply carries no number of its own), three were squares named as places behind an
+adjective (« la case centrale e4 »), two were an opening's first move quoted in its
+history. Each shape was fixed and unit-tested on the sentence that revealed it, and the
+table above is a **fresh** set of answers judged by the fixed reader — not the text it was
+tuned on. The unfiltered reading is published beside the filtered one: 37 flags out of 185
+citations, which is what the number looks like when a square is never given the benefit of
+the doubt.
+
+**99 tests, no network.** Every external service is faked, and the only test that needs the
 downloaded corpus skips when it is absent. Three of them guard the evaluation itself: that
 no case points at an article the corpus cannot hold, that the `french-question` variant
 calls the agent's own function rather than a copy of it, and that raising the threshold
@@ -212,9 +253,13 @@ uv run python -m scripts.run_retrieval_ablation     # needs the stack up and ing
 uv run python -m scripts.sweep_theory_threshold     # reads the frozen Explorer reading
 uv run python -m scripts.sample_theory_positions    # re-takes that reading; needs a token
 docker compose exec backend python -m scripts.bench_agent
+
+# the only measurement that spends money: 42 calls to the configured model
+docker compose exec backend python -m scripts.check_move_invention
+docker compose exec backend python -m scripts.check_move_invention --rejudge   # free
 ```
 
-Checks: `uv run pytest` (87 tests), `uv run ruff check .`,
+Checks: `uv run pytest` (99 tests), `uv run ruff check .`,
 `uv run bandit -c pyproject.toml -r src`, and `npm test -- --watch=false
 --browsers=ChromeHeadless` in `frontend/`.
 
@@ -234,7 +279,7 @@ Checks: `uv run pytest` (87 tests), `uv run ruff check .`,
 │   │   ├── rag/              chunking and indexing
 │   │   ├── services/         Lichess, Stockfish, YouTube, Milvus, MongoDB, the opening book
 │   │   └── config.py         every tunable, read from the environment
-│   └── tests/                87 tests, no network
+│   └── tests/                99 tests, no network
 ├── frontend/                 Angular Material and ngx-chess-board
 ├── docs/                     architecture, and a feasibility study on video analysis
 ├── notebooks/                the walkthrough, from ingestion to the agent
@@ -256,13 +301,17 @@ within reach, and a high recall@3 says more about the corpus than about the retr
 What remains measurable — and is measured — is the sensitivity to how the question is
 worded.
 
-**Nothing here checks that the model obeys.** The prompt forbids inventing a move and
-forbids mentioning the engine when no evaluation was requested. That is the right
-instruction in the right place, and a test with a faked model can only verify that the
-*prompt* carries it. Measuring compliance means running a real model over the evaluation
-positions and counting the moves it cites outside the list it was given — designed, costed,
-and not run: the calls are billed and the decision to spend belongs to whoever owns the
-key.
+**One model, forty-two answers.** The invention check ran on `gpt-4o-mini` at temperature
+0.3, twice over twenty-one positions. Another model, or a longer answer, could behave
+differently. It stays a script rather than a test because every run of it is billed.
+
+**The other half of the instruction is unchecked.** The prompt also forbids mentioning the
+engine when no evaluation was requested. Nothing counts that, and counting it would take a
+different reader than this one.
+
+**The history the model tells is not verified.** Forty-five of the citations are an
+opening's own line, quoted behind its move number. That the line is the *right* one is not
+checked: the frozen reading holds positions, not the move orders that reach them.
 
 **The corpus is taken as it comes.** The Wikichess articles are indexed with their source
 and their contributors, and this repository measures which one is returned, not whether

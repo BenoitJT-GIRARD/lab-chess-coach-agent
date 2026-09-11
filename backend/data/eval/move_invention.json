@@ -1,0 +1,1960 @@
+{
+  "measured": "2026-09-08",
+  "model": "gpt-4o-mini",
+  "positions": 21,
+  "passes": 2,
+  "calls": 42,
+  "note": "Citations are judged against the prompt that produced them. A move written in French notation is translated before being compared; a bare square that the prose names as a place is not read as a move, and the unfiltered reading is given beside the filtered one as an upper bound.",
+  "totals": {
+    "cited": 116,
+    "offered": 68,
+    "legal_not_offered": 1,
+    "illegal": 2,
+    "line_reference": 45,
+    "in_french_notation": 0
+  },
+  "strict_totals": {
+    "cited": 185,
+    "offered": 98,
+    "legal_not_offered": 5,
+    "illegal": 37,
+    "line_reference": 45,
+    "in_french_notation": 0
+  },
+  "runs": [
+    {
+      "name": "Caro-Kann Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 5,
+        "offered": 1,
+        "legal_not_offered": 1,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 6,
+        "offered": 2,
+        "legal_not_offered": 1,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d4",
+          "san": "d4",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "legal",
+          "notation": "english"
+        }
+      ],
+      "flagged": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "legal",
+          "sentence": "En jouant d4, les Blancs cherchent à contrôler le centre et à préparer une expansion avec e5 dans le futur."
+        }
+      ],
+      "prompt": "FEN : rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p . p p p p p\n. . p . . . . .\n. . . . . . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : Caro-Kann Defense (B10)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - d4 (85546 parties)\n  - Nc3 (7810 parties)\n  - Nf3 (5261 parties)\n  - c4 (4266 parties)\n  - d3 (2648 parties)\nCoup mis en avant dans l'interface : d4, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Firouzja, Alireza, 1-0, 2021\n  - Ding, Liren - Carlsen, Magnus, 1/2-1/2, 2020\n  - Ding, Liren - Carlsen, Magnus, 1-0, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Défense Caro-Kann (Caro-Kann Defense)) Défense Caro-Kann (Caro-Kann Defense)  Code ECO : B10–B19  ·  Premiers coups : 1.e4 c6  Présentation  La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Par 1...c6, les Noirs préparent ...d5 comme dans la française, mais sans enfermer leur fou de cases blanches, qui peut sortir librement en f5 ou g4. C'est une ou\n  - (Défense Caro-Kann (Caro-Kann Defense)) La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Par 1...c6, les Noirs préparent ...d5 comme dans la française, mais sans enfermer leur fou de cases blanches, qui peut sortir librement en f5 ou g4. C'est une ouverture réputée pour sa robustesse, appréciée des joueurs positionnels recherchant une structure saine\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Avec 1...c6, les Noirs préparent ...d5 tout en gardant leur fou de cases blanches actif, ce qui leur permet de jouer de manière flexible. Dans cette position, le coup d4 est le plus joué par les maîtres et il est très logique. En jouant d4, les Blancs cherchent à contrôler le centre et à préparer une expansion avec e5 dans le futur. Cela permet également d'ouvrir des lignes pour les pièces, notamment le fou de cases blanches. Pense à toujours contrôler le centre de l'échiquier, car cela te donnera plus d'espace pour manœuvrer tes pièces. N'hésite pas à regarder des vidéos explicatives pour approfondir ta compréhension de cette ouverture."
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 3,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Qa4, Qb3, Qc2, Nc3, Na3, h3, g3, f3, e3, d3\nÉchiquier :\nr n b q k b n r\np p . p p p p p\n. . . . . . . .\n. . p . . . . .\n. . P . . . . .\n. . . . . . . .\nP P . P P P P P\nR N B Q K B N R\n\nOuverture : English Opening: Symmetrical Variation (A30)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nf3 (10870 parties)\n  - Nc3 (6277 parties)\n  - g3 (4777 parties)\n  - b3 (214 parties)\n  - e3 (45 parties)\nCoup mis en avant dans l'interface : Nf3, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, Magnus - Kramnik, Vladimir, 1/2-1/2, 2013\n  - Carlsen, Magnus - Topalov, Veselin, 1/2-1/2, 2013\n  - Carlsen, M. - Vachier Lagrave, M., 1/2-1/2, 2019\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (English Opening) The English is a very flexible opening. Although many lines of the English have a distinct character, it often transposes into other openings. If White plays an early d4, the game will usually transpose into either the Queen's Gambit or an Indian defence.  The English derives its name from the English (unofficial) world champion, Howard Staunton, who played it during his 1843 match with Amant. It \n  - (English Opening) The English Opening is the fourth most popular opening move in chess. White begins the fight for the center by staking a claim to the d5 square. Common responses are 1...e5 (which can lead to positions similar to the Sicilian Defence but with opposite colors), 1...c5 (the Symmetrical Variation), and 1...Nf6. Also perfectly playable are 1...e6 (often leading to a Queen's Gambit Declined after 2.d4 \n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "L'ouverture anglaise, ici dans sa variante symétrique, est une ouverture flexible qui permet aux Blancs de contrôler le centre, notamment la case d5. Son nom vient du champion anglais Howard Staunton, qui l'a popularisée au 19ème siècle. Le coup Nf3 est le plus joué en parties de maîtres et il a pour but de développer le cavalier tout en contrôlant le centre, notamment la case d4. Cela prépare également le roque, ce qui est important pour la sécurité de ton roi. Pense à développer tes autres pièces rapidement après cela, en visant à contrôler le centre avec tes pions et tes pièces. N'oublie pas que l'ouverture est le moment idéal pour établir une bonne position, alors essaie de garder un équilibre entre le développement de tes pièces et la sécurité de ton roi. En résumé, développe tes pièces et assure-toi que ton roi est en sécurité."
+    },
+    {
+      "name": "French Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 4,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 7,
+        "offered": 2,
+        "legal_not_offered": 2,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "e6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d4",
+          "san": "d4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p p p . p p p\n. . . . p . . .\n. . . . . . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : French Defense (C00)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - d4 (137036 parties)\n  - d3 (8823 parties)\n  - Nf3 (2507 parties)\n  - Qe2 (2130 parties)\n  - Nc3 (1063 parties)\nCoup mis en avant dans l'interface : d4, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Grischuk, A., 1-0, 2019\n  - So, W. - Carlsen, M., 1/2-1/2, 2017\n  - Caruana, F. - So, W., 0-1, 2017\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (French defense) French defense  Code ECO : C00 Coups : 1.e4 e6 FEN : rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_21.html Contributeurs Wikichess : Thibault de Vassal, Toncho Tenev  The French defence has a reputation for solidity and resilience, though it can result in a somewhat cramped game for Black in the early stages. Black often gains counterattacking po\n  - (Défense française (French Defense)) Défense française (French Defense)  Code ECO : C00–C19  ·  Premiers coups : 1.e4 e6  Présentation  La défense française est une réponse solide et stratégique à 1.e4. Par 1...e6, les Noirs préparent la poussée ...d5 pour contester le centre, tout en acceptant temporairement un espace réduit. C'est une ouverture réputée pour sa solidité et sa richesse positionnelle, appréciée des joueurs qui aiment \n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "La Défense française est une réponse solide et stratégique des Noirs face à 1.e4. En jouant 1...e6, les Noirs préparent la poussée ...d5 pour contester le centre, même si cela peut entraîner un espace réduit au début de la partie. Dans cette position, le coup d4 est le plus joué en parties de maîtres et il est logique de l'exécuter. En poussant le pion d4, les Blancs cherchent à établir un fort contrôle du centre et à ouvrir des lignes pour leurs pièces. Cela permet également de préparer des développements futurs, comme le cavalier en f3 ou le fou en c4. Pense à bien développer tes pièces après avoir pris le contrôle du centre, car cela te donnera une meilleure position pour attaquer. N'oublie pas que le développement rapide et efficace de tes pièces est essentiel dans les ouvertures."
+    },
+    {
+      "name": "Italian Game",
+      "ply": 2,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 4,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 6,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 2,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "d4",
+          "san": "d4",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Bb5",
+          "san": "Bb5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p p p . p p p\n. . . . . . . .\n. . . . p . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : King's Pawn Game (C20)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nf3 (289894 parties)\n  - Bc4 (9323 parties)\n  - Nc3 (8152 parties)\n  - f4 (4858 parties)\n  - d4 (1864 parties)\nCoup mis en avant dans l'interface : Nf3, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Caruana, F., 1/2-1/2, 2019\n  - Caruana, F. - Carlsen, M., 1-0, 2019\n  - Caruana, Fabiano - Carlsen, Magnus, 0-1, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (King's pawn Opening) King's Pawn Game refers to any chess opening where White opens with 1.e4, the most popular of the twenty possible opening moves. Since nearly all of these openings have names of their own, the term \"King's Pawn Game\", unlike Queen's Pawn Game is rarely used to describe the opening of the game.  King's Pawn Games are further classified by whether Black responds with 1...e5 or not.\n  - (King's pawn Opening) King's Pawn Games are further classified by whether Black responds with 1...e5 or not.  Openings beginning with 1.e4 e5 are called Double King's Pawn Games (or Openings), Symmetrical King's Pawn Games (or Openings), or Open Gamesthese terms are equivalent. Openings where Black responds to 1.e4 with a move other than 1...e5 are called Asymmetrical King's Pawn Games (or Openings) or Semi-open Games\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "Le King's Pawn Game est une ouverture où les Blancs commencent par 1.e4, un des coups les plus populaires aux échecs. Cette ouverture peut mener à différentes variantes selon la réponse des Noirs, et ici, les Blancs cherchent à contrôler le centre avec leur pion en e4 tout en développant leurs pièces. Dans cette position, jouer Nf3 est un excellent choix car cela développe une pièce tout en protégeant le pion en e4. Cela permet également de préparer le roque et de contrôler le centre. En développant ton cavalier, tu prépares également d'autres coups comme d4 ou Bb5 dans les prochains tours. N'oublie pas que le développement rapide de tes pièces est essentiel dans les ouvertures. Pense à toujours contrôler le centre et à protéger tes pions."
+    },
+    {
+      "name": "King's Indian Defense",
+      "ply": 2,
+      "fen": "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 2,
+        "legal_not_offered": 1,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "d4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nf6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c4",
+          "san": "c4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Kd2, Qd3, Qd2, Bh6, Bg5, Bf4, Be3, Bd2, Nc3, Na3\nÉchiquier :\nr n b q k b . r\np p p p p p p p\n. . . . . n . .\n. . . . . . . .\n. . . P . . . .\n. . . . . . . .\nP P P . P P P P\nR N B Q K B N R\n\nOuverture : Indian Defense (A45)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - c4 (453682 parties)\n  - Nf3 (129325 parties)\n  - Bg5 (23277 parties)\n  - Bf4 (8276 parties)\n  - Nc3 (6721 parties)\nCoup mis en avant dans l'interface : c4, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Caruana, F., 1/2-1/2, 2019\n  - Carlsen, Magnus - Caruana, Fabiano, 1-0, 2020\n  - Carlsen, Magnus - Caruana, Fabiano, 1/2-1/2, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Queen's pawn game) Indian defences are characterized by the opening moves 1. d4 Nf6, although they can be reached by other move orders. These defences have a vast body of theory and have been employed by nearly all masters since the early twentieth century. They are all to varying degrees hypermodern defences, where Black invites White to establish an imposing presence in the centre with the plan of drawing it out, \n  - (King's Indian defense) The King's Indian Defence is a chess opening that begins 1.d4 Nf6 2.c4 g6 followed by ...Bg7 and ...d6. The King's Indian is a \"hypermodern\" opening, where Black lets White take the center with the view to later ruining White's \"wonderful\" position, often by an attack on White's king. It is a risky opening, which has been a favourite of players such as former world champions Garry Kasparov, Bobby \n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "La Défense Indienne est une ouverture qui commence par 1. d4 Nf6, et qui permet aux Noirs de contester le centre en invitant les Blancs à s'y établir. L'idée principale est de créer une position hypermoderne où les Noirs cherchent à détruire la structure centrale des Blancs plus tard dans la partie. Dans cette position, le coup c4 est le plus joué par les maîtres et il permet aux Blancs de renforcer leur contrôle sur le centre tout en préparant le développement de leurs pièces. En jouant c4, tu prépares également la possibilité de jouer d5 plus tard, ce qui pourrait ouvrir la position en ta faveur. Pense à bien développer tes pièces après cela, en visant à contrôler le centre et à créer des menaces contre le roi noir. N'oublie pas que le développement rapide et la sécurité de ton roi sont essentiels dans les ouvertures. Regarde aussi les vidéos explicatives pour approfondir ta compréhension de cette ouverture."
+    },
+    {
+      "name": "Queen's Gambit Declined",
+      "ply": 2,
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 2,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "d4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c4",
+          "san": "c4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Kd2, Qd3, Qd2, Bh6, Bg5, Bf4, Be3, Bd2, Nc3, Na3\nÉchiquier :\nr n b q k b n r\np p p . p p p p\n. . . . . . . .\n. . . p . . . .\n. . . P . . . .\n. . . . . . . .\nP P P . P P P P\nR N B Q K B N R\n\nOuverture : Queen's Pawn Game (D00)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - c4 (204448 parties)\n  - Nf3 (47503 parties)\n  - Bf4 (7082 parties)\n  - Bg5 (2791 parties)\n  - Nc3 (2622 parties)\nCoup mis en avant dans l'interface : c4, le plus joué en parties de maîtres.\nParties de référence :\n  - Aronian, L. - Carlsen, M., 1/2-1/2, 2014\n  - Carlsen, M. - Nakamura, Hi, 1/2-1/2, 2015\n  - Carlsen, M. - Topalov, V., 0-1, 2015\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Queen's pawn) Queen's pawn  Code ECO : A40 Coups : 1.d4 FEN : rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1 Source : https://ficgs.com/wikichess_2.html Contributeurs Wikichess : Thibault de Vassal  Queen's Pawn Game refer to any chess opening which starts with 1.d4, the second most popular opening move, but is now usually used to describe openings where White opens with 1.d4 but does not follow thr\n  - (Queen's pawn) Queen's Pawn Game refer to any chess opening which starts with 1.d4, the second most popular opening move, but is now usually used to describe openings where White opens with 1.d4 but does not follow through with an early pawn advance to c4. Some of these openings have individual names as well.  In the 1800s and early 1900s, 1.e4 was by far the most common opening move by White, while the differen\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "Cette position fait partie du Queen's Pawn Game, qui commence par 1.d4. Les Blancs cherchent à contrôler le centre avec leur pion en d4 et à préparer des développements harmonieux de leurs pièces. Dans cette position, le coup c4 est le plus joué par les maîtres, car il vise à renforcer le contrôle du centre et à préparer des possibilités d'attaque sur le pion noir en d5. En jouant c4, tu ouvres également des lignes pour tes pièces, ce qui peut te donner un bon développement. Si tu choisis un autre coup, assure-toi de bien réfléchir à la manière dont il va influencer le contrôle du centre et le développement de tes pièces. N'oublie pas que le développement rapide et le contrôle du centre sont des clés importantes dans l'ouverture. Prends le temps de bien évaluer chaque coup avant de jouer."
+    },
+    {
+      "name": "Scandinavian Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 5,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "exd5",
+          "san": "exd5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Bb5+",
+          "san": "Bb5+",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5+, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p p . p p p p\n. . . . . . . .\n. . . p . . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : Scandinavian Defense (B01)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - exd5 (23546 parties)\n  - Nc3 (521 parties)\n  - e5 (89 parties)\n  - d4 (80 parties)\n  - d3 (50 parties)\nCoup mis en avant dans l'interface : exd5, le plus joué en parties de maîtres.\nParties de référence :\n  - Caruana, F. - Carlsen, M., 1/2-1/2, 2015\n  - Caruana, F. - Carlsen, M., 0-1, 2014\n  - Caruana, F. - Carlsen, M., 1/2-1/2, 2016\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Défense scandinave (Scandinavian Defense, Center Counter)) Défense scandinave (Scandinavian Defense, Center Counter)  Code ECO : B01  ·  Premiers coups : 1.e4 d5  Présentation\n  - (Scandinavian (centre counter) defense) Scandinavian (centre counter) defense  Code ECO : B01 Coups : 1.e4 d5 FEN : rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_502.html Contributeurs Wikichess : Adam Domurad, Sandor Porkolab  One of the oldest recorded openings, first recorded as being played between Francesco di Castellvi and Narciso Vinyoles in Valencia in 1475, and being mentioned\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "La Défense scandinave est une ouverture qui commence par 1.e4 d5. Elle est l'une des plus anciennes ouvertures d'échecs, ayant été jouée pour la première fois en 1475. Les Noirs cherchent à contester le centre dès le début et à échanger des pièces rapidement pour obtenir une position active. Dans cette position, les Blancs ont la possibilité de jouer exd5, ce qui est le coup le plus joué en parties de maîtres. En prenant le pion noir, vous ouvrez la colonne 'e' et vous pouvez ensuite développer vos pièces avec plus de liberté. Pensez à contrôler le centre avec vos pions et à développer vos pièces rapidement après cet échange. Vous pouvez également envisager de jouer des coups comme Nf3 ou Bb5+ pour mettre la pression sur les Noirs. Rappelez-vous, le développement rapide et le contrôle du centre sont essentiels dans les ouvertures !"
+    },
+    {
+      "name": "Sicilian Defense, Najdorf",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 5,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 7,
+        "offered": 4,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Bb5",
+          "san": "Bb5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Bc4",
+          "san": "Bc4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p . p p p p p\n. . . . . . . .\n. . p . . . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : Sicilian Defense (B20)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nf3 (497049 parties)\n  - Nc3 (45195 parties)\n  - c3 (37886 parties)\n  - d4 (3385 parties)\n  - d3 (3152 parties)\nCoup mis en avant dans l'interface : Nf3, le plus joué en parties de maîtres.\nParties de référence :\n  - Caruana, F. - Carlsen, M., 1-0, 2019\n  - Carlsen, Magnus - Caruana, Fabiano, 1/2-1/2, 2020\n  - Caruana, Fabiano - Carlsen, Magnus, 1-0, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Sicilian defense) Sicilian defense  Code ECO : B20 Coups : 1.e4 c5 FEN : rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_3.html Contributeurs Wikichess : Thibault de Vassal  The Sicilian Defence is a chess opening which begins with 1.e4 c5\n  - (Défense sicilienne (Sicilian Defense)) Défense sicilienne (Sicilian Defense)  Code ECO : B20–B99  ·  Premiers coups : 1.e4 c5  Présentation",
+      "answer": "La Défense sicilienne est une ouverture qui commence par les coups 1.e4 c5. Elle est très populaire car elle offre aux Noirs de bonnes chances de contre-attaque et vise à déséquilibrer la position dès le début de la partie. Dans cette position, les Blancs ont joué Nf3, un coup très courant qui développe le cavalier tout en contrôlant le centre, notamment la case d4. Cela permet également de préparer des attaques futures tout en protégeant le pion en e4. Il est important de continuer à développer vos pièces rapidement et de garder un œil sur les menaces potentielles des Noirs. Pense à jouer des coups qui améliorent la coordination de tes pièces et à ne pas hésiter à jouer d'autres développements comme Bb5 ou Bc4 pour exercer une pression sur le camp adverse. Rappelle-toi, le développement rapide et la sécurité du roi sont essentiels dans les ouvertures !"
+    },
+    {
+      "name": "Caro-Kann Defense",
+      "ply": 4,
+      "fen": "rnbqkbnr/pp2pppp/2p5/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 0,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pp2pppp/2p5/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Kd2, Qh5, Qg4\nÉchiquier :\nr n b q k b n r\np p . . p p p p\n. . p . . . . .\n. . . p . . . .\n. . . P P . . .\n. . . . . . . .\nP P P . . P P P\nR N B Q K B N R\n\nOuverture : Caro-Kann Defense (B12)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - e5 (33417 parties)\n  - Nc3 (19703 parties)\n  - exd5 (16778 parties)\n  - Nd2 (11384 parties)\n  - f3 (2512 parties)\nCoup mis en avant dans l'interface : e5, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Firouzja, Alireza, 1-0, 2021\n  - Ding, Liren - Carlsen, Magnus, 1/2-1/2, 2020\n  - Ding, Liren - Carlsen, Magnus, 1-0, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Défense Caro-Kann (Caro-Kann Defense)) Défense Caro-Kann (Caro-Kann Defense)  Code ECO : B10–B19  ·  Premiers coups : 1.e4 c6  Présentation  La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Par 1...c6, les Noirs préparent ...d5 comme dans la française, mais sans enfermer leur fou de cases blanches, qui peut sortir librement en f5 ou g4. C'est une ou\n  - (Défense Caro-Kann (Caro-Kann Defense)) La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Par 1...c6, les Noirs préparent ...d5 comme dans la française, mais sans enfermer leur fou de cases blanches, qui peut sortir librement en f5 ou g4. C'est une ouverture réputée pour sa robustesse, appréciée des joueurs positionnels recherchant une structure saine",
+      "answer": "La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Les Noirs préparent ...d5, ce qui leur permet de contester le centre tout en gardant une structure de pions saine et flexible. Dans cette position, les Blancs ont la possibilité de jouer e5, un coup très populaire en théorie. Ce coup permet de prendre de l'espace au centre et de menacer le pion noir en d6, tout en ouvrant des lignes pour les pièces blanches. En jouant e5, vous poussez les Noirs à réagir, ce qui peut vous donner l'initiative. Pensez à bien développer vos pièces après ce coup, en visant à contrôler le centre et à préparer votre roque. Rappelez-vous, l'important est de toujours chercher à améliorer la position de vos pièces tout en gardant un œil sur les menaces de votre adversaire."
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 4,
+      "fen": "rnbqkb1r/pp1ppppp/5n2/2p5/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq - 2 3",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 3,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Nc3",
+          "san": "Nc3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "g3",
+          "san": "g3",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkb1r/pp1ppppp/5n2/2p5/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq - 2 3\nTrait aux : white\nCoups légaux : Ng5, Ne5, Nh4, Nd4, Ng1, Rg1, Qa4, Qb3, Qc2, Nc3, Na3, h3\nÉchiquier :\nr n b q k b . r\np p . p p p p p\n. . . . . n . .\n. . p . . . . .\n. . P . . . . .\n. . . . . N . .\nP P . P P P P P\nR N B Q K B . R\n\nOuverture : None (None)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nc3 (16546 parties)\n  - g3 (5475 parties)\n  - d4 (1368 parties)\n  - b3 (511 parties)\n  - e3 (277 parties)\nCoup mis en avant dans l'interface : Nc3, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, Magnus - Topalov, Veselin, 1/2-1/2, 2013\n  - Vachier Lagrave, M. - Carlsen, M., 1-0, 2019\n  - Carlsen, M. - Giri, A., 1/2-1/2, 2014\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Gambit Dame refusé (Queen's Gambit Declined)) Conseils pour les jeunes joueurs  Le gambit Dame refusé enseigne les fondamentaux du jeu fermé : pression sur le centre, jeu sur les colonnes, manœuvres patientes. Ne craignez pas le « gambit » : 2...e6 est parfaitement sûr et garde une position saine. Apprenez la manœuvre de minorité (b4-b5) côté blanc, c'est un plan typique et instructif dans la structure Carlsbad. Côté noir, planifiez tôt la li\n  - (Partie anglaise (English Opening)) Idées stratégiques  L'anglaise repose sur le contrôle des cases centrales à distance, en particulier d5, souvent renforcé par le fianchetto du fou-roi en g2. Les Blancs jouent fréquemment g3, Fg2, Cc3 et un développement souple, retardant la poussée centrale d4 ou e4 jusqu'au moment opportun. Les structures sont variées : sicilienne inversée (quand les Noirs répondent 1...e5), Benoni inversé, ou p\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "Dans cette position, les Blancs ont joué Nc3, un coup très populaire qui permet de développer le cavalier tout en renforçant le contrôle sur le centre, notamment sur la case d5. Ce coup prépare également le développement de la dame et d'autres pièces, tout en gardant une flexibilité pour les mouvements futurs. Pense à toujours contrôler le centre, car cela te donnera plus d'options pour attaquer ou défendre. N'hésite pas à explorer les autres coups possibles, comme g3 pour préparer le fianchetto de ton fou-roi, ce qui peut également renforcer ta position. Rappelle-toi que le développement rapide de tes pièces est essentiel pour obtenir une bonne position dans l'ouverture."
+    },
+    {
+      "name": "French Defense",
+      "ply": 4,
+      "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 6,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 7,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "e6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nc3",
+          "san": "Nc3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Bd3",
+          "san": "Bd3",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5+, Bc4, Bd3, Be2, Ke2, Kd2, Qh5, Qg4\nÉchiquier :\nr n b q k b n r\np p p . . p p p\n. . . . p . . .\n. . . p . . . .\n. . . P P . . .\n. . . . . . . .\nP P P . . P P P\nR N B Q K B N R\n\nOuverture : French Defense (C00)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nc3 (70617 parties)\n  - Nd2 (43735 parties)\n  - e5 (15864 parties)\n  - exd5 (8188 parties)\n  - Bd3 (1280 parties)\nCoup mis en avant dans l'interface : Nc3, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Caruana, F., 1-0, 2014\n  - So, W. - Carlsen, M., 1/2-1/2, 2017\n  - Aronian, L. - Carlsen, M., 1/2-1/2, 2019\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (French defense) French defense  Code ECO : C00 Coups : 1.e4 e6 FEN : rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_21.html Contributeurs Wikichess : Thibault de Vassal, Toncho Tenev  The French defence has a reputation for solidity and resilience, though it can result in a somewhat cramped game for Black in the early stages. Black often gains counterattacking po\n  - (Défense française (French Defense)) Défense française (French Defense)  Code ECO : C00–C19  ·  Premiers coups : 1.e4 e6  Présentation  La défense française est une réponse solide et stratégique à 1.e4. Par 1...e6, les Noirs préparent la poussée ...d5 pour contester le centre, tout en acceptant temporairement un espace réduit. C'est une ouverture réputée pour sa solidité et sa richesse positionnelle, appréciée des joueurs qui aiment ",
+      "answer": "La défense française est une réponse solide et stratégique des Noirs à 1.e4, caractérisée par le coup 1...e6. L'idée principale est de préparer la poussée ...d5 pour contester le centre, tout en acceptant un espace réduit au début de la partie. Les Blancs ont la possibilité de jouer Nc3, un coup très populaire qui renforce le contrôle du centre et prépare le développement de la pièce. Ce coup est souvent utilisé pour soutenir le pion en d5 et préparer des développements futurs comme Nf3 ou Bd3. Il est important de garder à l'esprit que la défense française peut mener à des positions un peu fermées, donc il faudra être patient et chercher des opportunités d'attaque. Pense à bien développer tes pièces et à contrôler le centre, car cela te donnera plus d'options dans le milieu de jeu."
+    },
+    {
+      "name": "Italian Game",
+      "ply": 4,
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "pass": 1,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 4,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 7,
+        "offered": 4,
+        "legal_not_offered": 0,
+        "illegal": 3,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Bb5",
+          "san": "Bb5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Bb5",
+          "san": "Bb5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "a6",
+          "san": null,
+          "verdict": "illegal",
+          "notation": ""
+        },
+        {
+          "token": "Bc4",
+          "san": "Bc4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [
+        {
+          "token": "a6",
+          "san": null,
+          "verdict": "illegal",
+          "sentence": "Pense à la suite de tes coups : si les Noirs jouent a6 pour chasser ton fou, tu pourras envisager de reculer avec Bc4 ou de prendre le cavalier."
+        }
+      ],
+      "prompt": "FEN : r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3\nTrait aux : white\nCoups légaux : Ng5, Nxe5, Nh4, Nd4, Ng1, Rg1, Ba6, Bb5, Bc4, Bd3, Be2, Ke2\nÉchiquier :\nr . b q k b n r\np p p p . p p p\n. . n . . . . .\n. . . . p . . .\n. . . . P . . .\n. . . . . N . .\nP P P P . P P P\nR N B Q K B . R\n\nOuverture : King's Knight Opening: Normal Variation (C44)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Bb5 (162021 parties)\n  - Bc4 (48160 parties)\n  - d4 (22292 parties)\n  - Nc3 (14272 parties)\n  - c3 (1576 parties)\nCoup mis en avant dans l'interface : Bb5, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Caruana, F., 1/2-1/2, 2019\n  - Caruana, F. - Carlsen, M., 1-0, 2019\n  - Carlsen, Magnus - Caruana, Fabiano, 1/2-1/2, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (King's knight Opening) King's knight Opening  Code ECO : C40 Coups : 1.e4 e5 2.Nf3 FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2 Source : https://ficgs.com/wikichess_8.html Contributeurs Wikichess : Thibault de Vassal  King's knight opening is prefered at 90% cases.  The knight simply attacks black's e5 pawn, that is not protected yet and controls d4 and e5 squares.  By far the most played continu\n  - (King's Indian defense) The King's Indian Defence is a chess opening that begins 1.d4 Nf6 2.c4 g6 followed by ...Bg7 and ...d6. The King's Indian is a \"hypermodern\" opening, where Black lets White take the center with the view to later ruining White's \"wonderful\" position, often by an attack on White's king. It is a risky opening, which has been a favourite of players such as former world champions Garry Kasparov, Bobby ",
+      "answer": "L'ouverture reconnue ici est l'Ouverture du Cavalier du Roi, dans sa variation normale. Les Blancs cherchent à contrôler le centre du plateau, en mettant la pression sur le pion e5 des Noirs, qui est actuellement sans protection. Dans cette position, le coup Bb5 est très intéressant car il met la pression sur le cavalier c6 des Noirs. En jouant Bb5, tu prépares également à potentiellement échanger ton fou contre le cavalier, ce qui pourrait affaiblir la défense des Noirs. Pense à la suite de tes coups : si les Noirs jouent a6 pour chasser ton fou, tu pourras envisager de reculer avec Bc4 ou de prendre le cavalier. Rappelle-toi que contrôler le centre est essentiel, alors garde un œil sur les possibilités de d4 dans les prochains coups. Utilise cette ouverture pour développer tes pièces rapidement et créer des menaces contre le roi adverse."
+    },
+    {
+      "name": "Anderssen Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . . .\nP . . . . . . .\n. P P P P P P P\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Anderssen's Opening — mais seules 838 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.00 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Ruy Lopez (Spanish Opening)) However, although it is named after him, this particular opening was known earlier; it is included in the Göttingen manuscript, which dates from 1490. Popular use of the Ruy Lopez opening did not develop, however, until the mid-1800s when Jaenisch, a Russian theoretician, \"rediscovered\" its potential.  The opening is still in active use as the double king's pawn opening most commonly used in maste\n  - (Partie écossaise (Scotch Game)) Présentation  La partie écossaise est une ouverture ouverte classique dans laquelle les Blancs jouent 3.d4 pour ouvrir immédiatement le centre, plutôt que de manœuvrer lentement comme dans l'espagnole ou l'italienne. Son nom vient d'un match par correspondance Édimbourg-Londres en 1824. Délaissée pendant un siècle, elle fut remise à l'honneur par Garry Kasparov dans les années 1990. C'est une ouve\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "Cette position est issue de l'Anderssen's Opening, une ouverture moins courante qui a été jouée dans quelques parties de maîtres. Les Noirs ont ici l'opportunité de répondre à l'initiative des Blancs en jouant e5, ce qui leur permet de contester le centre et de libérer leurs pièces. Dans cette position, le meilleur coup pour les Noirs est e5. En jouant ce coup, vous ouvrez la voie à votre fou et à votre dame, tout en prenant le contrôle du centre. Cela crée également des possibilités de développement pour vos pièces. Pensez à toujours essayer de contrôler le centre de l'échiquier, car cela vous donne plus d'espace pour manœuvrer vos pièces. N'oubliez pas que le développement rapide de vos pièces est essentiel dans les ouvertures. Si vous avez besoin d'aide pour comprendre cette ouverture, n'hésitez pas à consulter les vidéos explicatives."
+    },
+    {
+      "name": "Barnes Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b KQkq - 0 1",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 4,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . . .\n. . . . . P . .\nP P P P P . P P\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Barnes Opening — mais seules 12 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.79 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Partie écossaise (Scotch Game)) Conseils pour les jeunes joueurs  L'écossaise est une excellente première ouverture après 1.e4 : elle ouvre le centre tôt, ce qui rend les principes de développement très concrets. Ne reprenez pas le pion d4 avec la dame sans réflexion ; le coup naturel 4.Cxd4 centralise un cavalier et évite de perdre des tempos après ...Cc6. Méfiez-vous du contre-jeu noir par ...Fc5 et ...Df6 visant f2 et d4 : ga\n  - (King's pawn Opening) King's pawn Opening  Code ECO : B00 Coups : 1.e4 FEN : rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1 Source : https://ficgs.com/wikichess_1.html Contributeurs Wikichess : Thibault de Vassal, Mark Noble, Francisco Pessoa  King's Pawn Game refers to any chess opening where White opens with 1.e4, the most popular of the twenty possible opening moves. Since nearly all of these openings ha",
+      "answer": "Cette position correspond à l'Ouverture Barnes, qui est assez rare et n'a été atteinte que dans quelques parties de maîtres. Les Blancs cherchent à contrôler le centre avec le coup e5, ce qui leur permet d'ouvrir des lignes pour leurs pièces et de préparer un développement actif. Dans cette position, le meilleur coup pour les Noirs est e5, qui permet de contester le centre et d'ouvrir des possibilités pour les pièces noires. En jouant e5, vous créez également des menaces potentielles sur le pion f2 des Blancs. Pensez à développer vos pièces rapidement après ce coup, en plaçant vos cavaliers et fous sur des cases actives. Évitez de trop vous concentrer sur la défense et essayez de contre-attaquer dès que possible. Gardez à l'esprit que le développement rapide et le contrôle du centre sont cruciaux dans les ouvertures."
+    },
+    {
+      "name": "Desprez Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/7P/8/PPPPPPP1/RNBQKBNR b KQkq - 0 1",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 0,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 3,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "h4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "line",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/7P/8/PPPPPPP1/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . . P\n. . . . . . . .\nP P P P P P P .\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Kádas Opening — mais seules 53 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.34 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Partie écossaise (Scotch Game)) Conseils pour les jeunes joueurs  L'écossaise est une excellente première ouverture après 1.e4 : elle ouvre le centre tôt, ce qui rend les principes de développement très concrets. Ne reprenez pas le pion d4 avec la dame sans réflexion ; le coup naturel 4.Cxd4 centralise un cavalier et évite de perdre des tempos après ...Cc6. Méfiez-vous du contre-jeu noir par ...Fc5 et ...Df6 visant f2 et d4 : ga\n  - (Partie écossaise (Scotch Game)) Présentation  La partie écossaise est une ouverture ouverte classique dans laquelle les Blancs jouent 3.d4 pour ouvrir immédiatement le centre, plutôt que de manœuvrer lentement comme dans l'espagnole ou l'italienne. Son nom vient d'un match par correspondance Édimbourg-Londres en 1824. Délaissée pendant un siècle, elle fut remise à l'honneur par Garry Kasparov dans les années 1990. C'est une ouve",
+      "answer": "La Kádas Opening est une ouverture peu courante qui a été jouée dans seulement 53 parties de maîtres. Elle se caractérise par le coup 1.h4, qui vise à créer des opportunités sur l'aile du roi tout en gardant le centre relativement fermé. Dans cette position, le meilleur coup pour les Noirs est 1...e5. Ce coup permet d'ouvrir le centre et de contester le contrôle des Blancs. En jouant e5, vous créez également des possibilités pour vos pièces de se développer efficacement. Pensez à développer vos cavaliers et vos fous rapidement après cela, afin de contrôler le centre et de préparer votre roque. N'oubliez pas que le développement rapide de vos pièces est essentiel dans les ouvertures. Restez attentif aux menaces potentielles des Blancs et essayez de garder un bon équilibre dans votre position."
+    },
+    {
+      "name": "Grob",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/6P1/8/PPPPPP1P/RNBQKBNR b KQkq - 0 1",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 4,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "d5",
+          "san": "d5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Nh6",
+          "san": "Nh6",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "h6",
+          "san": "h6",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/6P1/8/PPPPPP1P/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . P .\n. . . . . . . .\nP P P P P P . P\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Grob Opening — mais seules 181 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup d5, évaluation de +1.33 en faveur de les Blancs\nCoup mis en avant dans l'interface : d5.\n\nExtraits de la base de connaissances :\n  - (Partie écossaise (Scotch Game)) Conseils pour les jeunes joueurs  L'écossaise est une excellente première ouverture après 1.e4 : elle ouvre le centre tôt, ce qui rend les principes de développement très concrets. Ne reprenez pas le pion d4 avec la dame sans réflexion ; le coup naturel 4.Cxd4 centralise un cavalier et évite de perdre des tempos après ...Cc6. Méfiez-vous du contre-jeu noir par ...Fc5 et ...Df6 visant f2 et d4 : ga\n  - (Partie écossaise (Scotch Game)) Présentation  La partie écossaise est une ouverture ouverte classique dans laquelle les Blancs jouent 3.d4 pour ouvrir immédiatement le centre, plutôt que de manœuvrer lentement comme dans l'espagnole ou l'italienne. Son nom vient d'un match par correspondance Édimbourg-Londres en 1824. Délaissée pendant un siècle, elle fut remise à l'honneur par Garry Kasparov dans les années 1990. C'est une ouve",
+      "answer": "La Grob Opening est une ouverture peu conventionnelle où les Blancs avancent le pion en g4 dès le premier coup. Bien que rarement jouée au niveau des maîtres, elle vise à surprendre l'adversaire et à créer des opportunités d'attaque rapide. Dans cette position, les Noirs ont plusieurs options, mais le meilleur coup est d5, qui permet de contester le centre et d'ouvrir des lignes pour les pièces. En jouant d5, vous créez une forte présence au centre et vous préparez le développement de vos pièces. Évitez de jouer des coups passifs comme Nh6 ou h6 qui ne contribuent pas à votre développement. Pensez à toujours contrôler le centre, car cela vous donnera plus d'espace pour manœuvrer vos pièces. Rappelez-vous, le développement rapide de vos pièces est essentiel dans les ouvertures."
+    },
+    {
+      "name": "Sodium Attack",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/N7/PPPPPPPP/R1BQKBNR b KQkq - 1 1",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 3,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/8/N7/PPPPPPPP/R1BQKBNR b KQkq - 1 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . . .\nN . . . . . . .\nP P P P P P P P\nR . B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Sodium Attack — mais seules 18 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.74 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Système de Londres (London System)) Idées stratégiques  Le plan blanc est simple et se répète : Ff4, e3, Fd3, c3, Cbd2, Cgf3, puis le petit roque. La structure obtenue est solide et sans faiblesse. Le fou en f4 surveille la case e5 et vise la diagonale b8-h2, souvent en direction du roque noir. Une fois développé, le cavalier passe par d2 puis e5 pour occuper le centre, et l'attaque se poursuit par Dc2, Fxh7 dans certaines configura\n  - (Système de Londres (London System)) Le plan blanc est simple et se répète : Ff4, e3, Fd3, c3, Cbd2, Cgf3, puis le petit roque. La structure obtenue est solide et sans faiblesse. Le fou en f4 surveille la case e5 et vise la diagonale b8-h2, souvent en direction du roque noir. Une fois développé, le cavalier passe par d2 puis e5 pour occuper le centre, et l'attaque se poursuit par Dc2, Fxh7 dans certaines configurations, ou par la pou",
+      "answer": "Cette position fait partie de l'attaque Sodium, qui est peu connue et n'a été jouée que dans quelques parties de maîtres. Les Noirs ont plusieurs options, mais l'idée principale est de réagir à l'occupation du centre par les Blancs, notamment avec le coup e5, qui vise à établir un fort contrôle central. Dans cette position, le meilleur coup pour les Noirs est e5. En jouant ce coup, vous contestez immédiatement le centre et ouvrez des lignes pour vos pièces. Cela permet également de libérer le fou en c8 et de préparer le développement de vos autres pièces. Pensez à bien contrôler le centre, car c'est une clé importante dans les ouvertures. N'oubliez pas que le développement rapide de vos pièces est essentiel pour une bonne position. Essayez de toujours avoir un plan clair pour vos prochains coups."
+    },
+    {
+      "name": "Ware Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\nP . . . . . . .\n. . . . . . . .\n. P P P P P P P\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Ware Opening — mais seules 29 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.23 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Queen's pawn) Queen's Pawn Game refer to any chess opening which starts with 1.d4, the second most popular opening move, but is now usually used to describe openings where White opens with 1.d4 but does not follow through with an early pawn advance to c4. Some of these openings have individual names as well.  In the 1800s and early 1900s, 1.e4 was by far the most common opening move by White, while the differen\n  - (Partie écossaise (Scotch Game)) Conseils pour les jeunes joueurs  L'écossaise est une excellente première ouverture après 1.e4 : elle ouvre le centre tôt, ce qui rend les principes de développement très concrets. Ne reprenez pas le pion d4 avec la dame sans réflexion ; le coup naturel 4.Cxd4 centralise un cavalier et évite de perdre des tempos après ...Cc6. Méfiez-vous du contre-jeu noir par ...Fc5 et ...Df6 visant f2 et d4 : ga",
+      "answer": "La position actuelle est connue sous le nom d'Ouverture Ware, bien qu'elle ne soit pas très courante, avec seulement 29 parties de maîtres l'ayant atteinte. Les Noirs ont plusieurs options, mais l'idée principale est de contester le centre et de préparer un développement harmonieux des pièces. Dans cette position, le meilleur coup pour les Noirs est e5, qui vise à contrôler le centre et à ouvrir des lignes pour les pièces. En jouant e5, vous permettez à vos pièces de se développer plus efficacement et vous créez des possibilités d'attaques futures. N'oubliez pas que le contrôle du centre est crucial dans les ouvertures, car cela vous donne plus de liberté de mouvement. Pensez également à développer vos cavaliers et fous rapidement pour soutenir votre position. Rappelez-vous, un bon développement est la clé pour obtenir une position solide."
+    },
+    {
+      "name": "Bongcloud",
+      "ply": 3,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR b kq - 1 2",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 3,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 2,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Nf6",
+          "san": "Nf6",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR b kq - 1 2\nTrait aux : black\nCoups légaux : Ne7, Nh6, Nf6, Be7, Bd6, Bc5, Bb4, Ba3, Ke7, Qe7, Qf6, Qg5\nÉchiquier :\nr n b q k b n r\np p p p . p p p\n. . . . . . . .\n. . . . p . . .\n. . . . P . . .\n. . . . . . . .\nP P P P K P P P\nR N B Q . B N R\n\nLa position n'est pas de la théorie établie.\nMoteur Stockfish : meilleur coup Nf6, évaluation de +1.36 en faveur de les Blancs\nCoup mis en avant dans l'interface : Nf6.\n\nExtraits de la base de connaissances :\n  - (King's pawn game) King's pawn game  Code ECO : C20 Coups : 1.e4 e5 FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_5.html Contributeurs Wikichess : Thibault de Vassal  The open game is a fight for center squares : d4 and d5 are already under control, and the probable next moves 2.Nf3 or 2.Nc3, then 2. ... Nc6 or 2. ... Nf6 will take control of e4 and e5 square\n  - (Défense française (French Defense)) Conseils pour les jeunes joueurs  La française est une excellente arme pour apprendre les structures de chaînes de pions et les plans à long terme. Retenez le principe : attaquez la base de la chaîne adverse (...c5 et ...f6 pour les Noirs ; f4-f5 pour les Blancs). Surveillez votre fou de c8 dès l'ouverture et cherchez un plan pour le sortir, sinon il restera passif toute la partie. Avec les Blancs",
+      "answer": "Dans cette position, les Noirs ont plusieurs options, mais le coup Nf6 est particulièrement intéressant. En jouant ce coup, vous développez votre cavalier tout en contrôlant la case centrale e4. Cela vous aidera à renforcer votre position et à préparer le développement de vos autres pièces. Pensez également à la sécurité de votre roi ; il pourrait être judicieux de roquer dès que possible. N'oubliez pas de garder un œil sur votre fou de c8, qui pourrait devenir un atout précieux si vous parvenez à le développer efficacement."
+    },
+    {
+      "name": "Scholar's Attack",
+      "ply": 3,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Nc6",
+          "san": "Nc6",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2\nTrait aux : black\nCoups légaux : Ne7, Nh6, Nf6, Be7, Bd6, Bc5, Bb4, Ba3, Ke7, Qe7, Qf6, Qg5\nÉchiquier :\nr n b q k b n r\np p p p . p p p\n. . . . . . . .\n. . . . p . . Q\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B . K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — King's Pawn Game: Wayward Queen Attack — mais seules 48 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup Nc6, évaluation de +0.29 en faveur de les Blancs\nCoup mis en avant dans l'interface : Nc6.\n\nExtraits de la base de connaissances :\n  - (King's pawn game) King's pawn game  Code ECO : C20 Coups : 1.e4 e5 FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_5.html Contributeurs Wikichess : Thibault de Vassal  The open game is a fight for center squares : d4 and d5 are already under control, and the probable next moves 2.Nf3 or 2.Nc3, then 2. ... Nc6 or 2. ... Nf6 will take control of e4 and e5 square\n  - (Queen's pawn game) Queen's pawn game  Code ECO : A45 Coups : 1.d4 Nf6 FEN : rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2 Source : https://ficgs.com/wikichess_14.html Contributeurs Wikichess : Thibault de Vassal",
+      "answer": "Cette position fait partie du King's Pawn Game, plus précisément de l'attaque de la Reine égarée. Bien que peu jouée à haut niveau, elle offre des possibilités intéressantes pour les deux camps, notamment en cherchant à contrôler le centre. Dans cette position, le meilleur coup pour les Noirs est Nc6, qui permet de développer le cavalier tout en mettant la pression sur le centre. Cela aide également à préparer le développement des autres pièces et à renforcer la position. Pense à toujours développer tes pièces et à contrôler le centre, car cela te donnera plus d'options pour l'attaque. Évite de laisser ta Reine trop exposée, car elle pourrait devenir une cible facile. En résumé, concentre-toi sur le développement et la sécurité de tes pièces."
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 6,
+      "fen": "rnbqkb1r/pp1ppp1p/5np1/2p5/2P5/5NP1/PP1PPP1P/RNBQKB1R w KQkq - 0 4",
+      "pass": 1,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 2,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Bg2",
+          "san": "Bg2",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "d4",
+          "san": "d4",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "e4",
+          "san": "e4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkb1r/pp1ppp1p/5np1/2p5/2P5/5NP1/PP1PPP1P/RNBQKB1R w KQkq - 0 4\nTrait aux : white\nCoups légaux : Ng5, Ne5, Nh4, Nd4, Ng1, Rg1, Bh3, Bg2, Qa4, Qb3, Qc2, Nc3\nÉchiquier :\nr n b q k b . r\np p . p p p . p\n. . . . . n p .\n. . p . . . . .\n. . P . . . . .\n. . . . . N P .\nP P . P P P . P\nR N B Q K B . R\n\nLa position n'est pas de la théorie établie.\nMoteur Stockfish : meilleur coup Bg2, évaluation de +0.31 en faveur de les Blancs\nCoup mis en avant dans l'interface : Bg2.\n\nExtraits de la base de connaissances :\n  - (Gambit Dame refusé (Queen's Gambit Declined)) Conseils pour les jeunes joueurs  Le gambit Dame refusé enseigne les fondamentaux du jeu fermé : pression sur le centre, jeu sur les colonnes, manœuvres patientes. Ne craignez pas le « gambit » : 2...e6 est parfaitement sûr et garde une position saine. Apprenez la manœuvre de minorité (b4-b5) côté blanc, c'est un plan typique et instructif dans la structure Carlsbad. Côté noir, planifiez tôt la li\n  - (Partie anglaise (English Opening)) Idées stratégiques  L'anglaise repose sur le contrôle des cases centrales à distance, en particulier d5, souvent renforcé par le fianchetto du fou-roi en g2. Les Blancs jouent fréquemment g3, Fg2, Cc3 et un développement souple, retardant la poussée centrale d4 ou e4 jusqu'au moment opportun. Les structures sont variées : sicilienne inversée (quand les Noirs répondent 1...e5), Benoni inversé, ou p",
+      "answer": "Dans cette position, le meilleur coup pour les Blancs est de jouer Bg2. Ce coup permet de fianchetto le fou-roi, ce qui renforce le contrôle sur la case centrale d5 et prépare un développement harmonieux des pièces. En plaçant le fou sur g2, vous augmentez également la pression sur le centre et préparez une éventuelle poussée avec d4 ou e4 plus tard dans la partie. Pensez à bien développer vos pièces et à garder une structure solide. Rappelez-vous que le développement et le contrôle du centre sont essentiels dans les ouvertures."
+    },
+    {
+      "name": "Caro-Kann Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 4,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d4",
+          "san": "d4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p . p p p p p\n. . p . . . . .\n. . . . . . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : Caro-Kann Defense (B10)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - d4 (85546 parties)\n  - Nc3 (7810 parties)\n  - Nf3 (5261 parties)\n  - c4 (4266 parties)\n  - d3 (2648 parties)\nCoup mis en avant dans l'interface : d4, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Firouzja, Alireza, 1-0, 2021\n  - Ding, Liren - Carlsen, Magnus, 1/2-1/2, 2020\n  - Ding, Liren - Carlsen, Magnus, 1-0, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Défense Caro-Kann (Caro-Kann Defense)) Défense Caro-Kann (Caro-Kann Defense)  Code ECO : B10–B19  ·  Premiers coups : 1.e4 c6  Présentation  La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Par 1...c6, les Noirs préparent ...d5 comme dans la française, mais sans enfermer leur fou de cases blanches, qui peut sortir librement en f5 ou g4. C'est une ou\n  - (Défense Caro-Kann (Caro-Kann Defense)) La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Par 1...c6, les Noirs préparent ...d5 comme dans la française, mais sans enfermer leur fou de cases blanches, qui peut sortir librement en f5 ou g4. C'est une ouverture réputée pour sa robustesse, appréciée des joueurs positionnels recherchant une structure saine",
+      "answer": "La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Avec 1...c6, les Noirs préparent ...d5, tout en gardant leur fou de cases blanches actif, ce qui leur permet de jouer de manière flexible. Dans cette position, le coup d4 est très puissant pour les Blancs. En jouant d4, vous contrôlez le centre et préparez à ouvrir la position pour vos pièces. Cela vous permet également de développer votre fou de cases blanches et d'augmenter votre influence sur le jeu. C'est un coup très joué par les maîtres, donc il est sage de l'adopter. Pensez à toujours contrôler le centre avec vos pions, car cela vous donne plus d'espace pour manœuvrer vos pièces. N'oubliez pas que le développement rapide de vos pièces est essentiel dans les ouvertures."
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 6,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 4,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Qa4, Qb3, Qc2, Nc3, Na3, h3, g3, f3, e3, d3\nÉchiquier :\nr n b q k b n r\np p . p p p p p\n. . . . . . . .\n. . p . . . . .\n. . P . . . . .\n. . . . . . . .\nP P . P P P P P\nR N B Q K B N R\n\nOuverture : English Opening: Symmetrical Variation (A30)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nf3 (10870 parties)\n  - Nc3 (6277 parties)\n  - g3 (4777 parties)\n  - b3 (214 parties)\n  - e3 (45 parties)\nCoup mis en avant dans l'interface : Nf3, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, Magnus - Kramnik, Vladimir, 1/2-1/2, 2013\n  - Carlsen, Magnus - Topalov, Veselin, 1/2-1/2, 2013\n  - Carlsen, M. - Vachier Lagrave, M., 1/2-1/2, 2019\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (English Opening) The English is a very flexible opening. Although many lines of the English have a distinct character, it often transposes into other openings. If White plays an early d4, the game will usually transpose into either the Queen's Gambit or an Indian defence.  The English derives its name from the English (unofficial) world champion, Howard Staunton, who played it during his 1843 match with Amant. It \n  - (English Opening) The English Opening is the fourth most popular opening move in chess. White begins the fight for the center by staking a claim to the d5 square. Common responses are 1...e5 (which can lead to positions similar to the Sicilian Defence but with opposite colors), 1...c5 (the Symmetrical Variation), and 1...Nf6. Also perfectly playable are 1...e6 (often leading to a Queen's Gambit Declined after 2.d4 ",
+      "answer": "L'ouverture anglaise, ici dans sa variante symétrique, est une ouverture très flexible qui permet aux Blancs de revendiquer le centre, notamment la case d5. Elle tire son nom du champion anglais Howard Staunton, qui l'a popularisée au XIXe siècle. Le coup Nf3 est le plus joué dans cette position, et il a plusieurs avantages. En développant le cavalier en f3, tu contrôles la case centrale d5 tout en préparant un éventuel développement du fou en g2 ou en e2. Cela aide aussi à sécuriser ton roi pour le roque à venir. Pense à toujours développer tes pièces et à contrôler le centre, car cela te donnera plus d'options pour la suite de la partie. N'oublie pas que chaque développement doit avoir un but, alors réfléchis à ce que tu veux accomplir avec chaque coup."
+    },
+    {
+      "name": "French Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 6,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 7,
+        "offered": 4,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "e6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d4",
+          "san": "d4",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Bd3",
+          "san": "Bd3",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p p p . p p p\n. . . . p . . .\n. . . . . . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : French Defense (C00)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - d4 (137036 parties)\n  - d3 (8823 parties)\n  - Nf3 (2507 parties)\n  - Qe2 (2130 parties)\n  - Nc3 (1063 parties)\nCoup mis en avant dans l'interface : d4, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Grischuk, A., 1-0, 2019\n  - So, W. - Carlsen, M., 1/2-1/2, 2017\n  - Caruana, F. - So, W., 0-1, 2017\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (French defense) French defense  Code ECO : C00 Coups : 1.e4 e6 FEN : rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_21.html Contributeurs Wikichess : Thibault de Vassal, Toncho Tenev  The French defence has a reputation for solidity and resilience, though it can result in a somewhat cramped game for Black in the early stages. Black often gains counterattacking po\n  - (Défense française (French Defense)) Défense française (French Defense)  Code ECO : C00–C19  ·  Premiers coups : 1.e4 e6  Présentation  La défense française est une réponse solide et stratégique à 1.e4. Par 1...e6, les Noirs préparent la poussée ...d5 pour contester le centre, tout en acceptant temporairement un espace réduit. C'est une ouverture réputée pour sa solidité et sa richesse positionnelle, appréciée des joueurs qui aiment \n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "La défense française est une réponse solide et stratégique des Noirs à 1.e4, qui commence par 1...e6. L'idée principale est de préparer la poussée ...d5 pour contester le centre, tout en acceptant temporairement un espace réduit. Dans cette position, jouer d4 est le coup le plus populaire et le plus efficace. En poussant le pion d4, vous établissez un fort contrôle du centre et ouvrez des lignes pour vos pièces. Cela vous permettra de développer vos pièces rapidement et de préparer des attaques sur le roi adverse. Pensez à suivre avec des coups comme Nf3 ou Bd3 pour continuer à renforcer votre position. N'oubliez pas que le contrôle du centre est crucial dans les ouvertures, alors assurez-vous de bien le maintenir."
+    },
+    {
+      "name": "Italian Game",
+      "ply": 2,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 4,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p p p . p p p\n. . . . . . . .\n. . . . p . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : King's Pawn Game (C20)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nf3 (289894 parties)\n  - Bc4 (9323 parties)\n  - Nc3 (8152 parties)\n  - f4 (4858 parties)\n  - d4 (1864 parties)\nCoup mis en avant dans l'interface : Nf3, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Caruana, F., 1/2-1/2, 2019\n  - Caruana, F. - Carlsen, M., 1-0, 2019\n  - Caruana, Fabiano - Carlsen, Magnus, 0-1, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (King's pawn Opening) King's Pawn Game refers to any chess opening where White opens with 1.e4, the most popular of the twenty possible opening moves. Since nearly all of these openings have names of their own, the term \"King's Pawn Game\", unlike Queen's Pawn Game is rarely used to describe the opening of the game.  King's Pawn Games are further classified by whether Black responds with 1...e5 or not.\n  - (King's pawn Opening) King's Pawn Games are further classified by whether Black responds with 1...e5 or not.  Openings beginning with 1.e4 e5 are called Double King's Pawn Games (or Openings), Symmetrical King's Pawn Games (or Openings), or Open Gamesthese terms are equivalent. Openings where Black responds to 1.e4 with a move other than 1...e5 are called Asymmetrical King's Pawn Games (or Openings) or Semi-open Games",
+      "answer": "Le King's Pawn Game est une ouverture qui commence par le coup 1.e4, le plus populaire parmi les vingt coups d'ouverture possibles. Dans cette position, les Blancs cherchent à contrôler le centre du plateau et à développer rapidement leurs pièces, en particulier avec le coup Nf3 qui est le plus joué en parties de maîtres. En jouant Nf3, tu développes ton cavalier tout en contrôlant la case centrale e5. Cela te permet également de préparer le roque et de sécuriser ton roi. C'est un coup très solide qui aide à établir une bonne position. Pense à continuer à développer tes autres pièces rapidement, comme tes fous et ton autre cavalier, pour renforcer ton contrôle du centre. N'oublie pas que le développement rapide et le contrôle du centre sont des clés importantes dans les ouvertures. Reste concentré sur ces principes !"
+    },
+    {
+      "name": "King's Indian Defense",
+      "ply": 2,
+      "fen": "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 6,
+        "offered": 2,
+        "legal_not_offered": 1,
+        "illegal": 1,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "d4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nf6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c4",
+          "san": "c4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Kd2, Qd3, Qd2, Bh6, Bg5, Bf4, Be3, Bd2, Nc3, Na3\nÉchiquier :\nr n b q k b . r\np p p p p p p p\n. . . . . n . .\n. . . . . . . .\n. . . P . . . .\n. . . . . . . .\nP P P . P P P P\nR N B Q K B N R\n\nOuverture : Indian Defense (A45)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - c4 (453682 parties)\n  - Nf3 (129325 parties)\n  - Bg5 (23277 parties)\n  - Bf4 (8276 parties)\n  - Nc3 (6721 parties)\nCoup mis en avant dans l'interface : c4, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Caruana, F., 1/2-1/2, 2019\n  - Carlsen, Magnus - Caruana, Fabiano, 1-0, 2020\n  - Carlsen, Magnus - Caruana, Fabiano, 1/2-1/2, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Queen's pawn game) Indian defences are characterized by the opening moves 1. d4 Nf6, although they can be reached by other move orders. These defences have a vast body of theory and have been employed by nearly all masters since the early twentieth century. They are all to varying degrees hypermodern defences, where Black invites White to establish an imposing presence in the centre with the plan of drawing it out, \n  - (King's Indian defense) The King's Indian Defence is a chess opening that begins 1.d4 Nf6 2.c4 g6 followed by ...Bg7 and ...d6. The King's Indian is a \"hypermodern\" opening, where Black lets White take the center with the view to later ruining White's \"wonderful\" position, often by an attack on White's king. It is a risky opening, which has been a favourite of players such as former world champions Garry Kasparov, Bobby \n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "L'ouverture que nous avons ici est la Défense Indienne, qui commence par 1.d4 Nf6. Les Noirs adoptent une approche hypermoderne, invitant les Blancs à établir un fort contrôle au centre, avec l'idée de le contrecarrer plus tard. Le coup que tu as sous les yeux, c4, est le plus joué par les maîtres dans cette position. En jouant c4, tu renforces ton contrôle du centre et prépares potentiellement d'autres développements, comme le développement de ton fou en f4 ou en g5. Cela te permet aussi de garder une certaine flexibilité dans le développement de tes pièces. Pense à bien contrôler le centre tout en restant attentif aux menaces des Noirs. N'oublie pas que le développement rapide de tes pièces est essentiel dans cette phase de la partie."
+    },
+    {
+      "name": "Queen's Gambit Declined",
+      "ply": 2,
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 4,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "d4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c4",
+          "san": "c4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Kd2, Qd3, Qd2, Bh6, Bg5, Bf4, Be3, Bd2, Nc3, Na3\nÉchiquier :\nr n b q k b n r\np p p . p p p p\n. . . . . . . .\n. . . p . . . .\n. . . P . . . .\n. . . . . . . .\nP P P . P P P P\nR N B Q K B N R\n\nOuverture : Queen's Pawn Game (D00)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - c4 (204448 parties)\n  - Nf3 (47503 parties)\n  - Bf4 (7082 parties)\n  - Bg5 (2791 parties)\n  - Nc3 (2622 parties)\nCoup mis en avant dans l'interface : c4, le plus joué en parties de maîtres.\nParties de référence :\n  - Aronian, L. - Carlsen, M., 1/2-1/2, 2014\n  - Carlsen, M. - Nakamura, Hi, 1/2-1/2, 2015\n  - Carlsen, M. - Topalov, V., 0-1, 2015\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Queen's pawn) Queen's pawn  Code ECO : A40 Coups : 1.d4 FEN : rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1 Source : https://ficgs.com/wikichess_2.html Contributeurs Wikichess : Thibault de Vassal  Queen's Pawn Game refer to any chess opening which starts with 1.d4, the second most popular opening move, but is now usually used to describe openings where White opens with 1.d4 but does not follow thr\n  - (Queen's pawn) Queen's Pawn Game refer to any chess opening which starts with 1.d4, the second most popular opening move, but is now usually used to describe openings where White opens with 1.d4 but does not follow through with an early pawn advance to c4. Some of these openings have individual names as well.  In the 1800s and early 1900s, 1.e4 was by far the most common opening move by White, while the differen",
+      "answer": "La partie se situe dans le cadre du Queen's Pawn Game, qui commence par le coup 1.d4. Cette ouverture est souvent utilisée pour établir un contrôle central solide tout en gardant des options flexibles pour le développement des pièces. Dans cette position, le coup c4 est le plus joué par les maîtres et il vise à renforcer le contrôle des cases centrales, en particulier la case d5. En jouant c4, les Blancs cherchent à préparer une expansion au centre et à limiter les options des Noirs. C'est un excellent choix pour développer une position dynamique. Si tu choisis ce coup, pense à bien suivre avec le développement de tes pièces, notamment les cavaliers et les fous, pour soutenir ton contrôle central. N'oublie pas que le développement rapide de tes pièces est crucial dans les ouvertures !"
+    },
+    {
+      "name": "Scandinavian Defense",
+      "ply": 2,
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 2,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "exd5",
+          "san": "exd5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5+, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p p . p p p p\n. . . . . . . .\n. . . p . . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : Scandinavian Defense (B01)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - exd5 (23546 parties)\n  - Nc3 (521 parties)\n  - e5 (89 parties)\n  - d4 (80 parties)\n  - d3 (50 parties)\nCoup mis en avant dans l'interface : exd5, le plus joué en parties de maîtres.\nParties de référence :\n  - Caruana, F. - Carlsen, M., 1/2-1/2, 2015\n  - Caruana, F. - Carlsen, M., 0-1, 2014\n  - Caruana, F. - Carlsen, M., 1/2-1/2, 2016\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Défense scandinave (Scandinavian Defense, Center Counter)) Défense scandinave (Scandinavian Defense, Center Counter)  Code ECO : B01  ·  Premiers coups : 1.e4 d5  Présentation\n  - (Scandinavian (centre counter) defense) Scandinavian (centre counter) defense  Code ECO : B01 Coups : 1.e4 d5 FEN : rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_502.html Contributeurs Wikichess : Adam Domurad, Sandor Porkolab  One of the oldest recorded openings, first recorded as being played between Francesco di Castellvi and Narciso Vinyoles in Valencia in 1475, and being mentioned",
+      "answer": "La Défense scandinave est une ouverture qui commence par 1.e4 d5. C'est l'une des plus anciennes ouvertures d'échecs, jouée pour la première fois en 1475. Les Noirs cherchent à contester le centre dès le début du jeu, en échangeant leur pion d5 contre le pion e4 des Blancs. Dans cette position, le coup le plus populaire est exd5, qui permet aux Blancs de capturer le pion noir et de prendre le contrôle du centre. En jouant ce coup, vous ouvrez également des lignes pour vos pièces, ce qui peut faciliter le développement. Pensez à bien préparer vos pièces pour qu'elles soient actives après l'échange. Évitez de laisser vos pièces sur la première rangée trop longtemps, car elles auront besoin d'être prêtes à entrer dans le jeu. Rappelez-vous, contrôler le centre est essentiel pour obtenir une bonne position."
+    },
+    {
+      "name": "Sicilian Defense, Najdorf",
+      "ply": 2,
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 4,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 4,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 2,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Nf3",
+          "san": "Nf3",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Qh5, Qg4, Qf3\nÉchiquier :\nr n b q k b n r\np p . p p p p p\n. . . . . . . .\n. . p . . . . .\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B Q K B N R\n\nOuverture : Sicilian Defense (B20)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nf3 (497049 parties)\n  - Nc3 (45195 parties)\n  - c3 (37886 parties)\n  - d4 (3385 parties)\n  - d3 (3152 parties)\nCoup mis en avant dans l'interface : Nf3, le plus joué en parties de maîtres.\nParties de référence :\n  - Caruana, F. - Carlsen, M., 1-0, 2019\n  - Carlsen, Magnus - Caruana, Fabiano, 1/2-1/2, 2020\n  - Caruana, Fabiano - Carlsen, Magnus, 1-0, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Sicilian defense) Sicilian defense  Code ECO : B20 Coups : 1.e4 c5 FEN : rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_3.html Contributeurs Wikichess : Thibault de Vassal  The Sicilian Defence is a chess opening which begins with 1.e4 c5\n  - (Défense sicilienne (Sicilian Defense)) Défense sicilienne (Sicilian Defense)  Code ECO : B20–B99  ·  Premiers coups : 1.e4 c5  Présentation\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "La Défense sicilienne est une ouverture qui commence par 1.e4 c5. Elle est très populaire et vise à donner aux Noirs des chances de contre-attaque tout en déséquilibrant la position. Dans cette position, les Blancs ont la possibilité de jouer Nf3, qui est le coup le plus joué en parties de maîtres. Ce coup développe le cavalier tout en contrôlant le centre, ce qui est crucial dans l'ouverture. En jouant Nf3, tu prépares également de futures manœuvres pour renforcer ton contrôle sur les cases centrales. Pense à développer tes autres pièces rapidement après cela, comme tes fous et ton autre cavalier, pour maximiser ton potentiel d'attaque. Rappelle-toi, l'important est de garder une bonne coordination entre tes pièces."
+    },
+    {
+      "name": "Caro-Kann Defense",
+      "ply": 4,
+      "fen": "rnbqkbnr/pp2pppp/2p5/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 0,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "c6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pp2pppp/2p5/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5, Bc4, Bd3, Be2, Ke2, Kd2, Qh5, Qg4\nÉchiquier :\nr n b q k b n r\np p . . p p p p\n. . p . . . . .\n. . . p . . . .\n. . . P P . . .\n. . . . . . . .\nP P P . . P P P\nR N B Q K B N R\n\nOuverture : Caro-Kann Defense (B12)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - e5 (33417 parties)\n  - Nc3 (19703 parties)\n  - exd5 (16778 parties)\n  - Nd2 (11384 parties)\n  - f3 (2512 parties)\nCoup mis en avant dans l'interface : e5, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Firouzja, Alireza, 1-0, 2021\n  - Ding, Liren - Carlsen, Magnus, 1/2-1/2, 2020\n  - Ding, Liren - Carlsen, Magnus, 1-0, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Défense Caro-Kann (Caro-Kann Defense)) Défense Caro-Kann (Caro-Kann Defense)  Code ECO : B10–B19  ·  Premiers coups : 1.e4 c6  Présentation  La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Par 1...c6, les Noirs préparent ...d5 comme dans la française, mais sans enfermer leur fou de cases blanches, qui peut sortir librement en f5 ou g4. C'est une ou\n  - (Défense Caro-Kann (Caro-Kann Defense)) La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. Par 1...c6, les Noirs préparent ...d5 comme dans la française, mais sans enfermer leur fou de cases blanches, qui peut sortir librement en f5 ou g4. C'est une ouverture réputée pour sa robustesse, appréciée des joueurs positionnels recherchant une structure saine\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "La défense Caro-Kann, du nom des analystes Horatio Caro et Marcus Kann à la fin du XIXe siècle, est une réponse solide et fiable à 1.e4. En jouant 1...c6, les Noirs préparent ...d5, ce qui leur permet de contester le centre sans enfermer leur fou de cases blanches. Dans cette position, les Blancs ont la possibilité de jouer e5, un coup très populaire qui permet de prendre de l'espace au centre et de menacer le pion noir en d6. En avançant ce pion, vous créez également des opportunités pour vos pièces, notamment votre fou et votre dame. Pensez à développer vos pièces rapidement après ce coup, en visant à contrôler le centre et à préparer votre attaque. Rappelez-vous que le développement rapide et le contrôle du centre sont essentiels dans les ouvertures. N'hésitez pas à consulter des vidéos explicatives pour mieux comprendre les idées derrière cette ouverture."
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 4,
+      "fen": "rnbqkb1r/pp1ppppp/5n2/2p5/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq - 2 3",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Nc3",
+          "san": "Nc3",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "d4",
+          "san": "d4",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkb1r/pp1ppppp/5n2/2p5/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq - 2 3\nTrait aux : white\nCoups légaux : Ng5, Ne5, Nh4, Nd4, Ng1, Rg1, Qa4, Qb3, Qc2, Nc3, Na3, h3\nÉchiquier :\nr n b q k b . r\np p . p p p p p\n. . . . . n . .\n. . p . . . . .\n. . P . . . . .\n. . . . . N . .\nP P . P P P P P\nR N B Q K B . R\n\nOuverture : None (None)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nc3 (16546 parties)\n  - g3 (5475 parties)\n  - d4 (1368 parties)\n  - b3 (511 parties)\n  - e3 (277 parties)\nCoup mis en avant dans l'interface : Nc3, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, Magnus - Topalov, Veselin, 1/2-1/2, 2013\n  - Vachier Lagrave, M. - Carlsen, M., 1-0, 2019\n  - Carlsen, M. - Giri, A., 1/2-1/2, 2014\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (Gambit Dame refusé (Queen's Gambit Declined)) Conseils pour les jeunes joueurs  Le gambit Dame refusé enseigne les fondamentaux du jeu fermé : pression sur le centre, jeu sur les colonnes, manœuvres patientes. Ne craignez pas le « gambit » : 2...e6 est parfaitement sûr et garde une position saine. Apprenez la manœuvre de minorité (b4-b5) côté blanc, c'est un plan typique et instructif dans la structure Carlsbad. Côté noir, planifiez tôt la li\n  - (Partie anglaise (English Opening)) Idées stratégiques  L'anglaise repose sur le contrôle des cases centrales à distance, en particulier d5, souvent renforcé par le fianchetto du fou-roi en g2. Les Blancs jouent fréquemment g3, Fg2, Cc3 et un développement souple, retardant la poussée centrale d4 ou e4 jusqu'au moment opportun. Les structures sont variées : sicilienne inversée (quand les Noirs répondent 1...e5), Benoni inversé, ou p",
+      "answer": "La position actuelle est issue d'une ouverture qui n'est pas encore nommée, mais elle est dans la théorie. En jouant Nc3, les Blancs renforcent leur contrôle sur le centre et préparent le développement de leurs pièces. C'est un coup très populaire qui a été joué dans de nombreuses parties de maîtres. Pense à la pression que tu peux exercer sur le centre avec ce développement, et envisage de préparer des coups comme d4 par la suite pour ouvrir le jeu. Rappelle-toi que le développement rapide et le contrôle du centre sont essentiels dans les premières phases de la partie."
+    },
+    {
+      "name": "French Defense",
+      "ply": 4,
+      "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 4,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "e6",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nc3",
+          "san": "Nc3",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3\nTrait aux : white\nCoups légaux : Nh3, Nf3, Ne2, Ba6, Bb5+, Bc4, Bd3, Be2, Ke2, Kd2, Qh5, Qg4\nÉchiquier :\nr n b q k b n r\np p p . . p p p\n. . . . p . . .\n. . . p . . . .\n. . . P P . . .\n. . . . . . . .\nP P P . . P P P\nR N B Q K B N R\n\nOuverture : French Defense (C00)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Nc3 (70617 parties)\n  - Nd2 (43735 parties)\n  - e5 (15864 parties)\n  - exd5 (8188 parties)\n  - Bd3 (1280 parties)\nCoup mis en avant dans l'interface : Nc3, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Caruana, F., 1-0, 2014\n  - So, W. - Carlsen, M., 1/2-1/2, 2017\n  - Aronian, L. - Carlsen, M., 1/2-1/2, 2019\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (French defense) French defense  Code ECO : C00 Coups : 1.e4 e6 FEN : rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_21.html Contributeurs Wikichess : Thibault de Vassal, Toncho Tenev  The French defence has a reputation for solidity and resilience, though it can result in a somewhat cramped game for Black in the early stages. Black often gains counterattacking po\n  - (Défense française (French Defense)) Défense française (French Defense)  Code ECO : C00–C19  ·  Premiers coups : 1.e4 e6  Présentation  La défense française est une réponse solide et stratégique à 1.e4. Par 1...e6, les Noirs préparent la poussée ...d5 pour contester le centre, tout en acceptant temporairement un espace réduit. C'est une ouverture réputée pour sa solidité et sa richesse positionnelle, appréciée des joueurs qui aiment ",
+      "answer": "La défense française est une réponse solide et stratégique des Noirs à 1.e4, qui commence par 1...e6. Elle vise à contester le centre avec le coup ...d5, tout en permettant aux Noirs de préparer un jeu contre-attaquant, même si cela peut mener à une position un peu serrée au début. Dans cette position, les Blancs ont l'opportunité de jouer Nc3, un coup très populaire qui renforce le contrôle du centre et prépare le développement du cavalier. Ce coup est souvent joué en réponse à la défense française car il aide à soutenir le pion en d4 et à préparer des développements futurs. Pense à bien contrôler le centre avec tes pions et à développer tes pièces rapidement. N'oublie pas que le développement est clé dans les ouvertures, alors essaie de faire sortir tes pièces avant de penser à attaquer. Rappelle-toi aussi de garder un œil sur les menaces de ton adversaire tout en avançant dans ton propre plan."
+    },
+    {
+      "name": "Italian Game",
+      "ply": 4,
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "pass": 2,
+      "in_theory": true,
+      "used_llm": true,
+      "summary": {
+        "cited": 4,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 7,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 3,
+        "line_reference": 3,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "e5",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Nf3",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "Bb5",
+          "san": "Bb5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3\nTrait aux : white\nCoups légaux : Ng5, Nxe5, Nh4, Nd4, Ng1, Rg1, Ba6, Bb5, Bc4, Bd3, Be2, Ke2\nÉchiquier :\nr . b q k b n r\np p p p . p p p\n. . n . . . . .\n. . . . p . . .\n. . . . P . . .\n. . . . . N . .\nP P P P . P P P\nR N B Q K B . R\n\nOuverture : King's Knight Opening: Normal Variation (C44)\nCoups théoriques, avec le nombre de parties de maîtres :\n  - Bb5 (162021 parties)\n  - Bc4 (48160 parties)\n  - d4 (22292 parties)\n  - Nc3 (14272 parties)\n  - c3 (1576 parties)\nCoup mis en avant dans l'interface : Bb5, le plus joué en parties de maîtres.\nParties de référence :\n  - Carlsen, M. - Caruana, F., 1/2-1/2, 2019\n  - Caruana, F. - Carlsen, M., 1-0, 2019\n  - Carlsen, Magnus - Caruana, Fabiano, 1/2-1/2, 2020\nLe moteur d'analyse n'a pas été sollicité : la position est dans la théorie.\n\nExtraits de la base de connaissances :\n  - (King's knight Opening) King's knight Opening  Code ECO : C40 Coups : 1.e4 e5 2.Nf3 FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2 Source : https://ficgs.com/wikichess_8.html Contributeurs Wikichess : Thibault de Vassal  King's knight opening is prefered at 90% cases.  The knight simply attacks black's e5 pawn, that is not protected yet and controls d4 and e5 squares.  By far the most played continu\n  - (King's Indian defense) The King's Indian Defence is a chess opening that begins 1.d4 Nf6 2.c4 g6 followed by ...Bg7 and ...d6. The King's Indian is a \"hypermodern\" opening, where Black lets White take the center with the view to later ruining White's \"wonderful\" position, often by an attack on White's king. It is a risky opening, which has been a favourite of players such as former world champions Garry Kasparov, Bobby ",
+      "answer": "L'ouverture reconnue est l'Ouverture du Cavalier du Roi : Variation Normale. Elle commence par 1.e4 e5 2.Nf3 et vise à contrôler le centre avec le cavalier tout en attaquant le pion e5 des Noirs, qui est vulnérable. Dans cette position, jouer Bb5 est une excellente idée car cela met la pression sur le cavalier c6 des Noirs, qui défend le pion e5. En plus de cela, cela permet de préparer un éventuel échange qui pourrait affaiblir la structure des Noirs. Si les Noirs choisissent de défendre leur cavalier, tu pourras continuer à développer tes pièces et renforcer ta position. N'oublie pas que le développement rapide de tes pièces est crucial dans les ouvertures. Pense à contrôler le centre tout en mettant la pression sur les pièces adverses."
+    },
+    {
+      "name": "Anderssen Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . . .\nP . . . . . . .\n. P P P P P P P\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Anderssen's Opening — mais seules 838 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.08 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Ruy Lopez (Spanish Opening)) However, although it is named after him, this particular opening was known earlier; it is included in the Göttingen manuscript, which dates from 1490. Popular use of the Ruy Lopez opening did not develop, however, until the mid-1800s when Jaenisch, a Russian theoretician, \"rediscovered\" its potential.  The opening is still in active use as the double king's pawn opening most commonly used in maste\n  - (Partie écossaise (Scotch Game)) Présentation  La partie écossaise est une ouverture ouverte classique dans laquelle les Blancs jouent 3.d4 pour ouvrir immédiatement le centre, plutôt que de manœuvrer lentement comme dans l'espagnole ou l'italienne. Son nom vient d'un match par correspondance Édimbourg-Londres en 1824. Délaissée pendant un siècle, elle fut remise à l'honneur par Garry Kasparov dans les années 1990. C'est une ouve",
+      "answer": "Cette position est issue de l'Ouverture Anderssen, qui est une ouverture moins courante mais qui a été jouée par des maîtres dans un nombre limité de parties. Les Noirs ont plusieurs options, mais l'idée principale est de réagir au coup des Blancs en jouant e5 pour contester le centre et ouvrir des lignes pour leurs pièces. Dans cette position, le meilleur coup pour les Noirs est e5. En jouant ce coup, tu vas occuper le centre et préparer le développement de tes pièces. Cela te permettra également de libérer ton fou de cases noires et de créer des possibilités d'attaque. N'hésite pas à développer tes pièces rapidement après cela, en visant à contrôler le centre du plateau. Souviens-toi que le contrôle du centre est crucial dans les ouvertures, alors essaie de toujours garder cela à l'esprit."
+    },
+    {
+      "name": "Barnes Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b KQkq - 0 1",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 5,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "h6",
+          "san": "h6",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "g6",
+          "san": "g6",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . . .\n. . . . . P . .\nP P P P P . P P\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Barnes Opening — mais seules 12 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.62 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Partie écossaise (Scotch Game)) Conseils pour les jeunes joueurs  L'écossaise est une excellente première ouverture après 1.e4 : elle ouvre le centre tôt, ce qui rend les principes de développement très concrets. Ne reprenez pas le pion d4 avec la dame sans réflexion ; le coup naturel 4.Cxd4 centralise un cavalier et évite de perdre des tempos après ...Cc6. Méfiez-vous du contre-jeu noir par ...Fc5 et ...Df6 visant f2 et d4 : ga\n  - (King's pawn Opening) King's pawn Opening  Code ECO : B00 Coups : 1.e4 FEN : rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1 Source : https://ficgs.com/wikichess_1.html Contributeurs Wikichess : Thibault de Vassal, Mark Noble, Francisco Pessoa  King's Pawn Game refers to any chess opening where White opens with 1.e4, the most popular of the twenty possible opening moves. Since nearly all of these openings ha",
+      "answer": "La position actuelle est connue sous le nom d'Ouverture Barnes, bien qu'elle ne soit pas très courante, avec seulement quelques parties de maîtres l'ayant atteint. Les Blancs cherchent à contrôler le centre avec le coup e5, ce qui leur permet de développer leurs pièces de manière active et de préparer des attaques sur le roi noir. Pour les Noirs, le meilleur coup serait de jouer e5, ce qui permettrait de contester le centre et d'ouvrir des lignes pour le développement des pièces. En jouant e5, vous pouvez également préparer des réponses actives aux menaces des Blancs. Évitez de jouer des coups passifs comme h6 ou g6 qui ne contribuent pas à votre développement. Pensez à développer vos pièces rapidement, surtout vos cavaliers, pour prendre le contrôle du centre. N'oubliez pas que le développement rapide et le contrôle du centre sont des principes clés dans les ouvertures."
+    },
+    {
+      "name": "Desprez Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/7P/8/PPPPPPP1/RNBQKBNR b KQkq - 0 1",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 3,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 5,
+        "offered": 5,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "h6",
+          "san": "h6",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "g6",
+          "san": "g6",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/7P/8/PPPPPPP1/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . . P\n. . . . . . . .\nP P P P P P P .\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Kádas Opening — mais seules 53 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.43 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Partie écossaise (Scotch Game)) Conseils pour les jeunes joueurs  L'écossaise est une excellente première ouverture après 1.e4 : elle ouvre le centre tôt, ce qui rend les principes de développement très concrets. Ne reprenez pas le pion d4 avec la dame sans réflexion ; le coup naturel 4.Cxd4 centralise un cavalier et évite de perdre des tempos après ...Cc6. Méfiez-vous du contre-jeu noir par ...Fc5 et ...Df6 visant f2 et d4 : ga\n  - (Partie écossaise (Scotch Game)) Présentation  La partie écossaise est une ouverture ouverte classique dans laquelle les Blancs jouent 3.d4 pour ouvrir immédiatement le centre, plutôt que de manœuvrer lentement comme dans l'espagnole ou l'italienne. Son nom vient d'un match par correspondance Édimbourg-Londres en 1824. Délaissée pendant un siècle, elle fut remise à l'honneur par Garry Kasparov dans les années 1990. C'est une ouve",
+      "answer": "La Kádas Opening est une ouverture peu courante qui a été jouée dans seulement 53 parties de maîtres. Les Blancs cherchent à établir un contrôle central avec le pion en e5, ce qui peut ouvrir des possibilités d'attaque sur le roi noir. Dans cette position, le meilleur coup pour les Noirs est e5, ce qui permet de contester le centre et de libérer des pièces. En jouant e5, vous ouvrez également des lignes pour vos fous et vous pouvez préparer des développements futurs. Évitez de jouer des coups trop passifs comme h6 ou g6, car ils ne contribuent pas à votre développement. Pensez à développer vos cavaliers et à contrôler le centre rapidement. Rappelez-vous, le développement rapide et le contrôle du centre sont essentiels dans les ouvertures."
+    },
+    {
+      "name": "Grob",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/6P1/8/PPPPPP1P/RNBQKBNR b KQkq - 0 1",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 4,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 1,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "g4",
+          "san": null,
+          "verdict": "line",
+          "notation": ""
+        },
+        {
+          "token": "d5",
+          "san": "d5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/6P1/8/PPPPPP1P/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . P .\n. . . . . . . .\nP P P P P P . P\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Grob Opening — mais seules 181 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup d5, évaluation de +1.32 en faveur de les Blancs\nCoup mis en avant dans l'interface : d5.\n\nExtraits de la base de connaissances :\n  - (Partie écossaise (Scotch Game)) Conseils pour les jeunes joueurs  L'écossaise est une excellente première ouverture après 1.e4 : elle ouvre le centre tôt, ce qui rend les principes de développement très concrets. Ne reprenez pas le pion d4 avec la dame sans réflexion ; le coup naturel 4.Cxd4 centralise un cavalier et évite de perdre des tempos après ...Cc6. Méfiez-vous du contre-jeu noir par ...Fc5 et ...Df6 visant f2 et d4 : ga\n  - (Partie écossaise (Scotch Game)) Présentation  La partie écossaise est une ouverture ouverte classique dans laquelle les Blancs jouent 3.d4 pour ouvrir immédiatement le centre, plutôt que de manœuvrer lentement comme dans l'espagnole ou l'italienne. Son nom vient d'un match par correspondance Édimbourg-Londres en 1824. Délaissée pendant un siècle, elle fut remise à l'honneur par Garry Kasparov dans les années 1990. C'est une ouve",
+      "answer": "La Grob Opening est une ouverture peu conventionnelle qui commence par le coup 1.g4. Bien qu'elle ne soit pas très populaire et qu'elle ait été jouée dans seulement 181 parties de maîtres, elle vise à surprendre l'adversaire et à créer des opportunités d'attaque sur le flanc roi. Dans cette position, les Noirs ont plusieurs coups possibles, mais le meilleur est d5. Ce coup permet de contester le centre et d'ouvrir des lignes pour les pièces noires. En jouant d5, vous créez également des menaces sur le pion e4 des Blancs. Pensez à développer vos pièces rapidement après cela, en plaçant vos cavaliers et fous sur des cases actives. N'oubliez pas que contrôler le centre est crucial pour obtenir une bonne position. Rappelez-vous, le développement rapide et le contrôle du centre sont des principes clés à suivre."
+    },
+    {
+      "name": "Sodium Attack",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/N7/PPPPPPPP/R1BQKBNR b KQkq - 1 1",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 1,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 3,
+        "offered": 3,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/8/N7/PPPPPPPP/R1BQKBNR b KQkq - 1 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\n. . . . . . . .\nN . . . . . . .\nP P P P P P P P\nR . B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Sodium Attack — mais seules 18 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.74 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Système de Londres (London System)) Idées stratégiques  Le plan blanc est simple et se répète : Ff4, e3, Fd3, c3, Cbd2, Cgf3, puis le petit roque. La structure obtenue est solide et sans faiblesse. Le fou en f4 surveille la case e5 et vise la diagonale b8-h2, souvent en direction du roque noir. Une fois développé, le cavalier passe par d2 puis e5 pour occuper le centre, et l'attaque se poursuit par Dc2, Fxh7 dans certaines configura\n  - (Système de Londres (London System)) Le plan blanc est simple et se répète : Ff4, e3, Fd3, c3, Cbd2, Cgf3, puis le petit roque. La structure obtenue est solide et sans faiblesse. Le fou en f4 surveille la case e5 et vise la diagonale b8-h2, souvent en direction du roque noir. Une fois développé, le cavalier passe par d2 puis e5 pour occuper le centre, et l'attaque se poursuit par Dc2, Fxh7 dans certaines configurations, ou par la pou\n\nDes vidéos explicatives sont affichées sous ta réponse : tu peux y renvoyer le joueur, sans citer de titre.",
+      "answer": "Cette position est connue sous le nom de Sodium Attack, une ouverture peu courante qui a été jouée dans seulement 18 parties de maîtres. Les Noirs doivent maintenant répondre à la poussée e5 des Blancs, qui vise à contrôler le centre et à ouvrir des lignes pour leurs pièces. Le meilleur coup pour les Noirs ici est de jouer e5, ce qui permet de contester le centre et d'ouvrir des possibilités de développement pour vos pièces. En jouant e5, vous créez également des opportunités pour vos cavaliers et vos fous. Pensez à développer vos pièces rapidement après cela, en visant à contrôler le centre avec vos pions. N'oubliez pas que la coordination entre vos pièces est essentielle pour une bonne stratégie. Regardez les vidéos explicatives pour approfondir vos connaissances sur cette position."
+    },
+    {
+      "name": "Ware Opening",
+      "ply": 1,
+      "fen": "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 4,
+        "offered": 4,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 4,
+        "offered": 4,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "e5",
+          "san": "e5",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Nf6",
+          "san": "Nf6",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "d6",
+          "san": "d6",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1\nTrait aux : black\nCoups légaux : Nh6, Nf6, Nc6, Na6, h6, g6, f6, e6, d6, c6, b6, a6\nÉchiquier :\nr n b q k b n r\np p p p p p p p\n. . . . . . . .\n. . . . . . . .\nP . . . . . . .\n. . . . . . . .\n. P P P P P P P\nR N B Q K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — Ware Opening — mais seules 29 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup e5, évaluation de +0.26 en faveur de les Blancs\nCoup mis en avant dans l'interface : e5.\n\nExtraits de la base de connaissances :\n  - (Queen's pawn) Queen's Pawn Game refer to any chess opening which starts with 1.d4, the second most popular opening move, but is now usually used to describe openings where White opens with 1.d4 but does not follow through with an early pawn advance to c4. Some of these openings have individual names as well.  In the 1800s and early 1900s, 1.e4 was by far the most common opening move by White, while the differen\n  - (Partie écossaise (Scotch Game)) Conseils pour les jeunes joueurs  L'écossaise est une excellente première ouverture après 1.e4 : elle ouvre le centre tôt, ce qui rend les principes de développement très concrets. Ne reprenez pas le pion d4 avec la dame sans réflexion ; le coup naturel 4.Cxd4 centralise un cavalier et évite de perdre des tempos après ...Cc6. Méfiez-vous du contre-jeu noir par ...Fc5 et ...Df6 visant f2 et d4 : ga",
+      "answer": "La position actuelle est connue sous le nom d'Ouverture Ware, bien qu'elle ne soit pas très courante, avec seulement 29 parties de maîtres l'ayant atteinte. Les Noirs ont plusieurs options, mais le coup e5 est particulièrement intéressant car il vise à contrôler le centre et à libérer le fou et la dame. Dans cette position, le meilleur coup pour les Noirs est e5. En jouant ce coup, vous ouvrez le centre et vous permettez à vos pièces de se développer plus facilement. Cela crée également des possibilités d'attaque sur le roi adverse. Pensez à développer vos pièces rapidement après cela, en jouant des coups comme Nf6 ou d6 pour renforcer votre contrôle du centre. N'oubliez pas que le développement rapide et le contrôle du centre sont des principes fondamentaux dans les ouvertures. Restez attentif aux menaces de votre adversaire tout en poursuivant votre plan."
+    },
+    {
+      "name": "Bongcloud",
+      "ply": 3,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR b kq - 1 2",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 3,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Nf6",
+          "san": "Nf6",
+          "verdict": "offered",
+          "notation": "english"
+        },
+        {
+          "token": "Nf6",
+          "san": "Nf6",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [],
+      "prompt": "FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR b kq - 1 2\nTrait aux : black\nCoups légaux : Ne7, Nh6, Nf6, Be7, Bd6, Bc5, Bb4, Ba3, Ke7, Qe7, Qf6, Qg5\nÉchiquier :\nr n b q k b n r\np p p p . p p p\n. . . . . . . .\n. . . . p . . .\n. . . . P . . .\n. . . . . . . .\nP P P P K P P P\nR N B Q . B N R\n\nLa position n'est pas de la théorie établie.\nMoteur Stockfish : meilleur coup Nf6, évaluation de +1.36 en faveur de les Blancs\nCoup mis en avant dans l'interface : Nf6.\n\nExtraits de la base de connaissances :\n  - (King's pawn game) King's pawn game  Code ECO : C20 Coups : 1.e4 e5 FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_5.html Contributeurs Wikichess : Thibault de Vassal  The open game is a fight for center squares : d4 and d5 are already under control, and the probable next moves 2.Nf3 or 2.Nc3, then 2. ... Nc6 or 2. ... Nf6 will take control of e4 and e5 square\n  - (Défense française (French Defense)) Conseils pour les jeunes joueurs  La française est une excellente arme pour apprendre les structures de chaînes de pions et les plans à long terme. Retenez le principe : attaquez la base de la chaîne adverse (...c5 et ...f6 pour les Noirs ; f4-f5 pour les Blancs). Surveillez votre fou de c8 dès l'ouverture et cherchez un plan pour le sortir, sinon il restera passif toute la partie. Avec les Blancs",
+      "answer": "La position actuelle n'est pas de la théorie établie, mais le meilleur coup selon le moteur est Nf6. Ce coup permet aux Noirs de développer leur cavalier tout en contrôlant la case centrale e4. En jouant Nf6, tu prépares également une meilleure défense pour ton roi et tu peux envisager de développer d'autres pièces comme le fou. Pense à toujours développer tes pièces et à contrôler le centre, car cela te donnera plus d'options pour l'avenir. N'oublie pas que chaque pièce doit avoir un rôle actif dans la partie."
+    },
+    {
+      "name": "Scholar's Attack",
+      "ply": 3,
+      "fen": "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 2,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 1,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 3,
+        "offered": 1,
+        "legal_not_offered": 0,
+        "illegal": 2,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [
+        {
+          "token": "Qh5",
+          "san": null,
+          "verdict": "illegal",
+          "notation": ""
+        },
+        {
+          "token": "Nc6",
+          "san": "Nc6",
+          "verdict": "offered",
+          "notation": "english"
+        }
+      ],
+      "flagged": [
+        {
+          "token": "Qh5",
+          "san": null,
+          "verdict": "illegal",
+          "sentence": "Les Blancs ont joué Qh5 pour attaquer le pion en e5, et les Noirs doivent maintenant défendre leur position tout en cherchant à se développer."
+        }
+      ],
+      "prompt": "FEN : rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2\nTrait aux : black\nCoups légaux : Ne7, Nh6, Nf6, Be7, Bd6, Bc5, Bb4, Ba3, Ke7, Qe7, Qf6, Qg5\nÉchiquier :\nr n b q k b n r\np p p p . p p p\n. . . . . . . .\n. . . . p . . Q\n. . . . P . . .\n. . . . . . . .\nP P P P . P P P\nR N B . K B N R\n\nLa position n'est pas de la théorie établie.\nElle porte tout de même un nom — King's Pawn Game: Wayward Queen Attack — mais seules 48 parties de maîtres l'ont atteinte.\nMoteur Stockfish : meilleur coup Nc6, évaluation de +0.34 en faveur de les Blancs\nCoup mis en avant dans l'interface : Nc6.\n\nExtraits de la base de connaissances :\n  - (King's pawn game) King's pawn game  Code ECO : C20 Coups : 1.e4 e5 FEN : rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2 Source : https://ficgs.com/wikichess_5.html Contributeurs Wikichess : Thibault de Vassal  The open game is a fight for center squares : d4 and d5 are already under control, and the probable next moves 2.Nf3 or 2.Nc3, then 2. ... Nc6 or 2. ... Nf6 will take control of e4 and e5 square\n  - (Queen's pawn game) Queen's pawn game  Code ECO : A45 Coups : 1.d4 Nf6 FEN : rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2 Source : https://ficgs.com/wikichess_14.html Contributeurs Wikichess : Thibault de Vassal",
+      "answer": "Cette position fait partie du King's Pawn Game, plus précisément du Wayward Queen Attack. Les Blancs ont joué Qh5 pour attaquer le pion en e5, et les Noirs doivent maintenant défendre leur position tout en cherchant à se développer. Dans cette position, le meilleur coup pour les Noirs est Nc6, qui permet de développer le cavalier tout en attaquant la dame blanche. Cela aide également à contrôler le centre et à préparer le développement des autres pièces. Pense à toujours développer tes pièces tout en gardant un œil sur la sécurité de ton roi. Évite de déplacer trop de fois la même pièce dans l'ouverture, concentre-toi sur le développement harmonieux de toutes tes pièces. Rappelle-toi que le contrôle du centre est crucial dans les premières phases de la partie."
+    },
+    {
+      "name": "English, Symmetrical",
+      "ply": 6,
+      "fen": "rnbqkb1r/pp1ppp1p/5np1/2p5/2P5/5NP1/PP1PPP1P/RNBQKB1R w KQkq - 0 4",
+      "pass": 2,
+      "in_theory": false,
+      "used_llm": true,
+      "summary": {
+        "cited": 0,
+        "offered": 0,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "strict_summary": {
+        "cited": 2,
+        "offered": 2,
+        "legal_not_offered": 0,
+        "illegal": 0,
+        "line_reference": 0,
+        "in_french_notation": 0
+      },
+      "citations": [],
+      "flagged": [],
+      "prompt": "FEN : rnbqkb1r/pp1ppp1p/5np1/2p5/2P5/5NP1/PP1PPP1P/RNBQKB1R w KQkq - 0 4\nTrait aux : white\nCoups légaux : Ng5, Ne5, Nh4, Nd4, Ng1, Rg1, Bh3, Bg2, Qa4, Qb3, Qc2, Nc3\nÉchiquier :\nr n b q k b . r\np p . p p p . p\n. . . . . n p .\n. . p . . . . .\n. . P . . . . .\n. . . . . N P .\nP P . P P P . P\nR N B Q K B . R\n\nLa position n'est pas de la théorie établie.\nMoteur Stockfish : meilleur coup d4, évaluation de +0.36 en faveur de les Blancs\nCoup mis en avant dans l'interface : d4.\n\nExtraits de la base de connaissances :\n  - (Gambit Dame refusé (Queen's Gambit Declined)) Conseils pour les jeunes joueurs  Le gambit Dame refusé enseigne les fondamentaux du jeu fermé : pression sur le centre, jeu sur les colonnes, manœuvres patientes. Ne craignez pas le « gambit » : 2...e6 est parfaitement sûr et garde une position saine. Apprenez la manœuvre de minorité (b4-b5) côté blanc, c'est un plan typique et instructif dans la structure Carlsbad. Côté noir, planifiez tôt la li\n  - (Partie anglaise (English Opening)) Idées stratégiques  L'anglaise repose sur le contrôle des cases centrales à distance, en particulier d5, souvent renforcé par le fianchetto du fou-roi en g2. Les Blancs jouent fréquemment g3, Fg2, Cc3 et un développement souple, retardant la poussée centrale d4 ou e4 jusqu'au moment opportun. Les structures sont variées : sicilienne inversée (quand les Noirs répondent 1...e5), Benoni inversé, ou p",
+      "answer": "La position actuelle n'est pas de la théorie établie, mais le moteur recommande de jouer d4. Ce coup est important car il permet aux Blancs de prendre le contrôle du centre, ce qui est essentiel pour le développement de vos pièces. En jouant d4, vous ouvrez également des lignes pour vos fous et préparez une meilleure coordination de vos pièces. Pensez à toujours chercher à contrôler le centre de l'échiquier, car cela vous donnera plus d'options pour attaquer et défendre. N'oubliez pas que la patience est clé dans cette position, alors prenez le temps de bien réfléchir à vos coups."
+    }
+  ]
+}
