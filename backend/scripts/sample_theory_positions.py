@@ -96,12 +96,10 @@ def main() -> None:
                 break
             except LichessServiceError as exc:
                 wait = PAUSE_SECONDS * (attempt + 2)
-                print(
-                    f"  {entry['name']:28s} ply {entry['ply']:2d}  {exc} — retry dans {wait:.0f}s"
-                )
+                print(f"  {entry['name']:28s} ply {entry['ply']:2d}  {exc} — retry in {wait:.0f}s")
                 time.sleep(wait)
         if result is None:
-            print(f"  {entry['name']:28s} ply {entry['ply']:2d}  abandonnée")
+            print(f"  {entry['name']:28s} ply {entry['ply']:2d}  given up")
             continue
         time.sleep(PAUSE_SECONDS)
         rows.append(
@@ -128,7 +126,7 @@ def main() -> None:
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"\n{len(rows)} positions écrites dans {OUT}")
+    print(f"\n{len(rows)} positions written to {OUT}")
 
 
 if __name__ == "__main__":
