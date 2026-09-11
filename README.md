@@ -177,9 +177,9 @@ exemption at all.
 
 **87 tests, no network.** Every external service is faked, and the only test that needs the
 downloaded corpus skips when it is absent. Three of them guard the evaluation itself: that
-no case points at an article the corpus cannot hold, that the
-`french-question` variant calls the agent's own function rather than a copy of it, and
-that raising the threshold never puts *more* positions into theory.
+no case points at an article the corpus cannot hold, that the `french-question` variant
+calls the agent's own function rather than a copy of it, and that raising the threshold
+never puts *more* positions into theory.
 
 ## Running it
 
