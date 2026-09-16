@@ -19,6 +19,7 @@ Usage (from the ``backend/`` folder)::
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import shutil
@@ -26,6 +27,8 @@ import subprocess  # nosec B404 - only fixed, local commands are run
 import sys
 import tempfile
 from pathlib import Path
+
+from chess_coach.figure_style import PALETTE
 
 # Where Chrome usually sits on Windows and on Linux. CHROME_BIN wins when set.
 CHEMINS_CHROME = [
@@ -36,67 +39,87 @@ CHEMINS_CHROME = [
     "/usr/bin/chromium",
 ]
 
+#: The document stylesheet, filled from the vendored palette.
+#:
+#: A PDF is read on paper and on a screen, and a printed page is the one surface where a
+#: colour chosen by hand shows next to the figures of the same document. The nine values this
+#: file used to write — a near-black blue for the headings, a sand for the quotations, an ochre
+#: rule — belonged to nothing: they were not the palette, and they did not match the figures
+#: the document embeds. Each one below is a token, and the day the palette moves this page
+#: moves with it.
 STYLESHEET = """
-@page { size: A4; margin: 18mm 16mm; }
+@page {{ size: A4; margin: 18mm 16mm; }}
 
-body {
+body {{
   font-family: 'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif;
   font-size: 10.5pt;
   line-height: 1.55;
-  color: #1f2933;
+  color: {ink};
   margin: 0;
-}
+}}
 
-h1 { font-size: 20pt; color: #0d1b2a; margin: 0 0 0.4em; }
-h2 {
+h1 {{ font-size: 20pt; color: {primary}; margin: 0 0 0.4em; }}
+h2 {{
   font-size: 14pt;
-  color: #0d1b2a;
+  color: {primary};
   margin-top: 1.6em;
   padding-bottom: 0.25em;
-  border-bottom: 2px solid #c8a04b;
+  border-bottom: 2px solid {secondary};
   break-after: avoid;
-}
-h3 { font-size: 11.5pt; color: #1b263b; margin-top: 1.2em; break-after: avoid; }
-h4 { font-size: 10.5pt; color: #1b263b; break-after: avoid; }
+}}
+h3 {{ font-size: 11.5pt; color: {primary}; margin-top: 1.2em; break-after: avoid; }}
+h4 {{ font-size: 10.5pt; color: {primary}; break-after: avoid; }}
 
-p, li { orphans: 3; widows: 3; }
+p, li {{ orphans: 3; widows: 3; }}
 
-blockquote {
+blockquote {{
   margin: 0 0 1.2em;
   padding: 0.6em 1em;
-  background: #f4f1ea;
-  border-left: 3px solid #c8a04b;
-  color: #4a5460;
-}
+  background: {surface};
+  border-left: 3px solid {secondary};
+  color: {muted};
+}}
 
-table {
+table {{
   width: 100%;
   border-collapse: collapse;
   margin: 0.8em 0 1.2em;
   font-size: 9pt;
   break-inside: avoid;
-}
-th, td { border: 1px solid #e2ddd2; padding: 5px 8px; text-align: left; vertical-align: top; }
-th { background: #0d1b2a; color: #ffffff; font-weight: 600; }
-tr:nth-child(even) td { background: #faf8f3; }
+}}
+th, td {{ border: 1px solid {grid}; padding: 5px 8px; text-align: left; vertical-align: top; }}
+th {{ background: {primary}; color: {paper}; font-weight: 600; }}
+tr:nth-child(even) td {{ background: {surface}; }}
 
-code {
+code {{
   font-family: 'Cascadia Mono', Consolas, monospace;
   font-size: 9pt;
-  background: #f4f1ea;
+  background: {surface};
   padding: 1px 4px;
   border-radius: 3px;
-}
+}}
 
-pre.mermaid {
+pre.mermaid {{
   break-inside: avoid;
   text-align: center;
   margin: 1.2em 0;
   background: none;
-}
+}}
 
-hr { border: 0; border-top: 1px solid #e2ddd2; margin: 1.8em 0; }
-"""
+hr {{ border: 0; border-top: 1px solid {grid}; margin: 1.8em 0; }}
+""".format(**PALETTE)
+
+#: What Mermaid paints a diagram with. Left to itself it uses its own greys and lavenders,
+#: which land beside figures drawn from the palette in the same document.
+MERMAID_THEME = {
+    "primaryColor": PALETTE["surface"],
+    "primaryTextColor": PALETTE["ink"],
+    "primaryBorderColor": PALETTE["primary"],
+    "lineColor": PALETTE["muted"],
+    "secondaryColor": PALETTE["paper"],
+    "tertiaryColor": PALETTE["paper"],
+    "fontFamily": "Segoe UI, system-ui, Helvetica, Arial, sans-serif",
+}
 
 TEMPLATE = """<!doctype html>
 <html lang="fr">
@@ -109,7 +132,7 @@ TEMPLATE = """<!doctype html>
 {body}
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({{ startOnLoad: true, theme: 'neutral' }});
+  mermaid.initialize({{ startOnLoad: true, theme: 'base', themeVariables: {theme} }});
 </script>
 </body>
 </html>
@@ -186,7 +209,12 @@ def main() -> None:
 
     print(f"Converting {source.name}...")
     body = markdown_to_html(source)
-    html = TEMPLATE.format(title=args.title or source.stem, style=STYLESHEET, body=body)
+    html = TEMPLATE.format(
+        title=args.title or source.stem,
+        style=STYLESHEET,
+        body=body,
+        theme=json.dumps(MERMAID_THEME),
+    )
     html_to_pdf(html, output)
 
     if not output.exists():

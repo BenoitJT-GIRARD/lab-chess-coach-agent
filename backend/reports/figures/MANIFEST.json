@@ -1,0 +1,37 @@
+{
+  "images": {
+    "latency_by_node.png": {
+      "axes": [
+        {
+          "title": "Wall-clock cost of each node of the graph, median and ninetieth percentile",
+          "x": "Wall-clock time of one node, in milliseconds",
+          "y": "Node of the agent's graph"
+        }
+      ],
+      "dispersion": null,
+      "dpi": 200,
+      "n": "n(context) = 12, n(theory) = 12, n(videos) = 12, n(engine) = 6",
+      "sha256": "7a7430ece41da915f7505f19e3ea430795f9ff1d7a53e7ab347d30ed919bee94",
+      "source": "scripts/build_figures.py",
+      "style_version": 1,
+      "written": "2026-09-15"
+    },
+    "routing_plateau.png": {
+      "axes": [
+        {
+          "title": "Positions routed to theory, across the threshold, on the frozen reading",
+          "x": "Threshold, in master games reaching the position",
+          "y": "Positions the agent answers from theory"
+        }
+      ],
+      "dispersion": null,
+      "dpi": 200,
+      "n": "n = 54",
+      "sha256": "71040a6551c0dccd430fda1044c84d60989d1214b6fffda5264ce74798895c0d",
+      "source": "scripts/build_figures.py",
+      "style_version": 1,
+      "written": "2026-09-15"
+    }
+  },
+  "schema": "image-manifest/1"
+}
