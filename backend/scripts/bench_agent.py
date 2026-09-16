@@ -106,6 +106,10 @@ def main() -> None:
         "nodes": {
             node: {
                 "n": len(values),
+                # Every measurement, not only the summary of them: a figure that shows
+                # twelve points says whether a median of 18 ms came from twelve values at
+                # 18 or from six at 5 and six at 40.
+                "samples_ms": [round(value, 2) for value in sorted(values)],
                 "median_ms": round(statistics.median(values), 1),
                 "p90_ms": round(sorted(values)[max(0, int(len(values) * 0.9) - 1)], 1),
                 "max_ms": round(max(values), 1),

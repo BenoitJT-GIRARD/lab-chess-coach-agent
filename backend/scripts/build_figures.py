@@ -18,6 +18,7 @@ import csv
 import json
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 from chess_coach.figure_style import PALETTE, apply_style, close, save_figure
 from chess_coach.utils.paths import FIGURES_DIR, LATENCY_JSON, THRESHOLD_SWEEP_CSV
@@ -82,36 +83,57 @@ def routing_plateau() -> None:
 
 
 def latency_by_node() -> None:
-    """What each node of the graph costs, median and ninetieth percentile."""
+    """Each measurement where the run recorded them, and the order statistics otherwise.
+
+    Two bars per node — the median beside the ninetieth percentile — asked the eye to compare
+    two lengths that are not independent: the p90 of a sample contains its median, and a bar
+    chart says the opposite. A latency is also not symmetric around its middle, so a mean and
+    an interval would describe a shape it does not have. What is drawn is the median, the
+    stretch from it to the p90, and the thin tail out to the slowest call.
+    """
     payload = json.loads(LATENCY_JSON.read_text(encoding="utf-8"))
     nodes = payload["nodes"]
     order = sorted(nodes, key=lambda name: nodes[name]["median_ms"])
-
-    medians = [nodes[name]["median_ms"] for name in order]
-    p90s = [nodes[name]["p90_ms"] for name in order]
     positions = range(len(order))
 
     fig, ax = plt.subplots()
-    ax.barh(
-        [position + 0.18 for position in positions],
-        medians,
-        height=0.34,
-        color=PALETTE["primary"],
-        label="median",
-    )
-    ax.barh(
-        [position - 0.18 for position in positions],
-        p90s,
-        height=0.34,
-        color=PALETTE["tertiary"],
-        label="p90",
-    )
+    scatterer = np.random.default_rng(20260916)
+    for position, name in zip(positions, order, strict=True):
+        node = nodes[name]
+        samples = [float(value) for value in node.get("samples_ms") or []]
+        if samples:
+            ax.scatter(
+                samples,
+                position + scatterer.uniform(-0.16, 0.16, size=len(samples)),
+                s=16,
+                color=PALETTE["tertiary"],
+                alpha=0.55,
+                linewidths=0,
+                zorder=2,
+            )
+        ax.hlines(
+            position, node["median_ms"], node["max_ms"],
+            color=PALETTE["control"], linewidth=1.0, zorder=3,
+        )
+        ax.hlines(
+            position, node["median_ms"], node["p90_ms"],
+            color=PALETTE["primary"], linewidth=3.4, zorder=4,
+        )
+        ax.scatter(
+            [node["median_ms"]], [position], s=44, color=PALETTE["primary"], zorder=5,
+            label="median" if position == 0 else None,
+        )
+    ax.plot([], [], color=PALETTE["primary"], linewidth=3.4, label="median to p90")
+    ax.plot([], [], color=PALETTE["control"], linewidth=1.0, label="p90 to slowest call")
+    # Logarithmic, because the four nodes span 18 ms to 8 seconds: on a linear axis the one
+    # cold start of the context node flattens the other three into the same pixel column.
+    ax.set_xscale("log")
     ax.set_yticks(list(positions))
     ax.set_yticklabels(order)
-    ax.set_xlabel("Wall-clock time of one node, in milliseconds")
+    ax.set_xlabel("Wall-clock time of one node, in milliseconds (log scale)")
     ax.set_ylabel("Node of the agent's graph")
-    ax.set_title("Wall-clock cost of each node of the graph, median and ninetieth percentile")
-    ax.legend(loc="lower right")
+    ax.set_title("Wall-clock cost of each node of the agent's graph")
+    ax.legend(loc="upper right", fontsize=8, frameon=False)
 
     counts = {name: nodes[name]["n"] for name in order}
     _breathe(fig)
@@ -120,8 +142,8 @@ def latency_by_node() -> None:
         FIGURES_DIR / "latency_by_node.png",
         n=counts,
         source=SOURCE,
-        note="4 positions, 3 repeats, language model disabled; p90 over 12 points is an "
-        "order statistic, so no interval is drawn",
+        note="4 positions, 3 repeats, language model disabled; order statistics of a skewed "
+        "sample, so no mean and no interval is drawn",
     )
     close(fig)
 

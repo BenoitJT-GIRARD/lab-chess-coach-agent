@@ -3,18 +3,18 @@
     "latency_by_node.png": {
       "axes": [
         {
-          "title": "Wall-clock cost of each node of the graph, median and ninetieth percentile",
-          "x": "Wall-clock time of one node, in milliseconds",
+          "title": "Wall-clock cost of each node of the agent's graph",
+          "x": "Wall-clock time of one node, in milliseconds (log scale)",
           "y": "Node of the agent's graph"
         }
       ],
       "dispersion": null,
       "dpi": 200,
       "n": "n(context) = 12, n(theory) = 12, n(videos) = 12, n(engine) = 6",
-      "sha256": "7a7430ece41da915f7505f19e3ea430795f9ff1d7a53e7ab347d30ed919bee94",
+      "sha256": "68117a6609e10f89c141564e79e71137da1c682b8e9aa8695550bbce5d1771ce",
       "source": "scripts/build_figures.py",
       "style_version": 1,
-      "written": "2026-09-15"
+      "written": "2026-09-16"
     },
     "routing_plateau.png": {
       "axes": [
@@ -30,7 +30,7 @@
       "sha256": "71040a6551c0dccd430fda1044c84d60989d1214b6fffda5264ce74798895c0d",
       "source": "scripts/build_figures.py",
       "style_version": 1,
-      "written": "2026-09-15"
+      "written": "2026-09-16"
     }
   },
   "schema": "image-manifest/1"
