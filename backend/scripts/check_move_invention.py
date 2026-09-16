@@ -1,9 +1,8 @@
 """Does the model cite only the moves it was given?
 
-The system prompt tells it to: *ne cite que les coups qui te sont donnés, n'en invente
-aucun*. That is the strongest claim the repository makes about the last node, and until
-now it was an instruction in the right place, checked by nothing — a test with a faked
-model can only verify that the *prompt* carries the rule.
+One line of the system prompt forbids inventing a move, and that line is the strongest claim
+this repository makes about its last node. It went unchecked for a long time: a suite with a
+faked model can only show that the prompt carries the rule, never that anything obeys it.
 
 This script checks the rule itself, on the real agent and the real model: every position
 of the frozen reading that left theory, plus the first twelve that stayed in it, each run
@@ -28,18 +27,19 @@ import argparse
 import json
 import re
 from datetime import UTC, datetime
-from pathlib import Path
 from typing import Any
 
 from chess_coach.agent.graph import build_default_agent
 from chess_coach.agent.synthesize import build_llm_prompt
+from chess_coach.artifacts import write_json, write_text
 from chess_coach.config import get_settings
 from chess_coach.evaluation.moves import classify, summarise
 from chess_coach.evaluation.threshold import is_in_theory
+from chess_coach.utils.paths import MOVE_INVENTION_JSON, MOVE_INVENTION_TABLE, THEORY_POSITIONS
 
-POSITIONS = Path("data/eval/theory_positions.json")
-OUT_JSON = Path("data/eval/move_invention.json")
-OUT_MD = Path("data/eval/move_invention.md")
+POSITIONS = THEORY_POSITIONS
+OUT_JSON = MOVE_INVENTION_JSON
+OUT_MD = MOVE_INVENTION_TABLE
 
 #: Every position that left theory, plus the first twelve that stayed in it. The graph
 #: takes a different path for each — one answers from the Explorer, the other from
@@ -198,12 +198,21 @@ def to_markdown(payload: dict[str, Any]) -> str:
     if not flagged:
         lines.append("Nothing: every move cited over the run was one the prompt had given.")
     else:
+        # The model was asked to coach in French, so its sentences are in French. They are
+        # quoted inside a fenced block: they are the evidence, not the prose of this report,
+        # and the language rule of the repository judges what is written here rather than
+        # what was measured.
         for name, attempt, item in flagged:
             reading = f" = {item['san']}" if item["san"] else ""
             lines.append(
                 f"- **{name}** (pass {attempt}) — `{item['token']}`{reading}, "
-                f"*{item['verdict']}* — « {item['sentence']} »"
+                f"*{item['verdict']}*, in the model's own words:"
             )
+            lines.append("")
+            lines.append("  ```")
+            lines.append(f"  {item['sentence']}")
+            lines.append("  ```")
+            lines.append("")
     lines.append("")
 
     fell_back = [run for run in payload["runs"] if not run["used_llm"]]
@@ -230,8 +239,8 @@ def rejudge() -> None:
     report["totals"] = totals(report["runs"], "summary")
     report["strict_totals"] = totals(report["runs"], "strict_summary")
 
-    OUT_JSON.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    OUT_MD.write_text(to_markdown(report), encoding="utf-8")
+    write_json(OUT_JSON, report)
+    write_text(OUT_MD, to_markdown(report))
     print(json.dumps(report["totals"], ensure_ascii=False))
     print(f"{len(report['runs'])} saved answers judged again, no call made")
 
@@ -293,8 +302,8 @@ def main() -> None:
     }
 
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUT_JSON.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    OUT_MD.write_text(to_markdown(report), encoding="utf-8")
+    write_json(OUT_JSON, report)
+    write_text(OUT_MD, to_markdown(report))
 
     print()
     print(json.dumps(report["totals"], ensure_ascii=False))

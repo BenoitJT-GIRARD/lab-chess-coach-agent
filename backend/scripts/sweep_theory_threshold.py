@@ -8,16 +8,16 @@ Touches no network: everything comes from ``data/eval/theory_positions.json``, w
 
 from __future__ import annotations
 
-import csv
 import json
-from pathlib import Path
 
+from chess_coach.artifacts import write_csv, write_text
 from chess_coach.config import get_settings
 from chess_coach.evaluation.threshold import plateau_around, sweep
+from chess_coach.utils.paths import THEORY_POSITIONS, THRESHOLD_SWEEP_CSV, THRESHOLD_SWEEP_TABLE
 
-READING = Path("data/eval/theory_positions.json")
-OUT_CSV = Path("data/eval/theory_threshold_sweep.csv")
-OUT_TABLE = Path("data/eval/theory_threshold_sweep.md")
+READING = THEORY_POSITIONS
+OUT_CSV = THRESHOLD_SWEEP_CSV
+OUT_TABLE = THRESHOLD_SWEEP_TABLE
 
 THRESHOLDS = [0, 10, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000]
 
@@ -35,15 +35,9 @@ def main() -> None:
     rows = sweep(positions, THRESHOLDS)
     room = plateau_around(positions, served)
 
-    OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
-    with OUT_CSV.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(
-            handle, fieldnames=["threshold", "in_theory", "out_of_theory", "flipped"]
-        )
-        writer.writeheader()
-        writer.writerows(rows)
+    write_csv(OUT_CSV, ["threshold", "in_theory", "out_of_theory", "flipped"], rows)
 
-    OUT_TABLE.write_text(render(payload, rows, room, served), encoding="utf-8")
+    write_text(OUT_TABLE, render(payload, rows, room, served))
     for row in rows:
         mark = "  <- servi" if row["threshold"] == served else ""
         print(

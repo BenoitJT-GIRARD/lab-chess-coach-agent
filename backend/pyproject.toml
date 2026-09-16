@@ -59,7 +59,17 @@ dev = [
     "pre-commit>=4.0",
     "ipykernel>=6.29",
     "jupyter>=1.1",
-    "nbstripout>=0.7",
+    # The two published figures are drawn by `scripts/build_figures.py`, through the
+    # vendored `figure_style`. The served backend never draws anything, so matplotlib is a
+    # development dependency and stays out of the image.
+    "matplotlib>=3.9",
+    # `scripts/capture.py` drives the system Chrome through playwright: the interface draws
+    # itself after the page settles, and a headless clock photographs it empty.
+    "playwright>=1.47",
+    # `scripts/run_notebooks.py` executes the notebook from a clean kernel and writes its
+    # outputs back, which is what lets the published copy be one run rather than a history.
+    "nbclient>=0.10",
+    "nbformat>=5.10",
 ]
 
 # sentence-transformers pulls in PyTorch. By default PyTorch ships with the
@@ -84,7 +94,6 @@ packages = ["src/chess_coach"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-extend-exclude = ["notebooks/*.ipynb"]
 
 [tool.ruff.lint]
 select = [
@@ -105,6 +114,12 @@ ignore = [
     "N806",
 ]
 
+# A notebook spreads its imports across cells: the first one sets the environment up, and the
+# ones that follow sit next to the code that uses them, which is what makes a notebook
+# readable. It is linted, and these three rules are the ones that would ask it to stop.
+[tool.ruff.lint.per-file-ignores]
+"notebooks/**/*.ipynb" = ["E402", "F401", "I001"]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
@@ -112,8 +127,15 @@ line-ending = "lf"
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-addopts = "-ra -q --strict-markers"
 testpaths = ["tests"]
+addopts = "-ra --strict-markers --cov --cov-branch --cov-report=term-missing --cov-report=xml"
+markers = [
+    "integration: two real components of the repository wired together, or one against a real external dependency",
+    "system: the product started the way the README says to start it, questioned through its public surface",
+    "claim: fails when a published number, figure, table or artefact stops matching the code",
+    "simulation: replays a complete scenario on frozen data, with no real service",
+    "slow: takes long enough that a reader deserves to be told before running it",
+]
 # Warnings are errors. Three categories used to be silenced wholesale, which on a stack
 # made of six fast-moving libraries meant never hearing that one of them was about to
 # change its API. Every exemption below names the message it silences and the library it
@@ -121,15 +143,38 @@ testpaths = ["tests"]
 filterwarnings = ["error"]
 
 [tool.coverage.run]
-source = ["src/chess_coach"]
 branch = true
+source = ["src/chess_coach", "scripts"]
+data_file = "var/.coverage"
+omit = [
+    # Vendored copies of portfolio tooling, identical in every repository and tested where
+    # they are written: counting them here would measure someone else's tests.
+    "*/figure_style.py",
+    "*/utils/paths.py",
+    "scripts/run_notebooks.py",
+    "scripts/smoke.py",
+    "scripts/capture.py",
+]
 
 [tool.coverage.report]
+# The floor is the rate measured on the day the suite was completed, rounded down. A floor
+# below the current rate is not a floor: it lets the next commit lose coverage silently.
+fail_under = 70
+show_missing = true
+skip_covered = true
 exclude_lines = [
     "pragma: no cover",
     "if __name__ == .__main__.:",
     "raise NotImplementedError",
 ]
+
+[tool.coverage.xml]
+# Tracked: a published result a reader can open, and what the coverage badge recomputes from.
+output = "reports/coverage/coverage.xml"
+
+[tool.coverage.html]
+# Not tracked: generated pages nobody reviews in a diff.
+directory = "var/coverage-html"
 
 [tool.bandit]
 exclude_dirs = ["tests", "notebooks", ".venv"]

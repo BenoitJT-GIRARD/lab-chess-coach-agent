@@ -13,18 +13,18 @@ plus a handful of lines nobody plays, which is where a routing threshold earns i
 
 from __future__ import annotations
 
-import json
 import time
 from datetime import UTC, datetime
-from pathlib import Path
 
 import chess
 
+from chess_coach.artifacts import write_json
 from chess_coach.config import get_settings
 from chess_coach.services.lichess import LichessService, LichessServiceError
 from chess_coach.services.opening_book import OPENING_LINES
+from chess_coach.utils.paths import THEORY_POSITIONS
 
-OUT = Path("data/eval/theory_positions.json")
+OUT = THEORY_POSITIONS
 
 #: The Explorer is free and rate-limited. One request per second is the pace it tolerates;
 #: without this pause the run dies on HTTP 429 after about twenty positions, and the ones
@@ -125,7 +125,7 @@ def main() -> None:
         "positions": rows,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_json(OUT, payload)
     print(f"\n{len(rows)} positions written to {OUT}")
 
 

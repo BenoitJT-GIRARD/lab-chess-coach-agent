@@ -13,6 +13,8 @@ from functools import lru_cache
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from chess_coach.utils.paths import OPENINGS_DIR, WIKICHESS_DIR
+
 
 class Settings(BaseSettings):
     """Application configuration sourced from environment variables / ``.env``."""
@@ -63,6 +65,11 @@ class Settings(BaseSettings):
     milvus_host: str = "milvus"
     milvus_port: int = 19530
     milvus_collection: str = "chess_openings"
+    # How long a call to the vector store waits before giving up. pymilvus retries a closed
+    # port for about ten seconds by default, which a reader experiences as a page that hangs
+    # rather than as a search that failed; the route answers 503, and it has to answer it
+    # while someone is still looking.
+    milvus_timeout: float = Field(default=3.0, ge=0.5)
 
     # The knowledge base is made of two folders of Markdown articles, both
     # relative to the working directory.
@@ -70,8 +77,8 @@ class Settings(BaseSettings):
     #     not redistributed with the project: the folder is filled by
     #     scripts.fetch_wikichess;
     #   - openings: complementary notes written in French for young players.
-    wikichess_dir: str = "data/wikichess"
-    openings_dir: str = "data/openings"
+    wikichess_dir: str = str(WIKICHESS_DIR)
+    openings_dir: str = str(OPENINGS_DIR)
 
     # --- Embeddings ---
     # Multilingual, and it has to be: the Wikichess articles are in English, the

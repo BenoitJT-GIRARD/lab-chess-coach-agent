@@ -14,23 +14,23 @@ third-party endpoint would swamp the four nodes this is meant to compare.
 
 from __future__ import annotations
 
-import json
 import statistics
 import time
 from datetime import UTC, datetime
-from pathlib import Path
 
 import chess
 
 from chess_coach.agent.state import AgentDeps
+from chess_coach.artifacts import write_json
 from chess_coach.config import get_settings
 from chess_coach.services.mongo import MongoService
 from chess_coach.services.rag_search import RagService
 from chess_coach.services.stockfish_engine import StockfishService
 from chess_coach.services.theory import TheoryService
 from chess_coach.services.youtube import YoutubeService
+from chess_coach.utils.paths import LATENCY_JSON
 
-OUT = Path("data/eval/latency.json")
+OUT = LATENCY_JSON
 
 #: Two positions in theory, two out of it — the graph takes a different path for each, and
 #: an average over one of them would describe half the system.
@@ -114,7 +114,7 @@ def main() -> None:
         },
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_json(OUT, payload)
 
     print()
     for node, stats in payload["nodes"].items():

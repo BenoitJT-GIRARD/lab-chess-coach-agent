@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from chess_coach.utils.paths import TESTS_DIR
 from scripts.fetch_wikichess import (
     WikichessArticle,
     is_worth_keeping,
@@ -18,7 +19,9 @@ from scripts.fetch_wikichess import (
     write_manifest,
 )
 
-FIXTURE = Path(__file__).parent / "fixtures" / "wikichess_article.html"
+#: The fixtures live at the root of `tests/`, beside the three tiers, because the same page
+#: would be read by an integration test of the download if one were ever written.
+FIXTURE = TESTS_DIR / "fixtures" / "wikichess_article.html"
 
 # The page is the position after 1.e4 c5, so the walk reached it with those moves.
 MOVES = ["e4", "c5"]
@@ -83,7 +86,7 @@ def test_the_manifest_indexes_what_the_download_writes(tmp_path: Path) -> None:
     """
 
     write_articles([parse(3, load_fixture(), MOVES)], tmp_path)
-    manifest = write_manifest(tmp_path, downloaded="2026-09-08")
+    manifest = write_manifest(tmp_path, downloaded="2026-09-08", output=tmp_path / "MANIFEST.json")
 
     payload = json.loads(manifest.read_text(encoding="utf-8"))
     assert payload["downloaded"] == "2026-09-08"
@@ -112,3 +115,24 @@ def test_an_article_without_explanation_is_dropped() -> None:
 
     assert is_worth_keeping(empty) is False
     assert is_worth_keeping(parse(3, load_fixture(), MOVES)) is True
+
+
+def test_indexing_a_scratch_directory_leaves_the_published_index_alone(tmp_path: Path) -> None:
+    """The guard on a defect this repository would not have noticed.
+
+    `write_manifest` defaults to the published path, which is what the download wants and
+    what a test must never get. Handed a directory of its own and no output, it would
+    replace twenty-one articles with whatever the test invented.
+    """
+    from chess_coach.utils.paths import WIKICHESS_MANIFEST
+
+    before = WIKICHESS_MANIFEST.read_bytes()
+    (tmp_path / "00003-sicilian-defense.md").write_text(
+        "# Sicilian defense\n\n- Code ECO: B20\n- Coups: 1.e4 c5\n- Source: https://ficgs.com/wikichess_3.html\n",
+        encoding="utf-8",
+    )
+
+    written = write_manifest(tmp_path, downloaded="2026-09-15", output=tmp_path / "MANIFEST.json")
+
+    assert written == tmp_path / "MANIFEST.json"
+    assert WIKICHESS_MANIFEST.read_bytes() == before

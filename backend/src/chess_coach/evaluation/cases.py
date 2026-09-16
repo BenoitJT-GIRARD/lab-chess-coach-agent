@@ -15,8 +15,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from chess_coach.config import get_settings
+from chess_coach.utils.paths import RETRIEVAL_CASES
 
-DEFAULT_PATH = Path("data/eval/retrieval_cases.json")
+DEFAULT_PATH = RETRIEVAL_CASES
 
 
 @dataclass(frozen=True, slots=True)
@@ -52,10 +53,9 @@ def corpus_sources(settings=None) -> set[str]:
     Used by the tests: a case pointing at a file that is not in the corpus is a label
     nothing can ever satisfy, and it would silently drag recall down for good.
 
-    The Wikichess articles are not redistributed, so their folder holds nothing but its
-    manifest until ``scripts.fetch_wikichess`` has run. The manifest lists exactly what
-    the download writes, which is what the labels are checked against; the files
-    themselves are added when they are there.
+    The Wikichess articles are not redistributed, so their directory is empty on a fresh
+    clone. What the labels are checked against is the manifest, which lists exactly what the
+    download will write; the files join the check once they are on disk.
     """
 
     settings = settings or get_settings()
