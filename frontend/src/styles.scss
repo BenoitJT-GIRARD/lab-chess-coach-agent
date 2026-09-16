@@ -1,13 +1,10 @@
 /* Global styles — Chess Coach.
  *
- * Every colour below comes from the portfolio palette, and the file writes six hex values
- * in total: the six tokens. The Material ramps are derived from two of them with
- * `color.scale`, so a shade is computed rather than typed, and the day the palette moves
- * this file moves with it. The custom properties keep the names the components already use.
- *
- * The source of those six values is `assets/palette.yaml` in the governance repository,
- * which `tools/sync_figure_style.py` also renders into
- * `backend/src/chess_coach/assets/tokens.css` for anything that reads CSS directly.
+ * The file writes nine hex values in total, and nothing else: they are the same colours
+ * `backend/src/chess_coach/figure_style.py` draws the figures with, so a chart in the
+ * README and the interface beside it agree. The Material ramps are derived from two of
+ * them with `color.scale`, which is why a shade is computed rather than typed. The custom
+ * properties keep the names the three component stylesheets already use.
  */
 
 @use 'sass:color';

@@ -39,7 +39,7 @@ CHEMINS_CHROME = [
     "/usr/bin/chromium",
 ]
 
-#: The document stylesheet, filled from the vendored palette.
+#: The document stylesheet, filled from the palette the figures use.
 #:
 #: A PDF is read on paper and on a screen, and a printed page is the one surface where a
 #: colour chosen by hand shows next to the figures of the same document. The nine values this

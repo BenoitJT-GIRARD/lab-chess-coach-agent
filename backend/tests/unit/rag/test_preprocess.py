@@ -81,7 +81,7 @@ def test_strip_markdown_keeps_the_words_and_drops_the_markers() -> None:
 
 
 def test_the_header_block_leaves_the_text_and_becomes_fields() -> None:
-    """The defect the showcase screenshot exposed: codes before the first sentence.
+    """The defect the screenshot in the README exposed: codes before the first sentence.
 
     The header was stripped of its `>` and joined the first paragraph, so it was embedded
     with the prose and displayed under the board. What a passage needs from it, the opening

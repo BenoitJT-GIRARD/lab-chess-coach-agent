@@ -98,7 +98,7 @@ link that opens on YouTube, which is what the terms ask for.
 | How it is used | called as a separate process through the `stockfish` package, at depth 15 |
 
 Stockfish computes an evaluation, so it needs no data and carries no provenance question.
-Its licence is the reason it is installed in the image and not vendored into this repository.
+Its licence is the reason it is installed in the image and not copied into this repository.
 
 ## The embedding model
 

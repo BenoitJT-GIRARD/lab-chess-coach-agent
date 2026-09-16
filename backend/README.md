@@ -104,8 +104,8 @@ uv run python -m scripts.build_pdf ../docs/feasibility_video_analysis.md
 ```
 
 `build_pdf` drives Pandoc and headless Chrome, so a Mermaid diagram reaches the page as a
-picture and not as a block of code. Its stylesheet takes its nine colours from the
-vendored palette, so the PDF and the figures of the same document agree.
+picture and not as a block of code. Its stylesheet takes its nine colours from
+`chess_coach.figure_style`, so the PDF and the figures of the same document agree.
 
 ## Quality gates
 

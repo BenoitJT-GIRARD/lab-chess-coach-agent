@@ -66,7 +66,7 @@ def routing_plateau() -> None:
     ax.set_xlim(left=-1, right=max(thresholds) * 1.4)
     ax.set_xlabel("Threshold, in master games reaching the position")
     ax.set_ylabel("Positions the agent answers from theory")
-    # The title says what is plotted. The reading of it belongs to the README (ADR 0040).
+    # The title says what is plotted; reading it is the README's job.
     ax.set_title("Positions routed to theory, across the threshold, on the frozen reading")
     ax.set_ylim(0, total + 2)
 
