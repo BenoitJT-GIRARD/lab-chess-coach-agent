@@ -30,7 +30,6 @@ dependencies = [
     "stockfish>=3.28",
     # Agent orchestration
     "langgraph>=0.2.50",
-    "langchain-core>=0.3.20",
     # The synthesis node talks to an OpenAI-compatible model.
     "langchain-openai>=0.2.10",
     # Retrieval-Augmented Generation
@@ -44,9 +43,6 @@ dependencies = [
     "google-api-python-client>=2.150",
     # Persistence
     "pymongo>=4.9",
-    # Utilities
-    "rich>=13.9",
-    "tqdm>=4.66",
 ]
 
 [project.optional-dependencies]
@@ -64,7 +60,6 @@ dev = [
     "ipykernel>=6.29",
     "jupyter>=1.1",
     "nbstripout>=0.7",
-    "python-pptx>=1.0",
 ]
 
 # sentence-transformers pulls in PyTorch. By default PyTorch ships with the
