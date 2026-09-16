@@ -47,8 +47,8 @@ uv run python -m scripts.fetch_wikichess     # downloads the Wikichess articles
 uv run python -m scripts.ingest_wikichess    # chunks and indexes them into Milvus
 ```
 
-The downloaded articles are versioned with the project, so the first command is only for
-refreshing the corpus. The second is the one to run after a fresh `docker compose up`:
+The downloaded articles are not versioned with the project — they belong to their authors —
+so the first command is the one that creates the corpus. The second is the one to run after a fresh `docker compose up`:
 the Milvus volume keeps the index between restarts, but it starts empty.
 
 ## Reproducing the measurements

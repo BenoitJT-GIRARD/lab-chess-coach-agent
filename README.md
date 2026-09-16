@@ -7,8 +7,9 @@ position has left theory, it says so and hands over to an engine.
 ![The coach on the Ruy Lopez: opening detected, next move, theory, reference games and the retrieved passage](docs/images/coach-in-theory.png)
 
 **Project status** — finished, and archived in a runnable state. The whole stack comes up
-with one `docker compose up`. The CI is frozen to manual trigger so that nothing here
-decays into a red badge on a project nobody maintains.
+with one `docker compose up` — six services, of which the vector store is the slowest to be
+ready. The reference articles are not shipped with it: a script downloads them, because
+they belong to their authors. Continuous integration runs on push and on pull requests.
 
 ## The problem
 
