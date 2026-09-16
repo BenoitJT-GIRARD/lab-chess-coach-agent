@@ -1,4 +1,4 @@
-# Garder le contexte de build petit et reproductible.
+# Keep the build context small and reproducible.
 .venv/
 venv/
 **/__pycache__/
@@ -11,7 +11,14 @@ htmlcov/
 logs/
 *.log
 
-# Les articles Wikichess ne sont pas redistribues : ils sont telecharges par
-# scripts/fetch_wikichess.py et montes au moment de l'ingestion. Sans cette ligne, un
-# docker build les fait entrer dans l'image, que .gitignore les suive ou non.
-data/wikichess/*.md
+# Everything a run leaves behind, the downloaded corpus included. The Wikichess articles
+# are not redistributed: `scripts/fetch_wikichess.py` downloads them and docker-compose
+# mounts the folder at ingestion time. Without this line a `docker build` pulls them into
+# the image whether or not .gitignore tracks them.
+var/
+
+# What the repository publishes and the image has no use for. `reports/` is not here: the
+# image needs one file from it, the corpus manifest, and the Dockerfile copies that file
+# alone.
+notebooks/
+tests/

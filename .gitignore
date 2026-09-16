@@ -1,102 +1,38 @@
-# --- Python ---
-# The packaging folders are anchored at the root of the repository: without the
-# leading slash, "lib/" or "build/" would also hide source code that happens to
-# live in a folder of that name.
+# What this repository does not track.
+#
+# The path carries the role. `backend/data/` holds what the coach reads, `backend/reports/`
+# what the measurements publish, `docs/` what a person reads; everything a run leaves behind
+# lives under `backend/var/`, including the Wikichess articles, which FICGS does not allow
+# this repository to redistribute. No line here begins with `!`, because an exception means
+# the line above ignored something that had to be kept.
+
+# Everything a run writes and no reader opens: the downloaded corpus, the coverage
+# database and its HTML report, the Milvus and Mongo volumes. The only ignored directory.
+var/
+backend/var/
+
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-/build/
-/develop-eggs/
-/dist/
-/downloads/
-/eggs/
-/.eggs/
-/lib/
-/lib64/
-/parts/
-/sdist/
-/var/
-/wheels/
-/share/python-wheels/
 *.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# --- Environments ---
 .venv/
-venv/
-env/
-ENV/
-.env
-.envrc
 
-# --- uv ---
-.uv/
-
-# --- Node / Angular ---
-node_modules/
-frontend/dist/
-frontend/.angular/
-frontend/.angular/cache/
-npm-debug.log*
-
-# --- IDE ---
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
-
-# --- Jupyter ---
-.ipynb_checkpoints/
-*-checkpoint.ipynb
-
-# --- Testing / Linting ---
+# Tool caches
 .pytest_cache/
-.coverage
-.coverage.*
-htmlcov/
-.tox/
-.nox/
-coverage.xml
-*.cover
-.hypothesis/
 .ruff_cache/
 .mypy_cache/
-.dmypy.json
-dmypy.json
-.bandit
+.ipynb_checkpoints/
 
-# --- Logs / runtime ---
-logs/
-*.log
+# Secrets. `.env.example` is tracked and is not matched by this line: it is `.env` exactly,
+# so keeping the example needs no exception.
+.env
+.streamlit/secrets.toml
 
-# --- Docker / data volumes (named volumes only, never committed) ---
-volumes/
+# Node, for a repository that also ships a frontend
+node_modules/
 
-# --- Trained models and artefacts ---
-# Anchored: frontend/src/app/models/ holds code, not model weights.
-/models/
-*.tar.gz
-*.pkl
-*.npy
-
-# --- OS / temp ---
-*.tmp
-*.bak
-*.orig
-*.rej
-
-# --- Project-specific ---
-infos/
-data/raw/
-
-# The Wikichess corpus. FICGS keeps every right on the text of its site, so the
-# articles are not redistributed here: only the manifest that lists them is, and
-# scripts/fetch_wikichess.py downloads them again into this folder.
-backend/data/wikichess/*.md
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

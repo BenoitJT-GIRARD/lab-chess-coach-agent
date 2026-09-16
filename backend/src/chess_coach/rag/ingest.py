@@ -7,7 +7,7 @@ Sequential and explicit on purpose:
     3. embed every chunk,
     4. (re)create the Milvus collection and insert the vectors.
 
-The knowledge base has two folders. ``data/wikichess`` holds the articles
+The knowledge base has two folders. ``var/wikichess`` holds the articles
 downloaded from FICGS Wikichess, which are not redistributed with this project:
 the folder holds nothing but its manifest until ``scripts.fetch_wikichess`` has
 run. ``data/openings`` holds the complementary notes written in French for young
@@ -25,6 +25,7 @@ from chess_coach.config import Settings, get_settings
 from chess_coach.rag.preprocess import Article, build_chunks, load_articles
 from chess_coach.services.embeddings import EmbeddingService
 from chess_coach.services.milvus_store import MilvusStore
+from chess_coach.utils.paths import WIKICHESS_MANIFEST
 
 
 def knowledge_directories(settings: Settings) -> list[Path]:
@@ -40,10 +41,9 @@ def _require_downloaded_corpus(directory: Path) -> None:
     third of what the measurements report.
     """
 
-    manifest = directory / "MANIFEST.json"
-    if not manifest.is_file() or any(directory.glob("*.md")):
+    if not WIKICHESS_MANIFEST.is_file() or any(directory.glob("*.md")):
         return
-    listed = json.loads(manifest.read_text(encoding="utf-8"))["articles"]
+    listed = json.loads(WIKICHESS_MANIFEST.read_text(encoding="utf-8"))["articles"]
     raise FileNotFoundError(
         f"{directory} holds none of the {len(listed)} articles its manifest lists. "
         "They are not redistributed with this project: run "

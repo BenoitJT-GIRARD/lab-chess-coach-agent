@@ -28,10 +28,15 @@ COPY src ./src
 COPY scripts ./scripts
 RUN uv sync --frozen --no-dev
 
-# The knowledge base, ingested into Milvus at runtime. The Wikichess articles are
-# not redistributed: only their manifest is here, and docker-compose mounts the folder
-# the download fills.
+# The knowledge base, ingested into Milvus at runtime. The Wikichess articles are not
+# redistributed: docker-compose mounts the folder the download fills.
 COPY data ./data
+
+# One file out of `reports/`: the corpus manifest. `rag/ingest.py` reads it to refuse
+# indexing a corpus that was never downloaded, and the ingestion is run inside this
+# container. Without the manifest that refusal never fires, and the container quietly
+# indexes the eleven French notes alone.
+COPY reports/wikichess_manifest.json ./reports/wikichess_manifest.json
 
 EXPOSE 8000
 
@@ -39,7 +44,7 @@ EXPOSE 8000
 # that the mounted volumes inherit an owner the process can write to: the Hugging Face cache,
 # and the folder the Wikichess download fills.
 RUN useradd --create-home --uid 1000 coach \
-    && mkdir -p /cache/huggingface /app/data/wikichess \
+    && mkdir -p /cache/huggingface /app/var/wikichess \
     && chown -R coach:coach /app /cache
 USER coach
 

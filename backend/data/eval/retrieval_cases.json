@@ -1,6 +1,6 @@
 {
   "about": "Retrieval cases with a hard relevance label. Written by hand from the corpus index, never generated from the text of the target article: a question drawn from the article it should retrieve measures string matching, not retrieval.",
-  "corpus": "data/wikichess (21 articles, English) + data/openings (11 notes, French)",
+  "corpus": "var/wikichess (21 articles, English) + data/openings (11 notes, French)",
   "written": "2026-09-07",
   "cases": [
     {

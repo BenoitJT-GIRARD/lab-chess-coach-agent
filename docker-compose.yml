@@ -93,8 +93,9 @@ services:
       - hf_cache:/cache/huggingface
       # The Wikichess articles are not redistributed, so they are not in the image
       # either. Mounting the folder lets the download land on the host and be indexed
-      # without rebuilding anything.
-      - ./backend/data/wikichess:/app/data/wikichess
+      # without rebuilding anything. It is under `var/` because git ignores that
+      # directory, which is the whole point: the corpus must not be committed by accident.
+      - ./backend/var/wikichess:/app/var/wikichess
     ports:
       - "8000:8000"
     restart: unless-stopped

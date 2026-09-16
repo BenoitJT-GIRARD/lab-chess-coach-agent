@@ -14,9 +14,9 @@ openings — the same lines the local opening book is built from — and keeps
 every documented article met along the way. Following a line with python-chess
 also gives us, for free, the move sequence and the FEN of each article.
 
-The articles themselves are not redistributed: FICGS reserves the rights on
-the text of its site. What the repository keeps of the corpus is the manifest
-this script writes next to them — which files a download produces, and where
+The articles themselves are not redistributed; `docs/data-source.md` quotes the
+clause that forbids it. What the repository keeps of the corpus is the manifest
+this script writes — which files a download produces, and where
 each one comes from — so the evaluation labels can be checked without the
 articles being there.
 
@@ -41,6 +41,7 @@ import chess
 import httpx
 
 from chess_coach.services.opening_book import OPENING_LINES
+from chess_coach.utils.paths import WIKICHESS_DIR, WIKICHESS_MANIFEST
 
 BASE_URL = "https://ficgs.com/wikichess_{article_id}.html"
 
@@ -57,11 +58,11 @@ MIN_TEXT_LENGTH = 400
 FOOTER_SEPARATOR = "============"
 
 # The index of the corpus, written beside the articles and versioned in their place.
-MANIFEST_NAME = "MANIFEST.json"
 MANIFEST_ABOUT = (
-    "Index of the Wikichess corpus. The articles themselves are not redistributed: "
-    "FICGS reserves the rights on the text of its site. Run "
-    "`python -m scripts.fetch_wikichess` to download them again into this folder."
+    "Index of the Wikichess corpus. The articles themselves are not redistributed, for "
+    "the licence reason docs/data-source.md sets out. Run "
+    "`python -m scripts.fetch_wikichess` to download them again into `backend/var/`, "
+    "which git ignores."
 )
 
 
@@ -356,10 +357,19 @@ def build_manifest(directory: Path, *, downloaded: str) -> dict:
     }
 
 
-def write_manifest(directory: Path, *, downloaded: str) -> Path:
-    """Write the index of ``directory`` beside the articles, and return its path."""
+def write_manifest(directory: Path, *, downloaded: str, output: Path | None = None) -> Path:
+    """Index the articles of ``directory``, write that index, and return where it went.
 
-    path = directory / MANIFEST_NAME
+    The index is published and the articles are not. The corpus goes to `var/`, where git
+    does not keep it, while a list of titles, ECO codes and URLs records what was read.
+
+    ``output`` defaults to the published path. A caller indexing some other directory says
+    where the result goes, because a function that always wrote to the published file would
+    let a test overwrite it.
+    """
+
+    path = output or WIKICHESS_MANIFEST
+    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
         json.dump(
             build_manifest(directory, downloaded=downloaded), handle, ensure_ascii=False, indent=2
@@ -375,7 +385,7 @@ def write_manifest(directory: Path, *, downloaded: str) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Download the Wikichess corpus.")
-    parser.add_argument("--out", type=Path, default=Path("data/wikichess"), help="output folder")
+    parser.add_argument("--out", type=Path, default=WIKICHESS_DIR, help="output folder")
     args = parser.parse_args()
 
     # The lines followed are the local opening book's, so both sources of knowledge

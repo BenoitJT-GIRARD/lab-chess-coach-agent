@@ -1,5 +1,5 @@
 {
-  "about": "Index of the Wikichess corpus. The articles themselves are not redistributed: FICGS reserves the rights on the text of its site. Run `python -m scripts.fetch_wikichess` to download them again into this folder.",
+  "about": "Index of the Wikichess corpus. The articles themselves are not redistributed: FICGS reserves the rights on the text of its site. Run `python -m scripts.fetch_wikichess` to download them again into `backend/var/`, which git ignores.",
   "source": "https://ficgs.com/wikichess.html",
   "downloaded": "2026-09-02",
   "articles": [
