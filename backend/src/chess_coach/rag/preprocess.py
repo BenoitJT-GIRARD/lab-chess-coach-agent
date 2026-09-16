@@ -4,6 +4,14 @@ Chunking matters for RAG quality: chunks that are too large dilute the relevant
 passage, while chunks that are too small lose context. We split each article on
 paragraph boundaries and group consecutive paragraphs up to a character budget,
 keeping a small overlap so an idea split across two chunks stays retrievable.
+
+**The header block of an article is not prose, and it is not indexed.** Every article opens
+on a quoted block carrying its ECO code, its first moves, a FEN and, for the downloaded ones,
+a source URL and a list of contributors. Left in place it was the first thing in the first
+chunk of every article: embedded with the text, so a query about strategy met a wall of codes
+before a single sentence, and displayed to the player under the board. It is parsed into
+fields on the :class:`Article` and dropped from the text. What the retrieval needs of it —
+which opening, which file — already travels as ``opening`` and ``source``.
 """
 
 from __future__ import annotations
@@ -24,6 +32,12 @@ class Article:
     # It travels down to the chunks so a retrieved passage can be traced back
     # to its origin.
     collection: str = ""
+    #: What the header block carried, kept out of ``text``. None of the three is embedded:
+    #: they are facts about the article, and the agent already gets the ECO code and the
+    #: move order from the opening book.
+    eco: str = ""
+    moves: str = ""
+    url: str = ""
 
 
 @dataclass(slots=True)
@@ -36,6 +50,43 @@ class Chunk:
     text: str
 
 
+#: The labels the header block uses, in both corpora, mapped to the field they fill. The
+#: downloaded articles write one line per label; the notes written here put them on one line
+#: separated by a middle dot. Anything else in the block — the FEN, the list of Wikichess
+#: contributors — is read and dropped: it belongs to the article, not to a passage about it.
+HEADER_FIELDS = {
+    "code eco": "eco",
+    "eco": "eco",
+    "coups": "moves",
+    "premiers coups": "moves",
+    "source": "url",
+}
+
+
+def split_header(text: str) -> tuple[dict[str, str], str]:
+    """Separate the quoted header block from the body, and read its labels.
+
+    The block is the run of ``>`` lines that follows the title. Returning the body separately
+    is what keeps the codes out of the embedding and out of the passage a player reads.
+    """
+
+    fields: dict[str, str] = {}
+    body: list[str] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith(">"):
+            body.append(line)
+            continue
+        for piece in re.split(r"\s+[·•]\s+", stripped.lstrip("> ").strip()):
+            label, separator, value = piece.partition(":")
+            if not separator:
+                continue
+            field = HEADER_FIELDS.get(label.strip().lower())
+            if field and value.strip():
+                fields.setdefault(field, value.strip())
+    return fields, "\n".join(body)
+
+
 def load_articles(directory: Path) -> list[Article]:
     """Read every ``*.md`` file in ``directory`` into an :class:`Article`."""
 
@@ -43,13 +94,17 @@ def load_articles(directory: Path) -> list[Article]:
     articles: list[Article] = []
     for path in sorted(directory.glob("*.md")):
         raw = path.read_text(encoding="utf-8").strip()
+        fields, body = split_header(raw)
         articles.append(
             Article(
                 slug=path.stem,
                 # The title is read before cleaning, since it is the "# " heading.
                 title=_extract_title(raw, fallback=path.stem),
-                text=strip_markdown(raw),
+                text=strip_markdown(body),
                 collection=directory.name,
+                eco=fields.get("eco", ""),
+                moves=fields.get("moves", ""),
+                url=fields.get("url", ""),
             )
         )
     return articles
@@ -58,16 +113,14 @@ def load_articles(directory: Path) -> list[Article]:
 def strip_markdown(text: str) -> str:
     """Remove the Markdown markers so a passage reads as plain prose.
 
-    The articles are stored as Markdown — a title, a quoted block of metadata,
-    then section headings. Those markers are noise once a passage is shown to a
-    player or handed to the language model, so they are dropped. The words
-    themselves are kept: the ECO code and the move sequence help the search.
+    What is left after :func:`split_header` is a title and a series of section headings. Both
+    are noise once a passage is shown to a player or handed to the language model, so the
+    markers go and the words stay.
     """
 
     lines: list[str] = []
     for line in text.splitlines():
         line = re.sub(r"^\s{0,3}#{1,6}\s*", "", line)  # titres de section
-        line = re.sub(r"^\s{0,3}>\s?", "", line)  # bloc de métadonnées
         line = line.replace("**", "").replace("__", "")  # bold
         lines.append(line.rstrip())
     # At most two newlines: the chunking splits on paragraphs.

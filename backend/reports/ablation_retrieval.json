@@ -1,7 +1,7 @@
 {
-  "measured": "2026-09-07",
+  "measured": "2026-09-15",
   "corpus": {
-    "wikichess": "data/wikichess",
+    "wikichess": "var/wikichess",
     "openings": "data/openings",
     "collection": "chess_openings"
   },
@@ -23,7 +23,7 @@
           "case": "ruy-lopez",
           "query": "Ruy Lopez",
           "rank": 1,
-          "first": "openings/partie-espagnole.md",
+          "first": "wikichess/00012-ruy-lopez-spanish-opening.md",
           "rr": 1.0
         },
         {
@@ -37,14 +37,14 @@
           "case": "sicilian",
           "query": "Sicilian Defense",
           "rank": 1,
-          "first": "openings/defense-sicilienne.md",
+          "first": "wikichess/00003-sicilian-defense.md",
           "rr": 1.0
         },
         {
           "case": "french",
           "query": "French Defense",
           "rank": 1,
-          "first": "wikichess/00021-french-defense.md",
+          "first": "openings/defense-francaise.md",
           "rr": 1.0
         },
         {
@@ -86,7 +86,7 @@
           "case": "kings-indian",
           "query": "King's Indian Defense",
           "rank": 1,
-          "first": "wikichess/00044-king-s-indian-defense.md",
+          "first": "openings/defense-est-indienne.md",
           "rr": 1.0
         },
         {
@@ -122,17 +122,17 @@
     "french-question": {
       "scores": {
         "n": 14.0,
-        "recall@1": 0.9285714285714286,
+        "recall@1": 0.8571428571428571,
         "recall@3": 1.0,
         "recall@5": 1.0,
-        "mrr": 0.9642857142857143
+        "mrr": 0.9285714285714286
       },
       "cases": [
         {
           "case": "ruy-lopez",
           "query": "ouverture Ruy Lopez, idées et plans",
           "rank": 1,
-          "first": "wikichess/00012-ruy-lopez-spanish-opening.md",
+          "first": "openings/partie-espagnole.md",
           "rr": 1.0
         },
         {
@@ -153,7 +153,7 @@
           "case": "french",
           "query": "ouverture French Defense, idées et plans",
           "rank": 1,
-          "first": "wikichess/00021-french-defense.md",
+          "first": "openings/defense-francaise.md",
           "rr": 1.0
         },
         {
@@ -201,9 +201,9 @@
         {
           "case": "english",
           "query": "ouverture English Opening, idées et plans",
-          "rank": 1,
-          "first": "wikichess/00029-english-opening.md",
-          "rr": 1.0
+          "rank": 2,
+          "first": "openings/systeme-de-londres.md",
+          "rr": 0.5
         },
         {
           "case": "reti",
@@ -231,25 +231,25 @@
     "english-verbose": {
       "scores": {
         "n": 14.0,
-        "recall@1": 0.5714285714285714,
-        "recall@3": 0.7857142857142857,
+        "recall@1": 0.5,
+        "recall@3": 0.8571428571428571,
         "recall@5": 0.9285714285714286,
-        "mrr": 0.7209183673469388
+        "mrr": 0.6928571428571428
       },
       "cases": [
         {
           "case": "ruy-lopez",
           "query": "chess opening Ruy Lopez: main ideas, plans and typical moves",
-          "rank": 5,
-          "first": "wikichess/00016-queen-s-gambit.md",
-          "rr": 0.2
+          "rank": 6,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.1667
         },
         {
           "case": "italian-game",
           "query": "chess opening Italian Game: main ideas, plans and typical moves",
-          "rank": 2,
+          "rank": 3,
           "first": "wikichess/00045-king-s-pawn-game.md",
-          "rr": 0.5
+          "rr": 0.3333
         },
         {
           "case": "sicilian",
@@ -262,22 +262,22 @@
           "case": "french",
           "query": "chess opening French Defense: main ideas, plans and typical moves",
           "rank": 2,
-          "first": "wikichess/00016-queen-s-gambit.md",
+          "first": "wikichess/00045-king-s-pawn-game.md",
           "rr": 0.5
         },
         {
           "case": "scandinavian",
           "query": "chess opening Scandinavian Defense: main ideas, plans and typical moves",
-          "rank": 2,
-          "first": "wikichess/00003-sicilian-defense.md",
-          "rr": 0.5
+          "rank": 1,
+          "first": "openings/defense-scandinave.md",
+          "rr": 1.0
         },
         {
           "case": "scotch",
           "query": "chess opening Scotch Game: main ideas, plans and typical moves",
-          "rank": 1,
-          "first": "wikichess/00046-scotch-opening.md",
-          "rr": 1.0
+          "rank": 2,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.5
         },
         {
           "case": "petrov",
@@ -296,9 +296,9 @@
         {
           "case": "slav",
           "query": "chess opening Slav Defense: main ideas, plans and typical moves",
-          "rank": 4,
-          "first": "wikichess/00016-queen-s-gambit.md",
-          "rr": 0.25
+          "rank": 5,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.2
         },
         {
           "case": "kings-indian",
@@ -310,9 +310,9 @@
         {
           "case": "english",
           "query": "chess opening English Opening: main ideas, plans and typical moves",
-          "rank": 1,
-          "first": "wikichess/00029-english-opening.md",
-          "rr": 1.0
+          "rank": 2,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.5
         },
         {
           "case": "reti",
@@ -331,47 +331,47 @@
         {
           "case": "london",
           "query": "chess opening London System: main ideas, plans and typical moves",
-          "rank": 7,
-          "first": "wikichess/00016-queen-s-gambit.md",
-          "rr": 0.1429
+          "rank": 2,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.5
         }
       ]
     },
     "name-and-eco": {
       "scores": {
         "n": 14.0,
-        "recall@1": 1.0,
-        "recall@3": 1.0,
+        "recall@1": 0.9285714285714286,
+        "recall@3": 0.9285714285714286,
         "recall@5": 1.0,
-        "mrr": 1.0
+        "mrr": 0.9464285714285714
       },
       "cases": [
         {
           "case": "ruy-lopez",
           "query": "Ruy Lopez C60",
           "rank": 1,
-          "first": "openings/partie-espagnole.md",
+          "first": "wikichess/00297-ruy-lopez-spanish-opening.md",
           "rr": 1.0
         },
         {
           "case": "italian-game",
           "query": "Italian Game C50",
-          "rank": 1,
-          "first": "wikichess/00048-giuoco-piano.md",
-          "rr": 1.0
+          "rank": 4,
+          "first": "wikichess/00045-king-s-pawn-game.md",
+          "rr": 0.25
         },
         {
           "case": "sicilian",
           "query": "Sicilian Defense B40",
           "rank": 1,
-          "first": "openings/defense-sicilienne.md",
+          "first": "wikichess/00003-sicilian-defense.md",
           "rr": 1.0
         },
         {
           "case": "french",
           "query": "French Defense C00",
           "rank": 1,
-          "first": "wikichess/00021-french-defense.md",
+          "first": "openings/defense-francaise.md",
           "rr": 1.0
         },
         {
@@ -413,14 +413,14 @@
           "case": "kings-indian",
           "query": "King's Indian Defense E60",
           "rank": 1,
-          "first": "openings/defense-est-indienne.md",
+          "first": "wikichess/00044-king-s-indian-defense.md",
           "rr": 1.0
         },
         {
           "case": "english",
           "query": "English Opening A10",
           "rank": 1,
-          "first": "openings/partie-anglaise.md",
+          "first": "wikichess/00029-english-opening.md",
           "rr": 1.0
         },
         {

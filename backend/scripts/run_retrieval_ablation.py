@@ -6,29 +6,40 @@ worded**. The served wording is called through the agent's own function, so the 
 *served* is the product and not a copy of it.
 
     docker compose up -d
-    docker compose run --rm backend python -m scripts.ingest_wikichess
+    the ingestion command of docker-compose.yml
     uv run python -m scripts.run_retrieval_ablation
 """
 
 from __future__ import annotations
 
-import json
 from datetime import UTC, datetime
 from pathlib import Path
 
+from chess_coach.artifacts import write_json, write_text
 from chess_coach.config import get_settings
 from chess_coach.evaluation.cases import load_cases
 from chess_coach.evaluation.metrics import aggregate, dedupe_sources, reciprocal_rank
 from chess_coach.evaluation.variants import SERVED, VARIANTS
 from chess_coach.services.rag_search import RagService
+from chess_coach.utils.paths import ABLATION_JSON, ABLATION_TABLE, ROOT_DIR
 
-OUT_JSON = Path("data/eval/ablation_retrieval.json")
-OUT_TABLE = Path("data/eval/ablation_retrieval.md")
+OUT_JSON = ABLATION_JSON
+OUT_TABLE = ABLATION_TABLE
 
 #: Ask for more than the agent does. The agent shows three passages; scoring needs to know
 #: where the right article landed when it is not in the top three.
 TOP_K = 10
 KS = (1, 3, 5)
+
+
+def _relative(directory: str) -> str:
+    """The directory as the repository sees it, whatever the working directory was."""
+
+    path = Path(directory)
+    try:
+        return path.resolve().relative_to(ROOT_DIR).as_posix()
+    except ValueError:
+        return path.as_posix()
 
 
 def main() -> None:
@@ -65,9 +76,11 @@ def main() -> None:
 
     payload = {
         "measured": datetime.now(UTC).date().isoformat(),
+        # Relative to the project: an absolute path published in an artefact says where the
+        # author's machine keeps its files, and means nothing to anyone else.
         "corpus": {
-            "wikichess": settings.wikichess_dir,
-            "openings": settings.openings_dir,
+            "wikichess": _relative(settings.wikichess_dir),
+            "openings": _relative(settings.openings_dir),
             "collection": settings.milvus_collection,
         },
         "embedding_model": settings.embedding_model,
@@ -77,8 +90,8 @@ def main() -> None:
         "variants": results,
     }
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUT_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    OUT_TABLE.write_text(render_table(payload), encoding="utf-8")
+    write_json(OUT_JSON, payload)
+    write_text(OUT_TABLE, render_table(payload))
     print(f"\nwritten: {OUT_JSON} and {OUT_TABLE}")
 
 

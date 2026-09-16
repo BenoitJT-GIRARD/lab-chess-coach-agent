@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 import pytest
 
@@ -12,11 +11,10 @@ from chess_coach.rag.preprocess import (
     build_chunks,
     chunk_text,
     load_articles,
+    split_header,
     strip_markdown,
 )
-
-WIKICHESS_DIR = Path("data/wikichess")
-OPENINGS_DIR = Path("data/openings")
+from chess_coach.utils.paths import OPENINGS_DIR, WIKICHESS_DIR, WIKICHESS_MANIFEST
 
 SAMPLE = (
     "# Title\n\n"
@@ -72,15 +70,50 @@ def test_build_chunks_prefixes_the_source_with_its_collection() -> None:
 
 
 def test_strip_markdown_keeps_the_words_and_drops_the_markers() -> None:
-    nettoye = strip_markdown(ARTICLE_MARKDOWN)
+    _fields, body = split_header(ARTICLE_MARKDOWN)
+    nettoye = strip_markdown(body)
 
     assert "#" not in nettoye
     assert ">" not in nettoye
     assert "**" not in nettoye
-    # The words stay: the ECO code and the move line both help retrieval.
     assert "Sicilian defense" in nettoye
-    assert "Code ECO : B20" in nettoye
     assert "immediatement" in nettoye
+
+
+def test_the_header_block_leaves_the_text_and_becomes_fields() -> None:
+    """The defect the showcase screenshot exposed: codes before the first sentence.
+
+    The header was stripped of its `>` and joined the first paragraph, so it was embedded
+    with the prose and displayed under the board. What a passage needs from it, the opening
+    and the file, travels as `opening` and `source`.
+    """
+    fields, body = split_header(ARTICLE_MARKDOWN)
+
+    assert fields["eco"] == "B20"
+    assert "Code ECO" not in body
+    assert "immediatement" in body
+
+
+def test_a_header_written_on_one_line_is_read_too() -> None:
+    """The eleven notes written here put their labels on a single line, dot-separated."""
+    fields, body = split_header(
+        "# Partie espagnole\n\n> Code ECO : C60  ·  Premiers coups : 1.e4 e5\n\nLe fou en b5.\n"
+    )
+
+    assert fields == {"eco": "C60", "moves": "1.e4 e5"}
+    assert body.strip().endswith("Le fou en b5.")
+
+
+def test_what_the_header_carries_and_nothing_indexes_is_dropped() -> None:
+    """A FEN and a list of contributors are facts about the article, not about a passage."""
+    fields, body = split_header(
+        "# X\n\n> Code ECO : A00\n> FEN : 8/8/8/8/8/8/8/K6k w - - 0 1\n"
+        "> Contributeurs Wikichess : quelqu'un\n\nDu texte.\n"
+    )
+
+    assert set(fields) == {"eco"}
+    assert "8/8/8" not in body
+    assert "Contributeurs" not in body
 
 
 def test_load_the_french_opening_notes() -> None:
@@ -100,7 +133,7 @@ def test_the_manifest_indexes_the_corpus() -> None:
     and the evaluation labels would point at files no one could name.
     """
 
-    payload = json.loads((WIKICHESS_DIR / "MANIFEST.json").read_text(encoding="utf-8"))
+    payload = json.loads(WIKICHESS_MANIFEST.read_text(encoding="utf-8"))
 
     assert len(payload["articles"]) == 21
     assert all(article["file"].endswith(".md") for article in payload["articles"])
@@ -118,7 +151,8 @@ def test_load_the_wikichess_corpus() -> None:
 
     assert len(articles) >= 10
     assert all(article.collection == "wikichess" for article in articles)
-    # Every downloaded article credits the page it came from.
-    assert all("ficgs.com/wikichess_" in article.text for article in articles)
+    # Every downloaded article credits the page it came from, as a field and not as prose.
+    assert all(article.url.startswith("https://ficgs.com/wikichess_") for article in articles)
+    assert all("ficgs.com" not in article.text for article in articles)
     # And the Markdown markers are gone by the time the text is indexed.
     assert all(not article.text.startswith("#") for article in articles)
