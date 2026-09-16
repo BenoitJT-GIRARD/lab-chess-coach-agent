@@ -1,0 +1,23 @@
+{
+  "command": "cd backend && uv run python scripts/smoke.py",
+  "ran_at": "2026-09-15",
+  "git_revision": "0b2e878777ff8257024323a8a29db14be9a43728",
+  "tool_versions": {
+    "python": "3.12.12",
+    "chess": "1.11.2",
+    "langgraph": "1.2.6",
+    "pydantic": "2.13.4",
+    "fastapi": "0.138.2",
+    "pymilvus": "3.0.0",
+    "uv": "uv 0.11.6 (65950801c 2026-04-09 x86_64-pc-windows-msvc)",
+    "docker": "Docker version 29.2.0, build 0b9d198"
+  },
+  "duration_seconds": 16.8,
+  "key_output": [
+    "backend/reports/theory_threshold_sweep.csv",
+    "backend/reports/theory_threshold_sweep.md",
+    "backend/reports/move_invention.json",
+    "backend/reports/move_invention.md"
+  ],
+  "workflow_run_url": null
+}
