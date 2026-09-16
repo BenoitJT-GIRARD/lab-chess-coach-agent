@@ -35,6 +35,14 @@ COPY data ./data
 
 EXPOSE 8000
 
+# The service runs as a named user, not as root. The two writable paths are prepared here so
+# that the mounted volumes inherit an owner the process can write to: the Hugging Face cache,
+# and the folder the Wikichess download fills.
+RUN useradd --create-home --uid 1000 coach \
+    && mkdir -p /cache/huggingface /app/data/wikichess \
+    && chown -R coach:coach /app /cache
+USER coach
+
 # Lightweight liveness probe used by docker-compose.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
     CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/v1/healthcheck').status==200 else 1)"

@@ -10,3 +10,8 @@ htmlcov/
 .coverage*
 logs/
 *.log
+
+# Les articles Wikichess ne sont pas redistribues : ils sont telecharges par
+# scripts/fetch_wikichess.py et montes au moment de l'ingestion. Sans cette ligne, un
+# docker build les fait entrer dans l'image, que .gitignore les suive ou non.
+data/wikichess/*.md

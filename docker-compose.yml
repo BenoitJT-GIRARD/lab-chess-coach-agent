@@ -110,9 +110,10 @@ services:
       context: ./frontend
     container_name: chess_coach-frontend
     ports:
-      - "4200:80"
+      - "4200:8080"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
