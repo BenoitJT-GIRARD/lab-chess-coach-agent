@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import chess
+import pytest
 from fastapi.testclient import TestClient
 
 from chess_coach.agent.graph import ChessAgent
@@ -15,6 +16,8 @@ from chess_coach.services.lichess import OpeningExplorerResult, TheoryMove
 from chess_coach.services.milvus_store import SearchHit
 from chess_coach.services.stockfish_engine import EvaluationResult
 from chess_coach.services.youtube import VideoItem
+
+pytestmark = pytest.mark.integration
 
 
 class FakeTheory:

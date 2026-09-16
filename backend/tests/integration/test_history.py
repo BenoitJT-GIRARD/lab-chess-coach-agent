@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import pytest
 from fastapi.testclient import TestClient
 
 from chess_coach.api.dependencies import get_mongo_service
 from chess_coach.api.main import create_app
+
+pytestmark = pytest.mark.integration
 
 INTERACTIONS = [
     {

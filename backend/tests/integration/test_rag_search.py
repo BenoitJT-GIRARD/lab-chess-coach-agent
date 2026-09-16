@@ -4,12 +4,15 @@ from __future__ import annotations
 
 from urllib.parse import quote
 
+import pytest
 from fastapi.testclient import TestClient
 
 from chess_coach.api.dependencies import get_rag_service
 from chess_coach.api.main import create_app
 from chess_coach.services.milvus_store import SearchHit
 from chess_coach.services.rag_search import RagService
+
+pytestmark = pytest.mark.integration
 
 
 class FakeEmbedder:

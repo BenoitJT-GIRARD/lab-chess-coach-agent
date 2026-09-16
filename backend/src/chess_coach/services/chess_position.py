@@ -39,22 +39,37 @@ class PositionInfo:
 
 
 def is_valid_fen(fen: str) -> bool:
-    """Return ``True`` if ``fen`` parses into a legal chess position."""
+    """Return ``True`` if ``fen`` parses into a legal chess position.
+
+    Parsing is not enough. ``chess.Board`` accepts a great deal that no game can reach — eight
+    white kings on the first rank, a pawn on the eighth, the side that is not to move standing
+    in check — and every one of those would travel through the coach as a position: the opening
+    book would miss, the engine would return a score for it, and the answer would look like the
+    answer to a real question. ``board.status()`` is what python-chess knows about that, and
+    this function is the one place the repository asks it.
+    """
 
     try:
-        chess.Board(fen)
+        board = chess.Board(fen)
     except (ValueError, IndexError):
         return False
-    return True
+    return board.is_valid()
 
 
 def parse_board(fen: str) -> chess.Board:
-    """Parse ``fen`` into a :class:`chess.Board`, raising on invalid input."""
+    """Parse ``fen`` into a :class:`chess.Board`, raising on anything a game cannot reach.
+
+    The refusal names what python-chess found wrong, so a caller reading a log learns that the
+    position had two black kings rather than that a string was rejected.
+    """
 
     try:
-        return chess.Board(fen)
+        board = chess.Board(fen)
     except (ValueError, IndexError) as exc:
         raise InvalidFenError(f"Invalid FEN: {fen!r}") from exc
+    if not board.is_valid():
+        raise InvalidFenError(f"Invalid FEN: {fen!r} ({board.status()!r})")
+    return board
 
 
 def describe_position(fen: str) -> PositionInfo:

@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import chess
+import pytest
 
 from chess_coach.config import Settings
 from chess_coach.services.chess_position import STARTING_FEN
 from chess_coach.services.lichess import OpeningExplorerResult, ReferenceGame, TheoryMove
 from chess_coach.services.theory import TheoryService
+
+pytestmark = pytest.mark.integration
 
 
 def test_without_token_uses_local_book() -> None:

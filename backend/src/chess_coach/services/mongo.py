@@ -48,7 +48,7 @@ class MongoService:
         try:
             result = self._collection().insert_one(dict(document))
             return str(result.inserted_id)
-        except Exception as exc:  # pragma: no cover - needs a live server
+        except Exception as exc:
             logger.warning("Could not persist interaction to MongoDB: %s", exc)
             return None
 
@@ -57,7 +57,7 @@ class MongoService:
 
         try:
             return int(self._collection().count_documents({}))
-        except Exception as exc:  # pragma: no cover - needs a live server
+        except Exception as exc:
             logger.warning("Could not count interactions in MongoDB: %s", exc)
             return 0
 
@@ -73,6 +73,6 @@ class MongoService:
                 self._collection().find({}, {"_id": False}).sort("created_at", -1).limit(limit)
             )
             return list(documents)
-        except Exception as exc:  # pragma: no cover - needs a live server
+        except Exception as exc:
             logger.warning("Could not read the interactions from MongoDB: %s", exc)
             return []

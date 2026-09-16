@@ -23,8 +23,8 @@ par 1.e4 d5 ». Those moves have already been played; judged against the board i
 it they are all illegal. They are recorded apart, under ``line``, and left out of the
 invention count — with the limit that comes with it: what the presentation says about an
 opening's history is not checked here, only what the answer proposes for the position at
-hand. Black's reply carries no number of its own, so a move that follows a numbered one
-with nothing but space between them belongs to the same line.
+hand. Black's reply carries no number of its own, so a move separated from a numbered one
+by whitespace alone belongs to the same line.
 
 The verdicts are ``offered`` (the token is in the prompt), ``legal`` (a real move of the
 position that the prompt did not give), ``illegal`` (no such move here) and ``line`` (a
@@ -53,7 +53,7 @@ TOKEN_RE = re.compile(
     r"(?![\w-])"
 )
 
-# What precedes a bare square when the sentence names a place rather than a move: a
+# What precedes a bare square when the sentence names a place and not a move: a
 # location noun, a preposition, or a piece — « la case f7 », « en c4 », « le pion e4 ».
 # The filter is deliberately one-sided. It can drop a citation phrased as « le pion e4 »,
 # so the reports carry the unfiltered reading beside it as an upper bound; what it must
@@ -101,7 +101,7 @@ class Citation:
 def cited_tokens(text: str, *, strict: bool = False) -> list[Token]:
     """Every move-looking token of ``text``, in order.
 
-    ``strict`` keeps the bare squares that read as places rather than moves. It is the
+    ``strict`` keeps the bare squares that read as places. It is the
     upper bound of what the answer could be accused of citing.
     """
 

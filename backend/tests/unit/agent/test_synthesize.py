@@ -119,8 +119,8 @@ def test_the_template_explains_an_out_of_theory_position() -> None:
 def test_the_prompt_carries_the_position_and_the_facts() -> None:
     prompt = build_llm_prompt(STATE_IN_THEORY)
 
-    # The position is described the way it is described to a language model in
-    # the Kaggle Game Arena experiments: diagram, side to move, legal moves.
+    # Three things reach the model about the board itself: the diagram, whose turn it is,
+    # and the moves that are legal. `chess_position` says why those three.
     assert "Trait aux : black" in prompt
     assert "Coups légaux : Nf6, Bc5, d6" in prompt
     assert "Italian Game (C50)" in prompt

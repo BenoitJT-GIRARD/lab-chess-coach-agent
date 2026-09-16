@@ -164,9 +164,9 @@ class LichessService:
         """Map the raw Explorer JSON onto :class:`OpeningExplorerResult`.
 
         ``min_games`` is the number of reference games below which a position
-        is considered out of theory: the master database answers for almost any
-        legal position, but a line played forty-eight times is an oddity, not
-        theory a young player should learn.
+        is considered out of theory. Almost any legal position gets some answer
+        back, and a line reached forty-eight times in the whole database is a
+        curiosity: nothing a young player should be taught as theory.
         """
 
         opening = payload.get("opening") or {}

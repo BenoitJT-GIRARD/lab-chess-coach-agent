@@ -51,7 +51,7 @@ class MilvusStore:
             try:
                 from pymilvus import MilvusClient
 
-                self._client = MilvusClient(uri=self.uri)
+                self._client = MilvusClient(uri=self.uri, timeout=self._settings.milvus_timeout)
             except Exception as exc:  # pragma: no cover - needs a live server
                 raise MilvusStoreError(f"Could not connect to Milvus at {self.uri}") from exc
         return self._client
@@ -107,6 +107,7 @@ class MilvusStore:
                 limit=top_k,
                 output_fields=["text", "opening", "source"],
                 search_params={"metric_type": "IP"},
+                timeout=self._settings.milvus_timeout,
             )
         except Exception as exc:  # pragma: no cover - needs a live server
             raise MilvusStoreError("Milvus search failed") from exc

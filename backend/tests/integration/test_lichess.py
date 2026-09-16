@@ -10,6 +10,8 @@ from chess_coach.config import Settings
 from chess_coach.services.chess_position import STARTING_FEN
 from chess_coach.services.lichess import LichessService, LichessServiceError
 
+pytestmark = pytest.mark.integration
+
 # The client queries the master database: those are the reference games.
 EXPLORER_URL = "https://explorer.lichess.ovh/masters"
 

@@ -1,7 +1,7 @@
 """recall@k, MRR, and the deduplication that has to happen before the cut at k.
 
-An article is indexed as several chunks. Counting them separately would inflate recall at
-every k and make the ablation compare noise instead of configurations.
+One article enters the index as several chunks. Left uncollapsed they lift the score at every
+k, and the four variants then differ by how the chunker cut the corpus.
 """
 
 from __future__ import annotations

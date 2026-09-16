@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from urllib.parse import quote
 
+import pytest
 from fastapi.testclient import TestClient
 
 from chess_coach.api.dependencies import get_stockfish_service, get_theory_service
@@ -11,6 +12,8 @@ from chess_coach.api.main import create_app
 from chess_coach.services.chess_position import STARTING_FEN
 from chess_coach.services.lichess import OpeningExplorerResult, ReferenceGame, TheoryMove
 from chess_coach.services.stockfish_engine import EvaluationResult
+
+pytestmark = pytest.mark.integration
 
 
 def _path(prefix: str, fen: str) -> str:

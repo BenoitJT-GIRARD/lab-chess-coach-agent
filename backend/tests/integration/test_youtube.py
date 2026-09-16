@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import pytest
 from fastapi.testclient import TestClient
 
 from chess_coach.api.dependencies import get_youtube_service
 from chess_coach.api.main import create_app
 from chess_coach.config import Settings
 from chess_coach.services.youtube import YoutubeService
+
+pytestmark = pytest.mark.integration
 
 SAMPLE_RESPONSE = {
     "items": [
