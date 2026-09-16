@@ -1,5 +1,4 @@
-# Line endings are LF everywhere except for Windows scripts. Half of this repository is
-# a Node project, and a checkout that flips its endings breaks the lockfile diff.
+# Line endings are normalised to LF in the repository, whatever the platform commits.
 * text=auto eol=lf
 
 *.py text eol=lf
@@ -7,28 +6,17 @@
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
-*.cfg text eol=lf
-*.ini text eol=lf
 *.ts text eol=lf
-*.js text eol=lf
 *.json text eol=lf
 *.html text eol=lf
 *.scss text eol=lf
 *.conf text eol=lf
 
-*.bat text eol=crlf
-*.cmd text eol=crlf
-*.ps1 text eol=crlf
+# Notebooks are JSON. They are text, but never merged by union: git would splice two
+# versions into a file no reader can open, and report no conflict.
+*.ipynb text eol=lf
 
-# Notebooks are JSON: treated as text, without an aggressive end-of-line rewrite.
-*.ipynb text eol=lf merge=union
-
-# Binaries.
+# Binary: never converted on checkout, never diffed as text.
 *.png binary
-*.jpg binary
-*.jpeg binary
-*.gif binary
 *.ico binary
 *.pdf binary
-*.zip binary
-*.svg text eol=lf
