@@ -60,7 +60,7 @@ dev = [
     "ipykernel>=6.29",
     "jupyter>=1.1",
     # The two published figures are drawn by `scripts/build_figures.py`, through the
-    # vendored `figure_style`. The served backend never draws anything, so matplotlib is a
+    # `figure_style`. The served backend never draws anything, so matplotlib is a
     # development dependency and stays out of the image.
     "matplotlib>=3.9",
     # `scripts/capture.py` drives the system Chrome through playwright: the interface draws
@@ -143,12 +143,17 @@ markers = [
 filterwarnings = ["error"]
 
 [tool.coverage.run]
+# Without this, the published XML report writes the absolute root of the measured sources:
+# a reader finds the directory tree of the machine that ran the suite, and two runs on two
+# machines produce two different files for the same numbers.
+relative_files = true
 branch = true
 source = ["src/chess_coach", "scripts"]
 data_file = "var/.coverage"
 omit = [
-    # Vendored copies of portfolio tooling, identical in every repository and tested where
-    # they are written: counting them here would measure someone else's tests.
+    # Copied in rather than imported, so a clone needs nothing extra to install, and tested
+    # at their source. Measuring them here would report someone else's coverage as this
+    # project's.
     "*/figure_style.py",
     "*/utils/paths.py",
     "scripts/run_notebooks.py",

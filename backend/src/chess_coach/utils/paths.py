@@ -11,10 +11,9 @@ walked back three times in a script, no artefact read or written through a path 
 the working directory: each of those is a second answer to a question that already has one,
 and they disagree the day someone runs a script from another directory.
 
-The directory names are the closed vocabulary shared by every repository of the portfolio.
-A project adds its own *named artefacts* below — the served model, the published table — and
-never a new root directory: a directory outside the vocabulary exists only when
-``targets.yaml`` declares it with the technical reason that imposes it.
+The directory names below are the whole vocabulary this project uses at its root. Named
+artefacts — the served model, the published table — hang off them; a new root directory
+does not get added because a script found it convenient.
 """
 
 from __future__ import annotations
@@ -26,7 +25,8 @@ from pathlib import Path
 def _package_name() -> str:
     """The distribution package this module belongs to, read from the import system.
 
-    The same file is copied into every project of the portfolio, so it must not name one.
+    Read rather than written down, so that renaming the package does not leave a stale
+    string behind in the one module whose job is to know where things are.
     """
     if __package__:
         return __package__.split(".")[0]
@@ -75,6 +75,21 @@ INFRA_DIR: Path = ROOT_DIR / "infra"
 VAR_DIR: Path = ROOT_DIR / "var"
 
 
+def rel(path: Path | str) -> str:
+    """A path as a log line should carry it: relative to the project, with forward slashes.
+
+    A log that reads ``C:/Users/someone/work/data/raw/events.json`` says where the run
+    happened, which the next reader cannot use and cannot compare with their own run. The
+    part that carries information is ``data/raw/events.json``. A path outside the project
+    keeps its absolute form, because there it is the only unambiguous answer.
+    """
+    resolved = Path(path).resolve()
+    try:
+        return resolved.relative_to(ROOT_DIR).as_posix()
+    except ValueError:
+        return resolved.as_posix()
+
+
 def ensure_dirs() -> None:
     """Create the directories a run writes into.
 
@@ -85,19 +100,17 @@ def ensure_dirs() -> None:
         path.mkdir(parents=True, exist_ok=True)
 
 
-#: The repository, one level above the Python project. This is the only project of the
-#: portfolio that is not at the root of its repository: `frontend/` is beside it, and
-#: `docs/` belongs to both. The two constants below are therefore redefined against the
-#: repository and not against the project: a screenshot of the interface is not a
-#: document of the backend.
+#: The repository, one level above the Python project: `frontend/` sits beside `backend/`,
+#: and `docs/` belongs to both. The two constants below are therefore redefined against
+#: the repository and not against the project, because a screenshot of the interface is
+#: not a document of the backend.
 REPO_DIR: Path = ROOT_DIR.parent
 DOCS_DIR = REPO_DIR / "docs"
 IMAGES_DIR = DOCS_DIR / "images"
 
 # --- The named files of the chess coach -------------------------------------
 #
-# Above: the directories every repository of the portfolio shares. Below: the files this
-# project in particular reads and writes. A module that wants one of them imports its name
+# Above: the directories. Below: the files this project reads and writes. A module that wants one of them imports its name
 # from here, and nowhere does a path get assembled out of a literal — which is what lets a
 # script be launched from any working directory and still find its inputs.
 

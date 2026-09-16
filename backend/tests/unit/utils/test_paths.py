@@ -14,7 +14,7 @@ import pytest
 
 from chess_coach.utils import paths
 
-#: The closed vocabulary of root directories (ADR 0042), plus the one ignored directory.
+#: Every root directory this project is allowed to have, plus the one it ignores.
 VOCABULARY = {
     "src",
     "tests",
@@ -49,13 +49,13 @@ def test_an_explicit_override_wins_over_the_marker(
 
 
 def test_the_environment_variable_is_named_after_the_package() -> None:
-    """The name is derived from the package, which is how one copied module fits every project."""
+    """The name is derived from the package rather than written down anywhere."""
     assert paths.PACKAGE == "chess_coach"
     assert paths.ROOT_ENV == "CHESS_COACH_ROOT"
 
 
 def test_every_named_artefact_sits_inside_the_closed_vocabulary() -> None:
-    """A path that names a tenth root directory is a directory nobody declared (ADR 0042).
+    """A constant that points outside those directories is a directory nobody decided to have.
 
     Two roots are admitted, and only two: the project, and the repository one level above it
     that carries `docs/` and `frontend/`. A constant that resolves to neither is a directory
