@@ -15,7 +15,7 @@
       "app_state": "the six containers up through `docker compose up -d --build`, the Wikichess corpus downloaded and ingested into Milvus, and a Lichess token, a YouTube key and a language model key present in .env, and no request sent yet",
       "data_source": "own",
       "demonstrates_behaviour": "the eight routes and the shape of every answer, generated from the Pydantic models rather than written by hand, so the page a caller reads cannot drift from the contract the service enforces",
-      "git_revision": "cf511cacc2ead3260acb6228968486f4e4f55d1d",
+      "git_revision": "0a3ed1b11d68e683c2eb692383faa032e39dacaf",
       "depends_on": [
         "src/chess_coach/api/main.py",
         "src/chess_coach/api/schemas.py"
@@ -35,7 +35,7 @@
       "app_state": "the six containers up through `docker compose up -d --build`, the Wikichess corpus downloaded and ingested into Milvus, and a Lichess token, a YouTube key and a language model key present in .env, the board set to the Ruy Lopez after 3.Bb5 from the demo row",
       "data_source": "own",
       "demonstrates_behaviour": "the nominal answer, at the top of the panel where a reader lands: the opening named with its ECO code, the summary, the move most played in master games with its count, the theoretical moves and the reference games. The retrieved passage is below the fold here and visible in the twin capture",
-      "git_revision": "cf511cacc2ead3260acb6228968486f4e4f55d1d",
+      "git_revision": "0a3ed1b11d68e683c2eb692383faa032e39dacaf",
       "paired_with": "coach-out-of-theory.png",
       "depends_on": [
         "../frontend/src/app/coach/coach-panel.component.html",
@@ -56,7 +56,7 @@
       "app_state": "the six containers up through `docker compose up -d --build`, the Wikichess corpus downloaded and ingested into Milvus, and a Lichess token, a YouTube key and a language model key present in .env, the board set to 1.e4 e5 2.Qh5 from the demo row",
       "data_source": "own",
       "demonstrates_behaviour": "the same screen one branch later: the master database does not reach this position, so the theory panel says so and the engine evaluation takes its place, which is the branch the routing threshold decides",
-      "git_revision": "cf511cacc2ead3260acb6228968486f4e4f55d1d",
+      "git_revision": "0a3ed1b11d68e683c2eb692383faa032e39dacaf",
       "paired_with": "coach-in-theory.png",
       "depends_on": [
         "../frontend/src/app/coach/coach-panel.component.html",

@@ -1,7 +1,7 @@
 {
   "command": "cd backend && uv run python scripts/smoke.py",
   "ran_at": "2026-09-15",
-  "git_revision": "0b2e878777ff8257024323a8a29db14be9a43728",
+  "git_revision": "44bb55b552f4b4d24e6ef5680691508e75115d5f",
   "tool_versions": {
     "python": "3.12.12",
     "chess": "1.11.2",
