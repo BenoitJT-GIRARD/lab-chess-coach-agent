@@ -1,0 +1,156 @@
+# The legend of this repository's tables.
+#
+# Nine entries, one for every numeric column a reader meets. A column heading is a label and
+# not a definition: `recall@1` says nothing about the population it was computed over, and
+# `flipped` says nothing about what moved or in which direction that is good news. The answer
+# belongs here rather than in a variable name, so that the README, `docs/protocol.md` and the
+# reports can each point at one definition instead of writing three.
+#
+# Two of the nine measure a knob rather than a result. `threshold` is the setting the agent
+# is served with, and `in_theory` is what that setting decides; they appear in a table whose
+# whole point is that the first barely moves the second, and a reader who cannot tell which
+# column is the cause reads that table backwards.
+#
+# Anchors are written from the repository root. The Python project sits under `backend/`, so
+# `backend/reports/latency.json` is the path a reader opens, and `reports/latency.json` is the
+# same file seen from inside the project.
+
+metrics:
+
+  "recall@1":
+    definition: >-
+      The share of evaluation cases whose first retrieved article is one of the articles
+      labelled correct for that case, after fragments of the same article are deduplicated.
+    unit: "share of cases, 0 to 1"
+    direction: higher_is_better
+    anchor: "0.86 — backend/reports/ablation_retrieval.json#variants.french-question.scores.recall@1"
+    business_reading: >-
+      How often the passage shown under the board is about the opening on the board. At
+      rank 1 this is what the player actually reads, because nobody scrolls the second
+      passage.
+    source: "backend/scripts/run_retrieval_ablation.py, over the 14 cases of backend/data/eval/retrieval_cases.json"
+    uncertainty: >-
+      Fourteen cases, so one case is worth 0.071. No interval is published: a gap narrower
+      than one case is a single question changing its mind, and the table says so.
+
+  "recall@3":
+    definition: >-
+      The share of evaluation cases where one of the labelled articles is among the first
+      three retrieved, deduplicated by source file.
+    unit: "share of cases, 0 to 1"
+    direction: higher_is_better
+    anchor: "1.00 — backend/reports/ablation_retrieval.json#variants.french-question.scores.recall@3"
+    business_reading: >-
+      Whether the right article is within reach of the agent at all. The agent reads three
+      passages, so this is the number that says whether the synthesis had the material.
+    source: "backend/scripts/run_retrieval_ablation.py, over the same 14 cases"
+    uncertainty: >-
+      Fourteen cases, one case worth 0.071. A value of 1.00 on a corpus of 32 articles says
+      as much about the corpus as about the retrieval, and `docs/protocol.md` says so.
+
+  mrr:
+    definition: >-
+      The mean over the evaluation cases of one divided by the rank of the first correct
+      article; a case with no correct article in the top ten contributes zero.
+    unit: "mean reciprocal rank, 0 to 1"
+    direction: higher_is_better
+    anchor: "0.929 — backend/reports/ablation_retrieval.json#variants.french-question.scores.mrr"
+    business_reading: >-
+      One number for how far down the list the right article sits. It separates two variants
+      that both find the article but at different depths, which recall at a fixed k cannot.
+    source: "backend/scripts/run_retrieval_ablation.py, over the same 14 cases"
+    uncertainty: >-
+      Fourteen cases. Moving one case from rank 1 to rank 2 costs 0.036, so the same
+      one-case floor applies as for recall.
+
+  threshold:
+    definition: >-
+      The number of master games in the Lichess Explorer above which a position is treated
+      as theory; the agent's only conditional edge reads it.
+    unit: "master games"
+    direction: target
+    anchor: "1000 — backend/reports/theory_threshold_sweep.csv#threshold"
+    business_reading: >-
+      Where the coach stops quoting theory and starts asking the engine. Too low and it
+      quotes lines nobody plays; too high and it calls an engine on the Sicilian.
+    source: "backend/src/chess_coach/config.py, field `theory_min_games`; swept by backend/scripts/sweep_theory_threshold.py"
+    uncertainty: >-
+      Not measured but chosen. The sweep is what puts an uncertainty on the choice: it says
+      how many positions change side for a given move of the value.
+
+  in_theory:
+    definition: >-
+      The number of positions of the frozen reading that the agent routes to theory at a
+      given threshold.
+    unit: "positions"
+    direction: target
+    anchor: "45 — backend/reports/theory_threshold_sweep.csv#in_theory, row threshold=1000"
+    business_reading: >-
+      How much of the opening repertoire the coach answers from master games rather than
+      from an engine. Both answers are valid; they are not the same answer.
+    source: "backend/scripts/sweep_theory_threshold.py, replayed on backend/data/eval/theory_positions.json"
+    uncertainty: >-
+      Fifty-four positions read from the Explorer on one day. The counts of a live database
+      move, which is why the reading is frozen and dated rather than queried again.
+
+  flipped:
+    definition: >-
+      The number of positions that change side between one row of the sweep and the row
+      above it.
+    unit: "positions"
+    direction: target
+    anchor: "2 — backend/reports/theory_threshold_sweep.csv#flipped, row threshold=1000"
+    business_reading: >-
+      The sensitivity of the routing to its own setting. A row of zeros means the value was
+      chosen inside a plateau, and the choice does not have to be defended further.
+    source: "backend/scripts/sweep_theory_threshold.py, over the same 54 positions"
+    uncertainty: >-
+      A difference between two counts on the same 54 positions, so it carries no sampling
+      error of its own; it inherits the one-day reading of `in_theory`.
+
+  median_ms:
+    definition: >-
+      The median wall-clock time of one agent node over the repeated runs of the benchmark,
+      measured inside the deployed configuration.
+    unit: "milliseconds"
+    direction: lower_is_better
+    anchor: "18.0 — backend/reports/latency.json#nodes.context.median_ms"
+    business_reading: >-
+      What the player waits for, node by node. It says which part of the stack a slow answer
+      comes from, and the answer is not the part a vector database suggests.
+    source: "backend/scripts/bench_agent.py, 4 positions and 3 repeats, language model disabled"
+    uncertainty: >-
+      Six to twelve timings per node, on one machine, with the network between it and two
+      third-party services. The median is published beside p90 rather than with an interval:
+      twelve points do not carry one.
+
+  p90_ms:
+    definition: >-
+      The ninetieth percentile of the same timings, by linear interpolation between the two
+      neighbouring measurements.
+    unit: "milliseconds"
+    direction: lower_is_better
+    anchor: "20.0 — backend/reports/latency.json#nodes.context.p90_ms"
+    business_reading: >-
+      The slow answer rather than the usual one. A node whose p90 sits far above its median
+      is a node that will occasionally make the interface look broken.
+    source: "backend/scripts/bench_agent.py, over the same timings"
+    uncertainty: >-
+      A ninetieth percentile over six to twelve points is an order statistic, not an
+      estimate: it names the second-slowest measurement, and nothing beyond this run.
+
+  citations:
+    definition: >-
+      The number of chess moves the language model names in its written answers, as read by
+      the parser of `backend/scripts/check_move_invention.py`.
+    unit: "cited moves"
+    direction: target
+    anchor: "116 — backend/reports/move_invention.json#totals.cited"
+    business_reading: >-
+      The denominator of the only claim the interface depends on: that the moves shown to a
+      player come from the tools. Every count of that table is a share of this one.
+    source: "backend/scripts/check_move_invention.py, 21 positions answered twice by gpt-4o-mini"
+    uncertainty: >-
+      It depends on the reader, not on sampling. The unfiltered reading counts 185 by
+      treating every square-looking token as a move, and both readings are published so the
+      effect of the parser is visible rather than assumed.

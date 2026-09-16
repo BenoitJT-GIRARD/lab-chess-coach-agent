@@ -124,8 +124,9 @@ def _matching_passage(state: AgentState, max_chars: int = 320) -> str:
 
     The knowledge base answers for every query, so a passage is only used as a
     definition when its article shares an identifying word with the detected
-    opening. Otherwise the presentation would describe the wrong opening, which
-    is worse than saying nothing.
+    opening. Without that guard the presentation describes another opening
+    entirely, in the confident voice of a definition, and a young player has no
+    way of telling. Saying nothing is the safe failure here.
     """
 
     mots = _identifying_words(state.get("opening_name") or "")

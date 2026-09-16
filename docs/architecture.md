@@ -84,10 +84,10 @@ of games** behind it. The threshold is configurable — `THEORY_MIN_GAMES`, 1 00
 default: the Italian Game after 3.Bc4 Bc5 rests on 25 559 master games, 1.e4 e5 2.Qh5
 on 48, read on 2026-09-07.
 
-That number used to be justified by those two examples alone. It has since been swept over
-a frozen reading of 54 positions: the routing does not move between 500 and 5 000, so the
-served value sits in a plateau. Divide it by three and two positions out of 54 change side;
-multiply it by three and none do. The curve is in `../backend/data/eval/`.
+That number used to rest on those two examples alone. A sweep has since put a figure on how
+much it matters, and the answer is that the branch barely notices a factor of three either
+way. The README shows the rows around the served value, `protocol.md` says how the sweep was
+built, and `../backend/reports/theory_threshold_sweep.md` holds the whole curve.
 
 The move the interface puts forward follows the same rule: inside theory, the one most
 played in master games; outside it, Stockfish's. The language model is told which one was
@@ -123,7 +123,7 @@ no container. `evaluation` depends on both and nothing depends on it.
 | --- | --- | --- |
 | `lichess` | Theoretical moves and reference games | Error raised, the local book takes over |
 | `opening_book` | Local, offline opening book | Always available |
-| `theory` | Chooses between the two sources | — |
+| `theory` | Chooses between the two sources | not applicable |
 | `stockfish_engine` | Evaluation and best move | 502 on its own route |
 | `embeddings` | Text vectorisation | Model loaded once |
 | `milvus_store` | Vector collection | 503 on its own route |
@@ -141,19 +141,19 @@ empty. What each missing key costs is one row of that table.
 
 ```mermaid
 flowchart LR
-    FICGS["ficgs.com<br/>Wikichess"] -->|"scripts.fetch_wikichess"| FILES["backend/data/wikichess/<br/>21 articles, English"]
+    FICGS["ficgs.com<br/>Wikichess"] -->|"scripts.fetch_wikichess"| FILES["backend/var/wikichess/<br/>21 articles, English"]
     NOTES["backend/data/openings/<br/>11 notes, French"] --> CHUNK
     FILES --> CHUNK["Chunking<br/>(paragraphs, 600 chars, with overlap)"]
     CHUNK --> EMBED["Embedding<br/>multilingual MiniLM, 384 dimensions"]
     EMBED --> MILVUS[("Milvus<br/>collection chess_openings")]
 ```
 
-32 articles, 146 chunks. The Wikichess pages are not redistributed with this
-repository — FICGS keeps every right on the text of its site — so the download is what
+32 articles in two folders. The Wikichess pages are not redistributed with this
+repository, because FICGS keeps every right on the text of its site, so the download is what
 fills that folder, once, before the first ingestion; what is versioned is the manifest
-that lists which articles the corpus is made of. Every chunk keeps the name of the folder
-it came from, which is what lets the interface cite where an answer came from — and what lets the
-retrieval ablation score against a hard label.
+that lists which articles the corpus is made of. Each indexed passage carries the name of its
+folder, which is how the interface can say where an answer came from and how the ablation can
+score against a label it did not have to guess.
 
 The corpus is deliberately bilingual: the Wikichess pages are English, the complementary
 notes are French, and the queries are French. That is why the embedding model is
@@ -198,3 +198,36 @@ Five named volumes keep the state between restarts:
 
 That is what lets the demonstration restart without re-ingesting the corpus or losing the
 history.
+
+---
+
+## 7. What was considered and not built
+
+An architecture document that lists only what exists reads as though nothing else was ever on
+the table. Four things were, and each was set aside for a reason that is still the reason.
+
+**A language model asked to answer the question.** The obvious design: hand the position to a
+model and let it write. It was rejected before anything was built, and the README says why —
+the model has no way of knowing which of three situations it is in, and no source for the
+counts it will quote. What is here instead puts the model last, after the routing has been
+decided by a database and an engine, and `docs/protocol.md` measures what that buys.
+
+**A fine-tuned model instead of retrieval.** Thirty-two articles is not a training set. It is
+also the wrong shape of problem: the corpus changes when an article is added, and a retrieval
+index absorbs that in one ingestion while a fine-tune absorbs it in another training run. The
+cost of being wrong is asymmetric too — a retrieval that misses returns the wrong article,
+visibly, with its source; a fine-tune that misses invents.
+
+**An agent that chooses its own tools.** LangGraph supports a model deciding which tool to
+call. The graph here is a fixed sequence with one conditional edge, and that edge is a
+comparison between an integer and a threshold. Giving the choice to a model would have made the
+routing unmeasurable: `docs/protocol.md` sweeps the threshold over fifty-four positions and
+reports how many change side, which is a question one cannot ask about a prompt.
+
+**Video analysis.** The project was asked whether the coach could watch the videos it
+recommends and point at the moment an opening is explained. The study is
+[`feasibility_video_analysis.md`](feasibility_video_analysis.md), and its answer is that it is
+feasible and out of proportion: transcription, alignment and indexing for a corpus of eleven
+openings, against a retrieval that already answers in eighteen milliseconds. Nothing of it is
+built. The study is kept because the decision not to build it is part of the design, and
+because the reasoning would otherwise have to be redone by whoever asks next.
