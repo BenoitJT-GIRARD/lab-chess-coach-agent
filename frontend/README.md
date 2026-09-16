@@ -1,4 +1,4 @@
-# Frontend — the Angular interface
+# Frontend: the Angular interface
 
 An interactive chessboard and the coach's answer panel. It talks to the FastAPI backend
 through a relative path (`/api/v1`), which is what lets the same build run behind the
@@ -8,16 +8,16 @@ container's nginx proxy and behind the `ng serve` dev proxy without a rebuild.
 
 Two public bricks, and the attribution matters more than the line count:
 
-- **[ngx-chess-board](https://www.npmjs.com/package/ngx-chess-board)** — the board itself,
+- **[ngx-chess-board](https://www.npmjs.com/package/ngx-chess-board)**: the board itself,
   with its `[size]`, `[lightTileColor]`, `[darkTileColor]` inputs and its `(moveChange)`
-  output. Version 3.0.0 ships sources only on npm, so the build pins the Ivy-compiled
+  output. Version 3.0.0 ships sources only on npm, so the build fixes the Ivy build of
   2.2.3, which Angular 17 accepts through legacy peer resolution.
-- **[Angular Material](https://material.angular.io/)** — toolbar, cards, buttons, chips,
+- **[Angular Material](https://material.angular.io/)**: toolbar, cards, buttons, chips,
   tooltips and the loading indicator.
 
 The Material theme is built on a navy and a gold (`src/styles.scss`). The icon font is
 bundled through the `material-icons` package rather than loaded from Google Fonts, so the
-interface stays usable with no internet access — which is also what a demonstration on a
+interface stays usable with no internet access, which is also what a demonstration on a
 conference network needs.
 
 ## Layout

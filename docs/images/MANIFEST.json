@@ -1,0 +1,67 @@
+{
+  "schema": "image-manifest/1",
+  "images": {
+    "api-docs.png": {
+      "sha256": "f81aad381025e34f4f7b1e82432e7cf735ac11941fd72893784ecb895603d5b9",
+      "written": "2026-09-15",
+      "source": "scripts/capture.py",
+      "command": "uv run python scripts/capture.py --only api-docs",
+      "target": "http://127.0.0.1:8000/docs",
+      "viewport": [
+        1280,
+        1000
+      ],
+      "device_scale_factor": 2,
+      "app_state": "the six containers up through `docker compose up -d --build`, the Wikichess corpus downloaded and ingested into Milvus, and a Lichess token, a YouTube key and a language model key present in .env, and no request sent yet",
+      "data_source": "own",
+      "demonstrates_behaviour": "the eight routes and the shape of every answer, generated from the Pydantic models rather than written by hand, so the page a caller reads cannot drift from the contract the service enforces",
+      "git_revision": "cf511cacc2ead3260acb6228968486f4e4f55d1d",
+      "depends_on": [
+        "src/chess_coach/api/main.py",
+        "src/chess_coach/api/schemas.py"
+      ]
+    },
+    "coach-in-theory.png": {
+      "sha256": "093ff946577ee9d9c5ea12564567d0b2734a1e765dad6a1f0794305e65f2c588",
+      "written": "2026-09-15",
+      "source": "scripts/capture.py",
+      "command": "uv run python scripts/capture.py --only coach-in-theory",
+      "target": "http://127.0.0.1:4200/",
+      "viewport": [
+        1280,
+        1000
+      ],
+      "device_scale_factor": 2,
+      "app_state": "the six containers up through `docker compose up -d --build`, the Wikichess corpus downloaded and ingested into Milvus, and a Lichess token, a YouTube key and a language model key present in .env, the board set to the Ruy Lopez after 3.Bb5 from the demo row",
+      "data_source": "own",
+      "demonstrates_behaviour": "the nominal answer, at the top of the panel where a reader lands: the opening named with its ECO code, the summary, the move most played in master games with its count, the theoretical moves and the reference games. The retrieved passage is below the fold here and visible in the twin capture",
+      "git_revision": "cf511cacc2ead3260acb6228968486f4e4f55d1d",
+      "paired_with": "coach-out-of-theory.png",
+      "depends_on": [
+        "../frontend/src/app/coach/coach-panel.component.html",
+        "src/chess_coach/agent/graph.py"
+      ]
+    },
+    "coach-out-of-theory.png": {
+      "sha256": "baf71903a3729e0f0e3d9ce0cb98fd2c4a14a1389fc9bebf5717692172de60b0",
+      "written": "2026-09-15",
+      "source": "scripts/capture.py",
+      "command": "uv run python scripts/capture.py --only coach-out-of-theory",
+      "target": "http://127.0.0.1:4200/",
+      "viewport": [
+        1280,
+        1000
+      ],
+      "device_scale_factor": 2,
+      "app_state": "the six containers up through `docker compose up -d --build`, the Wikichess corpus downloaded and ingested into Milvus, and a Lichess token, a YouTube key and a language model key present in .env, the board set to 1.e4 e5 2.Qh5 from the demo row",
+      "data_source": "own",
+      "demonstrates_behaviour": "the same screen one branch later: the master database does not reach this position, so the theory panel says so and the engine evaluation takes its place, which is the branch the routing threshold decides",
+      "git_revision": "cf511cacc2ead3260acb6228968486f4e4f55d1d",
+      "paired_with": "coach-in-theory.png",
+      "depends_on": [
+        "../frontend/src/app/coach/coach-panel.component.html",
+        "src/chess_coach/agent/graph.py"
+      ]
+    }
+  }
+}

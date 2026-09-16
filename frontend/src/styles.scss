@@ -1,98 +1,107 @@
-/* Styles globaux — Chess Coach.
+/* Global styles — Chess Coach.
  *
- * Le thème Angular Material est construit sur un bleu nuit et un or.
- * Française des Échecs : un bleu nuit et un or. Les mêmes couleurs sont aussi
- * exposées en variables CSS, pour les quelques éléments dessinés à la main.
+ * Every colour below comes from the portfolio palette, and the file writes six hex values
+ * in total: the six tokens. The Material ramps are derived from two of them with
+ * `color.scale`, so a shade is computed rather than typed, and the day the palette moves
+ * this file moves with it. The custom properties keep the names the components already use.
+ *
+ * The source of those six values is `assets/palette.yaml` in the governance repository,
+ * which `tools/sync_figure_style.py` also renders into
+ * `backend/src/chess_coach/assets/tokens.css` for anything that reads CSS directly.
  */
 
+@use 'sass:color';
 @use '@angular/material' as mat;
 @use 'material-icons/iconfont/material-icons.css';
 
 @include mat.core();
 
-$chess_coach-navy: (
-  50: #e7e9ec,
-  100: #c3c8d0,
-  200: #9ba4b1,
-  300: #728091,
-  400: #54647a,
-  500: #364963,
-  600: #30425b,
-  700: #1b263b,
-  800: #131d2f,
-  900: #0d1b2a,
-  contrast: (
-    50: rgba(0, 0, 0, 0.87),
-    100: rgba(0, 0, 0, 0.87),
-    200: rgba(0, 0, 0, 0.87),
-    300: #ffffff,
-    400: #ffffff,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-  ),
+// --- The six tokens this interface uses -----------------------------------
+$token-primary: #123f5a; // the brand anchor, a deep blue
+$token-secondary: #bc6a24; // amber, the accent
+$token-ink: #1b1f23;
+$token-muted: #5b646d;
+$token-grid: #dde1e4;
+$token-surface: #f3f5f6;
+$token-paper: #ffffff;
+$token-ok: #2e6b4f;
+$token-danger: #8f2a22;
+
+// --- The two Material ramps, computed from two of them --------------------
+//
+// Material wants ten shades and their contrasts. Typing ten hex values would be ten
+// colours nobody decided; scaling one token gives a ramp that stays consistent with it.
+@function ramp($base) {
+  @return (
+    50: color.scale($base, $lightness: 92%),
+    100: color.scale($base, $lightness: 80%),
+    200: color.scale($base, $lightness: 64%),
+    300: color.scale($base, $lightness: 46%),
+    400: color.scale($base, $lightness: 26%),
+    500: $base,
+    600: color.scale($base, $lightness: -12%),
+    700: color.scale($base, $lightness: -26%),
+    800: color.scale($base, $lightness: -40%),
+    900: color.scale($base, $lightness: -55%),
+    contrast: (
+      50: $token-ink,
+      100: $token-ink,
+      200: $token-ink,
+      300: $token-ink,
+      400: $token-paper,
+      500: $token-paper,
+      600: $token-paper,
+      700: $token-paper,
+      800: $token-paper,
+      900: $token-paper,
+    )
+  );
+}
+
+$chess-coach-blue: ramp($token-primary);
+$chess-coach-amber: ramp($token-secondary);
+
+// A system font stack: the demonstration has to stay readable with no internet access, so
+// nothing is fetched from Google Fonts.
+$chess-coach-font: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+
+$chess-coach-typography: mat.define-typography-config(
+  $font-family: $chess-coach-font,
 );
 
-$chess_coach-gold: (
-  50: #f9f4e9,
-  100: #f0e4c8,
-  200: #e6d2a4,
-  300: #dbbf7f,
-  400: #d4b163,
-  500: #c8a04b,
-  600: #b89044,
-  700: #a37c3b,
-  800: #8e6933,
-  900: #6b4c24,
-  contrast: (
-    50: rgba(0, 0, 0, 0.87),
-    100: rgba(0, 0, 0, 0.87),
-    200: rgba(0, 0, 0, 0.87),
-    300: rgba(0, 0, 0, 0.87),
-    400: rgba(0, 0, 0, 0.87),
-    500: rgba(0, 0, 0, 0.87),
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-  ),
-);
-
-// Pile de polices systeme : la demonstration doit rester lisible sans acces
-// a internet, on ne charge donc pas Roboto depuis Google Fonts.
-$chess_coach-police: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-
-$chess_coach-typographie: mat.define-typography-config(
-  $font-family: $chess_coach-police,
-);
-
-$chess_coach-theme: mat.define-light-theme(
+$chess-coach-theme: mat.define-light-theme(
   (
     color: (
-      primary: mat.define-palette($chess_coach-navy, 900, 700, 500),
-      accent: mat.define-palette($chess_coach-gold, 500, 300, 700),
-      warn: mat.define-palette(mat.$red-palette),
+      primary: mat.define-palette($chess-coach-blue, 700, 500, 900),
+      accent: mat.define-palette($chess-coach-amber, 500, 300, 700),
+      warn: mat.define-palette($chess-coach-amber, 900),
     ),
-    typography: $chess_coach-typographie,
+    typography: $chess-coach-typography,
     density: 0,
   )
 );
 
-@include mat.all-component-themes($chess_coach-theme);
-@include mat.typography-hierarchy($chess_coach-typographie);
+@include mat.all-component-themes($chess-coach-theme);
+@include mat.typography-hierarchy($chess-coach-typography);
 
+// --- What the components read ---------------------------------------------
+//
+// The names are the ones the three component stylesheets already use. Their values are
+// tokens, so a component can keep saying « navy » while the palette decides what that is.
 :root {
-  --navy: #0d1b2a;
-  --navy-soft: #1b263b;
-  --gold: #c8a04b;
-  --gold-soft: #e0c074;
-  --paper: #f4f1ea;
-  --ink: #1f2933;
-  --muted: #6b7480;
-  --line: #e2ddd2;
-  --green: #2f8f5b;
+  --navy: #{$token-primary};
+  --navy-soft: #{color.scale($token-primary, $lightness: 18%)};
+  --gold: #{$token-secondary};
+  --gold-soft: #{color.scale($token-secondary, $lightness: 45%)};
+  --paper: #{$token-paper};
+  --surface: #{$token-surface};
+  --ink: #{$token-ink};
+  --muted: #{$token-muted};
+  --line: #{$token-grid};
+  --green: #{$token-ok};
+  // What a failed request is painted with. The danger state of the palette, not a red of
+  // this component's own.
+  --warning: #{$token-danger};
   --radius: 12px;
 }
 
@@ -108,7 +117,7 @@ body {
 }
 
 body {
-  font-family: $chess_coach-police;
+  font-family: $chess-coach-font;
   color: var(--ink);
-  background: linear-gradient(160deg, #f7f5ef 0%, #eceadf 100%);
+  background: linear-gradient(160deg, var(--paper) 0%, var(--surface) 100%);
 }

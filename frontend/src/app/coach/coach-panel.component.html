@@ -1,13 +1,20 @@
-<mat-card class="panel" appearance="outlined">
+<mat-card
+  class="panel"
+  appearance="outlined"
+  role="region"
+  aria-live="polite"
+  [attr.aria-busy]="loading"
+  aria-label="Analyse de la position"
+>
   <mat-card-content>
     @if (loading) {
-      <div class="state">
-        <mat-spinner diameter="36"></mat-spinner>
+      <div class="state" role="status">
+        <mat-spinner diameter="36" aria-label="Analyse en cours"></mat-spinner>
         <p>L'agent analyse la position…</p>
       </div>
     } @else if (error) {
-      <div class="state error">
-        <mat-icon>error_outline</mat-icon>
+      <div class="state error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
         <p>{{ error }}</p>
       </div>
     } @else if (result) {
@@ -27,14 +34,14 @@
 
       @if (result.opening_summary) {
         <section class="detected-opening">
-          <h3><mat-icon>emoji_objects</mat-icon> Ouverture détectée</h3>
+          <h3><mat-icon aria-hidden="true">emoji_objects</mat-icon> Ouverture détectée</h3>
           <p>{{ result.opening_summary }}</p>
         </section>
       }
 
       @if (nextMove; as coup) {
         <section class="next-move">
-          <span class="move-san">{{ coup.san }}</span>
+          <span class="move-san" [attr.aria-label]="'Coup proposé : ' + coup.san">{{ coup.san }}</span>
           <span class="move-text">
             <strong>Prochain coup</strong>
             <em>{{ coup.reason }}</em>
@@ -44,7 +51,7 @@
 
       @if (!result.in_theory && result.total_games) {
         <p class="rarity">
-          <mat-icon>info_outline</mat-icon>
+          <mat-icon aria-hidden="true">info_outline</mat-icon>
           <span>
             Ligne connue, mais rarement jouée :
             <strong>{{ gameCount(result.total_games) }} parties de maîtres</strong>.

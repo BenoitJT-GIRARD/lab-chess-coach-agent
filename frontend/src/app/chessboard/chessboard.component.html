@@ -2,7 +2,11 @@
   <!-- À gauche : l'échiquier et ses commandes -->
   <mat-card class="board-card" appearance="outlined">
     <mat-card-content>
-      <div class="board">
+      <div
+        class="board"
+        role="group"
+        aria-label="Échiquier : jouer un coup met à jour l'analyse"
+      >
         <ngx-chess-board
           #board
           [size]="boardSize"
@@ -19,7 +23,7 @@
           (click)="onMovePlayed()"
           matTooltip="Demander l'analyse de la position affichée"
         >
-          <mat-icon>psychology</mat-icon>
+          <mat-icon aria-hidden="true">psychology</mat-icon>
           Analyser
         </button>
 
@@ -30,7 +34,7 @@
           matTooltip="Annuler le dernier coup"
           aria-label="Annuler le dernier coup"
         >
-          <mat-icon>undo</mat-icon>
+          <mat-icon aria-hidden="true">undo</mat-icon>
         </button>
 
         <button
@@ -40,7 +44,7 @@
           matTooltip="Retourner l'échiquier"
           aria-label="Retourner l'échiquier"
         >
-          <mat-icon>swap_vert</mat-icon>
+          <mat-icon aria-hidden="true">swap_vert</mat-icon>
         </button>
 
         <button
@@ -50,7 +54,7 @@
           matTooltip="Revenir à la position de départ"
           aria-label="Revenir à la position de départ"
         >
-          <mat-icon>restart_alt</mat-icon>
+          <mat-icon aria-hidden="true">restart_alt</mat-icon>
         </button>
       </div>
 
@@ -58,6 +62,8 @@
         <span class="demos-heading">Positions de démonstration</span>
         <mat-chip-set aria-label="Positions de démonstration">
           @for (position of demoPositions; track position.fen) {
+            <!-- No aria-label here: MatChip drops an attribute set on its host and uses the
+                 visible text as the accessible name, which is the label itself. -->
             <mat-chip (click)="loadDemo(position)">{{ position.label }}</mat-chip>
           }
         </mat-chip-set>
@@ -74,13 +80,18 @@
     <mat-card class="history-card" appearance="outlined">
       <mat-card-content>
         <h3>
-          <mat-icon>history</mat-icon>
+          <mat-icon aria-hidden="true">history</mat-icon>
           Dernières analyses
           <span class="total">{{ analysisCount }} au total</span>
         </h3>
         <ul>
           @for (entry of history; track entry.created_at) {
-            <li (click)="replay(entry)">
+            <li
+              (click)="replay(entry)"
+              (keydown.enter)="replay(entry)"
+              tabindex="0"
+              [attr.aria-label]="'Rejouer : ' + (entry.opening_name || 'position hors théorie')"
+            >
               <span class="opening">{{ entry.opening_name || 'Hors théorie' }}</span>
               <span class="time">{{ timeOf(entry.created_at) }}</span>
             </li>

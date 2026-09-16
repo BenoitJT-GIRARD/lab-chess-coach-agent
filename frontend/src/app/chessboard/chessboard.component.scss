@@ -14,7 +14,7 @@
 
 .board-card {
   grid-area: echiquier;
-  background: #ffffff;
+  background: var(--paper);
   border-radius: var(--radius);
 }
 
@@ -92,7 +92,7 @@ mat-chip {
 
 .history-card {
   grid-area: history;
-  background: #ffffff;
+  background: var(--paper);
   border-radius: var(--radius);
 
   h3 {
