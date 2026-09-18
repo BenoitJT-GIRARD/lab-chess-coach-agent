@@ -112,15 +112,27 @@ def latency_by_node() -> None:
                 zorder=2,
             )
         ax.hlines(
-            position, node["median_ms"], node["max_ms"],
-            color=PALETTE["control"], linewidth=1.0, zorder=3,
+            position,
+            node["median_ms"],
+            node["max_ms"],
+            color=PALETTE["control"],
+            linewidth=1.0,
+            zorder=3,
         )
         ax.hlines(
-            position, node["median_ms"], node["p90_ms"],
-            color=PALETTE["primary"], linewidth=3.4, zorder=4,
+            position,
+            node["median_ms"],
+            node["p90_ms"],
+            color=PALETTE["primary"],
+            linewidth=3.4,
+            zorder=4,
         )
         ax.scatter(
-            [node["median_ms"]], [position], s=44, color=PALETTE["primary"], zorder=5,
+            [node["median_ms"]],
+            [position],
+            s=44,
+            color=PALETTE["primary"],
+            zorder=5,
             label="median" if position == 0 else None,
         )
     ax.plot([], [], color=PALETTE["primary"], linewidth=3.4, label="median to p90")

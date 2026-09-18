@@ -174,8 +174,7 @@ def to_markdown(payload: dict[str, Any]) -> str:
         "",
         "> **How to read it.** One row, and the columns say where each cited move came from. "
         "`Given in",
-        "> the prompt` is a move a tool supplied. `Legal, not given` is a move that exists in "
-        "the",
+        "> the prompt` is a move a tool supplied. `Legal, not given` is a move that exists in the",
         "> position and reached the answer from somewhere else. `No such move` could not be "
         "played at",
         "> all. `Told as a line` is the opening's own sequence quoted behind its move number.",
