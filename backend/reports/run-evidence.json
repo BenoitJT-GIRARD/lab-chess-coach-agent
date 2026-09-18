@@ -1,7 +1,7 @@
 {
   "command": "cd backend && uv run python scripts/smoke.py",
-  "ran_at": "2026-09-15",
-  "git_revision": "44bb55b552f4b4d24e6ef5680691508e75115d5f",
+  "ran_at": "2026-09-18",
+  "git_revision": "f703b51d2eee4af006a29037bf7b9a000a35a4d5",
   "tool_versions": {
     "python": "3.12.12",
     "chess": "1.11.2",
@@ -12,7 +12,7 @@
     "uv": "uv 0.11.6 (65950801c 2026-04-09 x86_64-pc-windows-msvc)",
     "docker": "Docker version 29.2.0, build 0b9d198"
   },
-  "duration_seconds": 16.8,
+  "duration_seconds": 49.8,
   "key_output": [
     "backend/reports/theory_threshold_sweep.csv",
     "backend/reports/theory_threshold_sweep.md",
