@@ -10,7 +10,7 @@ None of those citations came back in French notation: this model answered in the
 
 The last column is the opening's own sequence, cited behind its move number: already played, and left out of the invention count.
 
-Unfiltered reading — every square-looking token counted as a move, including the ones the prose names as places:
+Unfiltered reading, counting every square-looking token as a move, including the ones the prose names as places:
 
 | Citations | Given in the prompt | Legal, not given | No such move | Told as a line |
 |---|---|---|---|---|
@@ -18,19 +18,19 @@ Unfiltered reading — every square-looking token counted as a move, including t
 
 ## What was flagged (3)
 
-- **Caro-Kann Defense** (pass 1) — `e5` = e5, *legal*, in the model's own words:
+- **Caro-Kann Defense**, pass 1. `e5` = e5, *legal*, in the model's own words:
 
   ```
   En jouant d4, les Blancs cherchent à contrôler le centre et à préparer une expansion avec e5 dans le futur.
   ```
 
-- **Italian Game** (pass 1) — `a6`, *illegal*, in the model's own words:
+- **Italian Game**, pass 1. `a6`, *illegal*, in the model's own words:
 
   ```
   Pense à la suite de tes coups : si les Noirs jouent a6 pour chasser ton fou, tu pourras envisager de reculer avec Bc4 ou de prendre le cavalier.
   ```
 
-- **Scholar's Attack** (pass 2) — `Qh5`, *illegal*, in the model's own words:
+- **Scholar's Attack**, pass 2. `Qh5`, *illegal*, in the model's own words:
 
   ```
   Les Blancs ont joué Qh5 pour attaquer le pion en e5, et les Noirs doivent maintenant défendre leur position tout en cherchant à se développer.
