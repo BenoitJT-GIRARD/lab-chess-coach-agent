@@ -92,7 +92,7 @@ engine is a binary installed in the image and driven as a subprocess.
 The interface is **Angular** with Material and `ngx-chess-board`, served by nginx, which
 proxies `/api/` to the backend. Dependencies are locked by **uv**; **pytest** runs three tiers
 of tests with warnings as errors, **Ruff** lints and formats, and **Bandit** scans the source
-on every push.
+whenever the pipeline is started.
 
 ## The result
 

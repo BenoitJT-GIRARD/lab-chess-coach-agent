@@ -1,10 +1,9 @@
 name: CI
 
+# Frozen on 2026-09-18. The workflows below ran green on the commit this repository
+# publishes, and the Actions tab holds that run. They fire by hand from now on: a
+# repository nobody maintains should not go red on a dependency that moved.
 on:
-  push:
-    branches: ["main", "feat/**"]
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 # Two halves, two jobs. They share nothing and fail independently: a broken Angular test
