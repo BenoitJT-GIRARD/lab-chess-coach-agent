@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="docs/badges/python.svg" alt="Python 3.12">
-  <img src="docs/badges/stack.svg" alt="Built with Angular · LangGraph · Stockfish">
+  <img src="docs/badges/stack.svg" alt="Built with LangGraph · Milvus · sentence-transformers">
   <img src="docs/badges/licence.svg" alt="License: MIT">
   <img src="docs/badges/coverage.svg" alt="coverage 74%">
 </p>
