@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from chess_coach.config import get_settings
-from chess_coach.utils.paths import RETRIEVAL_CASES
+from chess_coach.utils.paths import RETRIEVAL_CASES, WIKICHESS_MANIFEST
 
 DEFAULT_PATH = RETRIEVAL_CASES
 
@@ -62,12 +62,18 @@ def corpus_sources(settings=None) -> set[str]:
     found: set[str] = set()
     for folder in (settings.wikichess_dir, settings.openings_dir):
         directory = Path(folder)
-        if not directory.is_dir():
-            continue
+        # The manifest of the Wikichess corpus is tracked under `reports/`, because the
+        # articles themselves are not redistributed and their directory does not exist on a
+        # fresh clone. Looking for it inside that directory found it only on a machine that
+        # had already downloaded them, which is the one machine that does not need it.
         manifest = directory / "MANIFEST.json"
+        if not manifest.is_file() and directory.name == Path(settings.wikichess_dir).name:
+            manifest = WIKICHESS_MANIFEST
         if manifest.is_file():
             listed = json.loads(manifest.read_text(encoding="utf-8"))
             found.update(f"{directory.name}/{a['file']}" for a in listed["articles"])
+        if not directory.is_dir():
+            continue
         for article in sorted(directory.glob("*.md")):
             found.add(f"{directory.name}/{article.name}")
     return found
