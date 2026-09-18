@@ -177,7 +177,7 @@ def to_markdown(payload: dict[str, Any]) -> str:
         "The last column is the opening's own sequence, cited behind its move number: "
         "already played, and left out of the invention count.",
         "",
-        "Unfiltered reading — every square-looking token counted as a move, including the "
+        "Unfiltered reading, counting every square-looking token as a move, including the "
         "ones the prose names as places:",
         "",
         "| Citations | Given in the prompt | Legal, not given | No such move | Told as a line |",
@@ -205,7 +205,7 @@ def to_markdown(payload: dict[str, Any]) -> str:
         for name, attempt, item in flagged:
             reading = f" = {item['san']}" if item["san"] else ""
             lines.append(
-                f"- **{name}** (pass {attempt}) — `{item['token']}`{reading}, "
+                f"- **{name}**, pass {attempt}. `{item['token']}`{reading}, "
                 f"*{item['verdict']}*, in the model's own words:"
             )
             lines.append("")
