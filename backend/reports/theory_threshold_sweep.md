@@ -19,6 +19,11 @@
 | 25000 | 28 | 26 | 13 |
 | 50000 | 24 | 30 | 4 |
 
+> **How to read it.** Each row is one candidate threshold applied to the same 54 positions. The
+> two middle columns split those positions in two, so they always add to 54. The last column
+> counts how many changed side against the row above, which makes consecutive zeros a stretch
+> where the exact value stops mattering.
+
 Divide the served threshold by 3 and **2 of 54** positions change side; multiply it by 3 and **0** do.
 
 The reading is frozen on purpose. The Explorer is a living database and these counts move; the sweep runs on the file so that it replays.

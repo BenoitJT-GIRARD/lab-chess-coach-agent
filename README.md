@@ -111,6 +111,14 @@ should come back. Four wordings, same corpus, same index:
 | `name-and-eco` (the name plus its ECO code) | 0.93 | 0.93 | 0.946 |
 n = 14 cases, each with a hard label and no judge.
 
+> **How to read it.** Each row is one wording of the same question, put to the same corpus and
+> index; `name-and-eco` appends the position's ECO (Encyclopaedia of Chess Openings) code.
+> recall@1 is the share of the fourteen cases whose first result is a correct article, the
+> passage a player actually reads. recall@3 is the share where a correct article is among the
+> three the agent receives. MRR (mean reciprocal rank) averages one divided by the rank of the
+> first correct article, separating two wordings that find it at different depths. A gap
+> smaller than one case of fourteen is a single question changing its mind.
+
 **Padding the question is what hurts.** The verbose English wording drops recall@1 from 0.86
 to 0.50, which is five questions of the fourteen. Its generic words are the vocabulary every
 article of the corpus shares, so it pulls the most general pages to the top: asked about the
@@ -153,8 +161,21 @@ first set. Here is what it does across a frozen reading of 54 positions:
 | 25000 | 28 | 13 |
 n = 54 positions, read from the `masters` database on 2026-09-07.
 
+> **How to read it.** Each row is one candidate value for `theory_min_games`, the number of
+> master games above which a position counts as theory. `in_theory` is how many of the 54 frozen
+> positions the agent would answer from master games at that setting. `flipped` counts the
+> positions that change side between a row and the one above it, so a row of zeros means the
+> value sits inside a plateau and the choice needs no further defence.
+
 <!-- source: backend/reports/figures/MANIFEST.json -->
 ![How many of the 54 frozen positions the agent routes to theory as the threshold grows: a flat stretch with the served value inside it, then a fall at the high end. n = 54 positions](backend/reports/figures/routing_plateau.png)
+
+> **How to read it.** The horizontal axis carries the same thresholds as the table above, on a
+> logarithmic scale, so a tenfold rise takes the same width wherever it happens. The vertical
+> axis counts positions answered from master games. A flat stretch means the routing is
+> indifferent to the exact value picked inside it, and the dotted marker is the value the
+> service holds. The drop at the right is where raising the bar starts handing openings to the
+> engine.
 
 **Two positions of the 54 move when the value is divided by three, and none move when it is
 tripled.** The stretch from 500 to 5 000 is flat, and the served value sits inside it. So a
@@ -179,8 +200,22 @@ Measured inside the deployed configuration, four positions, three repeats:
 n = 12 timings per node, 6 for the engine, which runs only on positions that left theory.
 The engine is called at the depth `STOCKFISH_DEPTH` sets, fifteen plies in this configuration.
 
+> **How to read it.** One row per node of the agent's graph, timed inside the deployed
+> configuration. `median_ms` is the usual wait in milliseconds, the value half the calls beat.
+> `p90_ms` is the ninetieth percentile, meaning the slow call and never the usual one; a node
+> whose p90 sits far above its median will occasionally make the interface look broken. Twelve
+> timings name an order statistic and do not estimate one, which is why no interval is
+> published beside them.
+
 <!-- source: backend/reports/figures/MANIFEST.json -->
-![The four nodes of the graph as horizontal bars, median beside ninetieth percentile: the retrieval node is a sliver next to the engine and the video search, and no node's slow answer sits far from its usual one. n = 12 timings per node, 6 for the engine](backend/reports/figures/latency_by_node.png)
+![The four nodes of the graph on a logarithmic scale, each a median dot with a thick segment reaching its ninetieth percentile and a thin line continuing to its slowest call: the retrieval node is the quickest by a factor of four, and its own tail is the longest of the four. n = 12 timings per node, 6 for the engine](backend/reports/figures/latency_by_node.png)
+
+> **How to read it.** Each row is one node, on a logarithmic scale because the four span three
+> orders of magnitude. The dot is the median, the thick segment runs from there to the
+> ninetieth percentile, and the thin line continues to the slowest call recorded. A short thick
+> segment with a long thin tail marks a node that is usually quick and occasionally is not.
+> The language model is absent from this bench, and in a real request it dominates everything
+> drawn here.
 
 The retrieval, the part one worries about on a stack with a vector database, is the cheapest
 node by a factor of four. What a request costs is the engine and YouTube, and the engine runs
@@ -201,6 +236,12 @@ One line of the prompt forbids inventing a move. Twenty-one positions were put t
 | Legal in the position, not given by any tool | 1 |
 | No such move in the position | 2 |
 n = 116 cited moves, over 21 positions answered twice.
+
+> **How to read it.** Each row is one origin a cited move can have, and `citations` counts the
+> moves that fall into it. The first two rows are moves a tool supplied or the opening's own
+> line quoted back. The last two are moves the model produced by itself, one playable in the
+> position and two that do not exist there. Only those bottom rows can break the claim the
+> interface rests on.
 
 **Not one move was made up.** Three citations fell outside what the prompt had given, and all
 three were read:

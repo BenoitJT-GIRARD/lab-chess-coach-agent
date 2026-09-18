@@ -13,6 +13,11 @@
 | `english-verbose` | 0.50 | 0.86 | 0.93 | 0.693 |
 | `name-and-eco` | 0.93 | 0.93 | 1.00 | 0.946 |
 
+> **How to read it.** Variants differ only in how the question is phrased. Each `recall@k` column
+> asks whether a correct article appears among the first k results returned, so the columns get
+> easier from left to right by construction. MRR (mean reciprocal rank) instead rewards the right
+> article for sitting near the top, averaging one over its rank across the fourteen cases.
+
 On 14 cases one case is worth 0.07 of recall, so a gap narrower than that is a single question changing its mind, not a result.
 
 ## Where each variant lands, case by case
