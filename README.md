@@ -44,10 +44,13 @@ question it can answer.**
 Six containers under Docker Compose, one command. A LangGraph agent routes a position
 through four sources and writes the answer.
 
-```
-START → identify → theory ──in theory──→ context → videos → synthesize → persist → END
-                     │                      ↑
-                     └──out of theory──→ engine
+```mermaid
+flowchart LR
+    TH["identify, then theory<br/>Lichess master games"] --> COND{"master games seen<br/>≥ theory_min_games?"}
+    COND -->|"yes, still theory"| CTX["context<br/>32 articles in Milvus"]
+    COND -->|"no, it has left theory"| ENG["engine<br/>Stockfish"]
+    ENG --> CTX
+    CTX --> TAIL["videos, synthesize, persist<br/>YouTube, the model, MongoDB"]
 ```
 
 - **Theory**: the [Lichess Opening Explorer](https://lichess.org/api#tag/Opening-Explorer)
