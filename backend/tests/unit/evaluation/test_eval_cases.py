@@ -6,12 +6,19 @@ drags recall down for good and no run will ever say why.
 
 from __future__ import annotations
 
+import pytest
+
 from chess_coach.evaluation.cases import corpus_sources, load_cases
 from chess_coach.evaluation.variants import SERVED, VARIANTS
 
 
 def test_every_case_points_at_an_article_that_exists() -> None:
     corpus = corpus_sources()
+    if not corpus:
+        # The articles belong to their authors and are downloaded by the reader, so a clone
+        # holds none of them. `test_preprocess.py` skips on the same ground; this one asserted
+        # instead, and said « every label is wrong » where it meant « there is no corpus ».
+        pytest.skip("corpus not downloaded: run `python -m scripts.fetch_wikichess`")
     missing = [
         (case.id, source)
         for case in load_cases()
