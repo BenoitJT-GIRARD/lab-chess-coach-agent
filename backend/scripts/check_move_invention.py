@@ -172,6 +172,14 @@ def to_markdown(payload: dict[str, Any]) -> str:
         f"| {filtered['cited']} | {filtered['offered']} | {filtered['legal_not_offered']} | "
         f"{filtered['illegal']} | {filtered['line_reference']} |",
         "",
+        "> **How to read it.** One row, and the columns say where each cited move came from. "
+        "`Given in",
+        "> the prompt` is a move a tool supplied. `Legal, not given` is a move that exists in "
+        "the",
+        "> position and reached the answer from somewhere else. `No such move` could not be "
+        "played at",
+        "> all. `Told as a line` is the opening's own sequence quoted behind its move number.",
+        "",
         notation_line(filtered["in_french_notation"]),
         "",
         "The last column is the opening's own sequence, cited behind its move number: "
@@ -184,6 +192,13 @@ def to_markdown(payload: dict[str, Any]) -> str:
         "|---|---|---|---|---|",
         f"| {strict['cited']} | {strict['offered']} | {strict['legal_not_offered']} | "
         f"{strict['illegal']} | {strict['line_reference']} |",
+        "",
+        "> **How to read it.** The same five columns, counted by a parser that treats every",
+        "> square-looking token as a move. The totals climb because English prose names squares "
+        "while",
+        "> talking about them. Publishing both readings shows how much the counting rule "
+        "decides, and",
+        "> the filtered reading above is the one the claim rests on.",
         "",
     ]
 

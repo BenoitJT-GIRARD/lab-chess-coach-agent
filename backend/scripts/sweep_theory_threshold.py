@@ -67,6 +67,14 @@ def render(payload: dict, rows: list[dict], room: dict, served: int) -> str:
         )
     lines += [
         "",
+        "> **How to read it.** Each row is one candidate threshold applied to the same "
+        f"{n} positions. The",
+        "> two middle columns split those positions in two, so they always add to "
+        f"{n}. The last column",
+        "> counts how many changed side against the row above, which makes consecutive zeros a "
+        "stretch",
+        "> where the exact value stops mattering.",
+        "",
         f"Divide the served threshold by {room['factor']:.0f} and "
         f"**{room['flipped_if_divided']} of {room['n']}** positions change side; multiply "
         f"it by {room['factor']:.0f} and **{room['flipped_if_multiplied']}** do.",

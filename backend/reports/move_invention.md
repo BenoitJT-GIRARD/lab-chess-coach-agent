@@ -9,8 +9,7 @@ Measured 2026-09-08 · model `gpt-4o-mini` · 21 positions, 2 passes, 42 calls.
 > **How to read it.** One row, and the columns say where each cited move came from. `Given in
 > the prompt` is a move a tool supplied. `Legal, not given` is a move that exists in the
 > position and reached the answer from somewhere else. `No such move` could not be played at
-> all. `Told as a line` is the opening's own sequence quoted behind its move number, already
-> played and left out of the invention count.
+> all. `Told as a line` is the opening's own sequence quoted behind its move number.
 
 None of those citations came back in French notation: this model answered in the notation it was handed. The translation step is still in the reader, and an answer written `Cf3` would be counted as the `Nf3` it was given rather than as an invention.
 
@@ -24,9 +23,8 @@ Unfiltered reading, counting every square-looking token as a move, including the
 
 > **How to read it.** The same five columns, counted by a parser that treats every
 > square-looking token as a move. The totals climb because English prose names squares while
-> talking about them, so `e4` in a sentence about the centre is scored as a citation. Publishing
-> both readings shows how much the counting rule decides, and the filtered reading above is the
-> one the claim rests on.
+> talking about them. Publishing both readings shows how much the counting rule decides, and
+> the filtered reading above is the one the claim rests on.
 
 ## What was flagged (3)
 
